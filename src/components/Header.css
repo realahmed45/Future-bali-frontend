@@ -1,0 +1,209 @@
+/* Header container styles */
+header {
+    background-color: #333; /* Dark grey background */
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between; /* Space between the logo and links */
+    align-items: center; /* Vertically center the items */
+    height: 50px;
+    position: relative; 
+  }
+  
+  /* Navigation links container */
+  nav {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+  
+  /* Styles for the navigation links */
+  nav .links {
+    display: flex;
+    gap: 20px; /* Space between navigation links */
+    margin-left: auto; /* Push links to the right */
+    margin-right: auto; /* Automatically set right margin to align in the center */
+  }
+  
+  
+  nav .link {
+    color: white; /* White text color */
+    text-decoration: none; /* Remove underline */
+    padding: 10px; /* Add padding around the links */
+    font-size: 20px; /* Match the font size of the home buttons */
+    font-family: Arial, sans-serif; /* Ensure consistency with the home links */
+    transition: color 0.3s ease; /* Smooth color transition on hover */
+}
+
+/* Hover effect for header links */
+
+  /* Logo image styles */
+
+
+  /* Header Styles */
+header {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background-color: #2b2828;
+}
+
+nav img {
+  height: 40px;
+}
+
+.sign-in {
+  position: absolute; /* Position it at the top-right */
+  right: 20px; /* Distance from the right edge */
+  top: 50%; /* Vertically center it */
+  transform: translateY(-50%); /* Adjust vertical position */
+  padding: 10px 20px;
+  /* background-color: rgb(106, 35, 128); */
+  color: white;
+  /* border: 2px solid rgb(106, 35, 128); */
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.sign-in:hover {
+  text-decoration: underline;
+}
+
+/* Modal Styles */
+.sign-in-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 300px;
+  box-shadow: 0 4px 8px rgba(179, 32, 32, 0.2);
+  position: relative; /* Make sure the close button is positioned relative to this */
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  cursor: pointer;
+  color: #000;
+}
+
+.close-btn:hover {
+  color: #f44336; /* Red color on hover */
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.user-name
+{ position: absolute; /* Position it at the top-right */
+  right: 20px; /* Distance from the right edge */
+  top: 50%; /* Vertically center it */
+  transform: translateY(-50%); /* Adjust vertical position */
+  padding: 10px 20px;
+  /* background-color: rgb(106, 35, 128); */
+  color: white;
+  /* border: 2px solid rgb(106, 35, 128); */
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+
+}
+
+.form-group label {
+  display: block;
+  font-weight: bold;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.submit-btn:hover {
+  background-color: #45a049;
+}
+
+.sign-in-btn {
+  position: absolute; /* Position it at the top-right */
+  right: 20px; /* Distance from the right edge */
+  top: 50%; /* Vertically center it */
+  transform: translateY(-50%); /* Adjust vertical position */
+  padding: 10px 20px;
+  background-color: rgb(106, 35, 128);
+  color: white;
+  border: 2px solid rgb(106, 35, 128);
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Button Hover Effect */
+.sign-in-btn:hover {
+  background-color: white;
+  color: black;
+}
+
+
+
+.user-options {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  border-radius: 4px;
+  z-index: 10;
+}
+
+.user-option {
+  padding: 8px;
+  text-decoration: none;
+  color: black;
+}
+
+.user-option:hover {
+  background-color: #f0f0f0;
+}
+
+.logout {
+  color: red;
+}
+
+.logout:hover {
+  background-color: #f8d7da;
+}

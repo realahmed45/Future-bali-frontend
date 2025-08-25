@@ -1,0 +1,21 @@
+.package2-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: #f4f4f4;
+    min-height: 100vh;
+  }
+  
+  .package2-heading {
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .package2-description {
+    font-size: 18px;
+    color: #555;
+    text-align: center;
+  }
+  
