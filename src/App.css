@@ -28,6 +28,136 @@
   color: #61dafb;
 }
 
+/* Add this to your App.css or create a separate home.css file */
+
+/* Spinning animation for loader */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Home HTML container styles */
+.home-html-container {
+  /* Reset any inherited styles that might interfere */
+  all: initial;
+
+  /* Restore essential display properties */
+  display: block;
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow-x: hidden !important;
+
+  /* Ensure proper box sizing */
+  box-sizing: border-box;
+
+  /* Allow the content to determine height */
+  min-height: auto;
+}
+
+/* Prevent horizontal overflow in home content */
+.home-html-container * {
+  max-width: 100% !important;
+  box-sizing: border-box;
+}
+
+/* Reset margins on first and last elements to prevent spacing issues */
+.home-html-container > *:first-child {
+  margin-top: 0 !important;
+}
+
+.home-html-container > *:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* Ensure images don't overflow */
+.home-html-container img {
+  max-width: 100% !important;
+  height: auto !important;
+}
+
+/* Fix any absolute positioning that might break layout */
+.home-html-container [style*="position: fixed"],
+.home-html-container [style*="position:fixed"] {
+  position: absolute !important;
+}
+/* Add these styles to your App.css file */
+
+/* Ensure html and body don't create extra scrollbars */
+html,
+body {
+  height: 100%;
+  overflow: hidden; /* Prevent body scroll */
+  margin: 0;
+  padding: 0;
+}
+
+/* Root container should fill viewport */
+#root {
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* App layout container */
+.app-layout {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Main content area - handle iframe specially */
+.app-content {
+  flex: 1;
+  overflow: hidden; /* No scroll on container when using iframe */
+  width: 100%;
+  position: relative;
+}
+
+/* Webkit scrollbar styling (Chrome, Safari, Edge) */
+.app-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.app-content::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+.app-content::-webkit-scrollbar-thumb {
+  background-color: #7c3aed;
+  border-radius: 4px;
+}
+
+.app-content::-webkit-scrollbar-thumb:hover {
+  background-color: #6d28d9;
+}
+
+/* Home content specific styles */
+.home-content-wrapper {
+  width: 100%;
+  overflow-x: hidden;
+  /* Ensure content doesn't create horizontal scroll */
+  max-width: 100%;
+}
+
+/* Prevent any element from causing horizontal overflow */
+.home-content-wrapper * {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Reset any margins that might cause scrolling issues */
+.home-content-wrapper > *:first-child {
+  margin-top: 0;
+}
+
+.home-content-wrapper > *:last-child {
+  margin-bottom: 0;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

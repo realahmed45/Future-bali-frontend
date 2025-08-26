@@ -23,22 +23,43 @@ import History from "../components/History";
 import "../assets/styles/App.css";
 import ContactForm2 from "../components/Emergencyform2";
 import ProtectedRoute from "../components/ProtectedRoute";
+import Adventure from "../components/Adventure";
 
 const AppRoutes = () => {
   return (
-    <div className="app-layout">
-      <Router>
+    <Router>
+      <div
+        className="app-layout"
+        style={{
+          minHeight: "100vh",
+          display: "flex",
+          flexDirection: "column",
+          // Prevent any overflow issues at the root level
+          overflow: "hidden",
+        }}
+      >
+        {/* Header - Fixed at top */}
         <Header />
-        <div className="app-content">
-          {/* Public routes */}
+
+        {/* Main content area - Let iframe handle its own scrolling */}
+        <main
+          className="app-content"
+          style={{
+            flex: 1,
+            width: "100%",
+            position: "relative",
+          }}
+        >
           <Routes>
             {/* Public routes */}
             <Route path="/" element={<Home />} />
+            <Route path="/home" element={<Home />} />
             <Route path="/ContactUs" element={<ContactUs />} />
             <Route path="/packages" element={<Packages />} />
             <Route path="/login" element={<Login />} />
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/case-study" element={<CaseStudy />} />
+            <Route path="/adventure" element={<Adventure />} />
 
             {/* Protected routes */}
             <Route element={<ProtectedRoute />}>
@@ -63,10 +84,12 @@ const AppRoutes = () => {
               <Route path="/history" element={<History />} />
             </Route>
           </Routes>
-        </div>
+        </main>
+
+        {/* Footer - Fixed at bottom */}
         <Footer />
-      </Router>
-    </div>
+      </div>
+    </Router>
   );
 };
 

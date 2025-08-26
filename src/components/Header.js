@@ -101,6 +101,9 @@ const Header = () => {
           <Link to="/gallery" className="hover:text-purple-400 transition">
             Gallery
           </Link>
+          <Link to="/adventure" className="hover:text-purple-400 transition">
+            My adventure
+          </Link>
         </div>
 
         {/* Auth Section */}
