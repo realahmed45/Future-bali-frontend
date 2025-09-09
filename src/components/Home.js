@@ -77,7 +77,7 @@ const NuanuHomepage = () => {
 
         {/* Main hero content - positioned at top left */}
         <div className="absolute mt-2 lg:mt-3 top-0 left-4 lg:left-8 text-black max-w-xs lg:max-w-md z-10">
-          <h1 className="text-xl lg:text-3xl font-normal mb-2 lg:mb-3 leading-tight">
+          <h1 className="text-xl lg:text-3xl font-normal mb-2 lg:mb-1 leading-tight">
             Best Premium investment in Bali
           </h1>
 
