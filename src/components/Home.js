@@ -93,7 +93,8 @@ const NuanuHomepage = () => {
         </div>
 
         {/* CTA Section */}
-        <div className="absolute bottom-4 right-4 lg:bottom-2 lg:right-28  mt-8 z-10">
+        {/* CTA Section */}
+        <div className="absolute bottom-8 right-4 lg:bottom-2 lg:right-28 mt-8 z-10">
           <div className="bg-white rounded-xl lg:rounded-2xl p-3 lg:p-4 shadow-2xl max-w-xs">
             <div className="flex items-center space-x-2 lg:space-x-3">
               <div className="flex-shrink-0">
