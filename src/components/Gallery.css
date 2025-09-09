@@ -1,0 +1,35 @@
+/* Gallery Section */
+.gallery-section {
+    padding: 20px;
+    /* background-color: #f9f9f9; */
+    width: 100%;
+  }
+  
+  /* Image Grid Container */
+  .image-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 images per row */
+    gap: 25px; /* Space between images */
+    margin: 0 auto;
+    max-width: 1200px; /* Center the grid and set maximum width */
+  }
+  
+  /* Individual Image Container */
+  .image-container {
+    text-align: center;
+  }
+  
+  /* Gallery Image */
+  .gallery-image {
+    width: 100%; /* Full width within grid cell */
+    height: auto;
+    border-radius: 1px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease;
+  }
+  
+  /* Hover Effect */
+  .gallery-image:hover {
+    transform: scale(1.05);
+  }
+  

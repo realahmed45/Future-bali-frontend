@@ -1,0 +1,133 @@
+.your-package-section {
+    width: 92%; /* Take the full width of the container */
+    margin: 10px 0; /* Ensure consistent spacing */
+    padding: 20px;
+    /* background-color: #f9f9f9; */
+    border-radius: 8px;
+    margin-left: 10%;
+    margin-right: 10%;
+  }
+  
+  .package-box {
+    display: flex; /* Flexbox for horizontal layout */
+    align-items: center; /* Center items vertically */
+    gap: 20px; /* Space between the image and the text */
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 30px;
+    padding-bottom: 80px;
+    background-color: #fff;
+    width: 100%; /* Ensure the box stretches full width */
+  }
+  
+  .package-imagec {
+    width: 400px; /* Adjust width */
+    height: 330px; /* Maintain aspect ratio */
+    object-fit: cover;
+  }
+  
+  .package-description {
+    flex: 1; /* Let the text take up remaining space */
+    font-size: 27px;
+    line-height: 1.8;
+    margin-left: 50px;
+  }
+  
+  .package-description h3 {
+    margin-bottom: 10px;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .package-description p {
+    margin: 5px 0;
+  }
+
+  .yellow-textc {
+    padding-left: 3px;
+    color: rgb(233, 191, 7);
+    font-size: 38px;
+  }
+  
+  .h-text {
+    font-size: 28px; /* Corrected property name from 'font: size' to 'font-size' */
+    font-weight: bold; /* Makes the text bold */
+    color: rgb(78, 78, 78); /* Sets the text color to grey */
+    
+  }
+
+  .add-ons-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 50px;
+    width: 1250px;
+    
+  }
+  
+  .add-on-box {
+    display: flex; /* Align image and text horizontally */
+    align-items: center; /* Center content vertically */
+    gap: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    height: 280px;
+  }
+  
+  .add-on-image {
+    width: 300px; /* Adjust width */
+    height: 230px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  
+  .add-on-description {
+    flex: 1; /* Allow text to take remaining space */
+    font-size: 26px;
+    line-height: 1.6;
+  }
+  
+  .add-on-description p {
+    margin: 5px 0; /* Add spacing between text lines */
+  }
+
+  .yellow-text {
+    color: #FFD700; /* Gold/Yellow color */
+    font-weight: bold;
+  }
+
+  .place-order-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    background-color: rgb(233, 191, 7);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .place-order-button:hover {
+    background-color: rgb(200, 160, 5); /* Slightly darker yellow */
+  }
+  
+  .no-add-ons-box {
+    border: 2px solid black;
+    padding: 20px;
+    margin-right: -55px;
+    
+    text-align: center;
+    background-color: #f9f9f9; /* Optional: Add a light background for the box */
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    width: 1250px;
+  }
+  
+  

@@ -1,0 +1,444 @@
+/* Packages container */
+.packages1-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f4f4f4;
+  }
+  
+  /* Header section with a background image */
+  .packages1-header {
+    background-image: url('../assets/images/packagebg1.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 50vh; /* Background image will take up 50% of the viewport height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+  }
+  
+  .packages1-heading {
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .packages1-description {
+    font-size: 18px;
+    margin-top: 10px;
+  }
+  
+  .breadcrumb1-link {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+  }
+  
+  .breadcrumb1-link:hover {
+    color: #ffd900;
+  }
+  
+  /* Features section */
+  .features-section {
+    display: flex;
+    margin-top: 100px;
+    padding-left: 8%;
+    padding-right: -10px;
+    gap: 2rem;
+  }
+  
+  .features-left {
+    flex: 1;
+  }
+
+  .features-left h2 {
+    font-size: 3rem; /* Increased font size for the "Features" heading */
+    font-weight: bold;
+    margin-bottom: 1rem;
+    margin-top: 15px;
+  }
+  
+  
+  .features-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin-left: -20px;
+    gap: 1rem;
+  }
+  
+  .feature-item {
+    margin-bottom: 1.5rem;
+    font-size: 1.2rem; /* Increased font size for feature titles */
+    font-weight: 500;
+  }
+  
+  .feature-title {
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top:10px;
+    font-size: 1.5rem; /* Increased font size for feature titles */
+    
+  }
+  
+  .dot {
+    width: 8px;
+    height: 8px;
+    background-color: #FFD700;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+.highlight-yellow {
+  color: rgb(233, 191, 7);
+  font-weight: 500; /* Make the word bold */
+  font-size: 34px; /* Increase the font size for emphasis */
+  width: 8px;
+  height: 8px;
+  padding-left: 20px;
+  
+}
+
+  .yellow-text {
+    padding-left: 3px;
+    color: rgb(233, 191, 7);
+  }
+  
+  .feature-detail {
+    font-size: 1.5rem;
+    color: #000000;
+    font-weight: 400;
+    padding-left: 60px;
+  }
+
+
+  
+  .feature-detail ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .feature-detail li {
+    margin-bottom: 0.25rem;
+  }
+  
+  .commitment-text {
+    color: #000000;
+    font-size: 1.5rem;
+    line-height: 1.3;
+    margin-top: 2rem;
+  }
+  
+  .commitment-text p {
+    margin-bottom: 1rem;
+  }
+  
+  .package-info-card {
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 62%;
+    height: 30%;
+  }
+  
+  .info-item {
+    margin-bottom: 1rem;
+  }
+  
+  .info-label {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+  }
+  
+  .info-value {
+    font-weight: 500;
+  }
+  
+  .package-image {
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .package-image img {
+    width: 70%;
+    height: 70%;
+    display: block;
+  }
+  
+  .add-ons-section {
+    /* padding: 40px 10px;  */
+    margin-top: 40px;
+    /* background-color: #f9f9f9;  */
+    text-align:left;
+    align-self: start;
+    margin-left: 3%;
+    margin-right: 3%;
+    width: 100%;
+    padding-left: 65px;
+    padding-right: -65px;
+
+  }
+  
+  .add-ons-heading {
+    font-size: 34px; /* Increased font size for the heading */
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .add-ons-description {
+    font-size: 24px; /* Increased font size for the description */
+    color: #555;
+    line-height: 1.8; /* Slightly increased line height for better readability */
+    max-width: 100%;
+    /* margin-right: 3%; */
+    text-align: left;
+    margin-right: 13%;
+  }
+
+  /* Responsive styles */
+  @media (max-width: 768px) {
+    .features-section {
+      flex-direction: column;
+    }
+    
+    .features-right {
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+  }
+
+  /* Existing CSS styles... */
+/* Existing CSS styles... */
+
+.cost-of-building-section {
+  margin-top: 120px;
+  display: flex;
+  justify-content: center;
+  width: 90%;
+}
+
+.cost-of-building-box {
+  position: relative;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 1200px;
+}
+
+
+.cost-of-building-heading {
+  font-size: 38px; /* Font size for the heading */
+  font-weight: bold;
+  position: absolute; /* Absolute positioning to take it outside the box */
+  top: -95px; /* Move it completely outside and above the box */
+  left: 0; /* Align it flush to the left of the parent box */
+  background-color: transparent; /* No background color */
+  z-index: 10; /* Ensure it appears on top of other elements */
+  padding: 0; /* Remove padding */
+}
+
+
+.cost-of-building-tables-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.cost-of-building-table {
+  flex-basis: 30%;
+  height: 70px;
+}
+
+.cost-of-building-table2 {
+  flex-basis: 60%;
+}
+
+.cost-of-building-table table,
+.cost-of-building-table2 table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 2px solid #000;
+  height: 10px;
+}
+
+.cost-of-building-table th,
+.cost-of-building-table td,
+.cost-of-building-table2 th,
+.cost-of-building-table2 td {
+  padding: 10px;
+  border: 1px solid #000000;
+  text-align: center;
+}
+
+.cost-of-building-table th,
+.cost-of-building-table2 th {
+  background-color: #f1f1f1;
+}
+
+.cost-of-building-notes {
+  margin-top: 40px;
+  font-size: 20px;
+  color: #000000;
+}
+
+
+
+.cost-of-building-button {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.yellow-btn {
+  background-color: #ffc107;
+  color: rgb(255, 255, 255);
+  font-size: 18px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 80%;
+  font-weight: bold;
+}
+
+.yellow-btn:hover {
+  background-color: #e0a800;
+}
+
+.add-checkbox {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  margin: auto;
+}
+
+.yellow-underline {
+  position: relative;
+  display: inline-block;
+}
+
+.yellow-underline::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 4px; /* Thickness of the underline */
+  background-color: rgb(243, 200, 8); /* Color of the underline */
+  left: 0;
+  bottom: -5px; /* Spacing between the text and underline */
+}
+
+.construction-overview-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 20px;
+  margin-bottom: -30px;
+  /* background-color: #f9f9f9; Light background for contrast */
+}
+
+.construction-overview-content {
+  display: flex;
+  max-width: 1200px;
+  width: 100%;
+  gap: 20px;
+  align-items: flex-start;
+  font-size: 20px; /* Increased font size */
+  line-height: 1.8; /* Optional: Improve readability */
+}
+
+
+.construction-overview-left {
+  flex: 1;
+  padding: 20px;
+}
+
+.construction-overview-heading {
+  font-size: 38px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.construction-overview-description {
+  font-size: 20px;
+  line-height: 1.6;
+  color: #000000;
+}
+
+.construction-overview-right {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5%;
+}
+
+.construction-overview-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+.construction-overview-description2,
+.construction-overview-description3 {
+  margin: 0; /* Removes space between the two lines */
+  font-size: 20px; /* Adjust font size for the entire line */
+}
+
+.construction-overview-description3 {
+  margin-top: -15px;
+}
+
+.highlight-red {
+  color: red;
+  font-weight: bold; /* Make the word bold */
+  font-size: 24px; /* Increase the font size for emphasis */
+}
+
+/* Photo Gallery Section */
+.photo-gallery-section {
+  padding: -100px 0;
+  margin-top: -10;
+  text-align: center;
+  background-color: #f4f4f4;
+}
+
+.photo-gallery-heading {
+  font-size: 45px;
+  font-weight: bold;
+  margin-bottom: 55px;
+  color: #000000;
+
+}
+
+.photo-gallery-images {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+}
+
+.photo-gallery-image {
+  width: 360px;
+  height: 490px;
+  object-fit: cover;
+  border-radius: 1px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.photo-gallery-image:hover {
+  transform: scale(1.05);
+}
+
+

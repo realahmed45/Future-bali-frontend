@@ -1,0 +1,82 @@
+/* General styles */
+.packages-container {
+    padding: 20px;
+  }
+  
+  .packages-header {
+    background-color: #f5f5f5;
+    padding: 20px;
+    border-radius: 5px;
+  }
+  
+  .packages-heading {
+    font-size: 36px;
+    font-weight: bold;
+  }
+  
+  .packages-description {
+    font-size: 18px;
+    color: #777;
+  }
+  
+  .category-selection {
+    display: flex; /* Align items in a row */
+    justify-content: center;
+    margin: 20px 0;
+  }
+  
+  .category-link {
+    cursor: pointer;
+    font-size: 18px;
+    margin: 0 15px; /* Space between each category */
+    color: #555;
+    text-decoration: none; /* Remove underline */
+    transition: color 0.3s ease;
+  }
+  
+  .category-link:hover {
+    color: #e9bf07;
+  }
+  
+  /* Highlight selected category */
+  .selected {
+    color: red;
+    font-weight: bold;
+  }
+  
+  .gallery-section {
+    text-align: center;
+  }
+  
+  .image-grid {
+    display: flex;
+    flex-wrap: wrap;
+    /* justify-content: center; */
+    gap: 20px;
+  }
+  
+  /* Slide animations */
+  .image-container {
+    width: 30%;
+    opacity: 0;
+    transform: translateY(30px); /* Initial position for sliding up */
+    transition: all 0.5s ease;
+  }
+  
+  .slide-in {
+    opacity: 1;
+    transform: translateX(0); /* Slide from the left */
+  }
+  
+  .slide-out {
+    opacity: 0;
+    transform: translateY(30px); /* Slide down effect */
+  }
+  
+  /* Additional style for images */
+  .gallery-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+  
