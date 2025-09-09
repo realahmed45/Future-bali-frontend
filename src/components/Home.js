@@ -80,9 +80,7 @@ const NuanuHomepage = () => {
           <h1 className="text-xl lg:text-3xl font-normal mb-2 lg:mb-3 leading-tight">
             Best Premium investment in Bali
           </h1>
-          <p className="text-gray-600 text-lg lg:text-2xl mb-2 lg:mb-3 opacity-90">
-            Adventure in bali
-          </p>
+
           <p className="text-2xl lg:text-4xl mb-1 font-bold text-black-400">
             (from $36,000)
           </p>
