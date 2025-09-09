@@ -111,26 +111,45 @@ const Adventure = () => {
   return (
     <div className="font-sans text-gray-800">
       {/* Hero Section */}
-      <div
-        className="h-screen bg-cover bg-center flex justify-center items-center text-white text-center"
-        style={{ backgroundImage: `url(${homeImage})` }}
-      >
-        <div className="flex gap-6 mt-44">
-          <Link
-            to="/packages"
-            className="px-6 py-3 bg-purple-700 text-white rounded-lg hover:bg-purple-600 transition shadow-md"
-          >
-            View Packages
-          </Link>
-          <Link
-            to="/contactUs"
-            className="px-6 py-3 bg-purple-700 text-white rounded-lg hover:bg-purple-600 transition shadow-md"
-          >
-            Contact Us
-          </Link>
+      <div className="relative h-screen flex justify-center items-center text-white text-center overflow-hidden">
+        {/* Vimeo Background Video */}
+        <iframe
+          className="absolute top-0 left-0 w-full h-full object-cover"
+          src="https://player.vimeo.com/video/1116970593?autoplay=1&muted=1&loop=1&controls=0&background=1&title=0&byline=0&portrait=0"
+          style={{
+            border: 0,
+            pointerEvents: "none",
+            width: "100vw",
+
+            minWidth: "200vh", // 16:9 aspect ratio
+            height: "100vh",
+            transform: "scale(1.2)", // Ensures full coverage
+          }}
+          allow="autoplay; fullscreen"
+          title="Future Bali Background Video"
+        />
+
+        {/* Dark overlay */}
+        <div className="absolute inset-0 bg-black bg-opacity-20"></div>
+
+        {/* Content */}
+        <div className="relative z-10">
+          <div className="flex gap-6 mt-60 ml-12">
+            <Link
+              to="/packages"
+              className="px-6 py-3 bg-purple-700 text-white rounded-lg hover:bg-purple-600 transition shadow-md"
+            >
+              View Packages
+            </Link>
+            <Link
+              to="/contactUs"
+              className="px-6 py-3 bg-purple-700 text-white rounded-lg hover:bg-purple-600 transition shadow-md"
+            >
+              Contact Us
+            </Link>
+          </div>
         </div>
       </div>
-
       {/* Packages Section */}
       <section className="py-8 px-4 bg-gray-50">
         <h2 className="text-center text-lg text-gray-500 uppercase mb-2">
