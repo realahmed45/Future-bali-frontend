@@ -104,7 +104,7 @@ const InheritanceForm = () => {
         );
 
         await axios.post(
-          "https://future-bali-backend-3.onrender.com/api/orders/save-inheritance",
+          "https://future-bali-backend-fixed-version.onrender.com/api/orders/save-inheritance",
           {
             contacts: contacts.map((contact) => ({
               name: contact.name,

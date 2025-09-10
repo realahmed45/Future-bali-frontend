@@ -3,7 +3,7 @@ import whatsappIcon from "../assets/images/whatsapp.png"; // You'll need to add 
 import phoneIcon from "../assets/images/phone.png";
 
 const ContactUs = () => {
-  const phoneNumber = "6287769489487"; // WhatsApp format without + and spaces
+  const phoneNumber = "6281818185522"; // WhatsApp format without + and spaces
 
   const handleWhatsAppClick = () => {
     const message = encodeURIComponent(
@@ -54,7 +54,7 @@ const ContactUs = () => {
                     </div>
                     <div>
                       <p className="text-purple-200 text-sm">Direct Line</p>
-                      <p className="text-xl font-semibold">+62 877-6948-9487</p>
+                      <p className="text-xl font-semibold">+62 818-1818-5522</p>
                     </div>
                   </div>
 

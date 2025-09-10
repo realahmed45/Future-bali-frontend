@@ -10,23 +10,26 @@ const Gallery = () => {
   const excludedIndexes = [47, 33, 26, 20];
 
   const imagePaths = {
-    All: Array.from({ length: 48 }, (_, i) => i + 1).filter(
-      (index) => !excludedIndexes.includes(index)
-    ),
-    Bedroom: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16].filter(
+    All: Array.from({ length: 48 }, (_, i) => i + 1)
+      .filter((index) => !excludedIndexes.includes(index))
+      .map((index) => {
+        if (index === 1) return 28;
+        if (index === 2) return 34;
+        return index;
+      }),
+    Bedroom: [28, 34, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16].filter(
       (index) => !excludedIndexes.includes(index)
     ),
     Kitchen: [17, 18, 19, 21, 22, 23, 24, 25, 27, 28].filter(
       (index) => !excludedIndexes.includes(index)
-    ), // 20 and 26 removed
+    ),
     Garden: [29, 30, 31, 32, 34, 35, 36, 37, 38, 39, 40].filter(
       (index) => !excludedIndexes.includes(index)
-    ), // 33 removed
+    ),
     Pool: [41, 42, 43, 44, 45, 46, 48].filter(
       (index) => !excludedIndexes.includes(index)
-    ), // 47 removed
+    ),
   };
-
   const handleCategoryChange = (newCategory) => {
     setIsSlidingOut(true);
     setTimeout(() => {
