@@ -103,50 +103,72 @@ const Login = () => {
     setPhoneError("");
     setEmailError("");
 
-    try {
-      const payload = loginMethod === "phone" ? { phone } : { email };
+    const maxRetries = 6;
+    let lastError = null;
 
-      // Get OTP from backend
-      const response = await axios.post(
-        `${API_BASE_URL}/api/auth/generate-otp`,
-        payload,
-        {
-          headers: { "Content-Type": "application/json" },
-          timeout: 30000,
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        const payload = loginMethod === "phone" ? { phone } : { email };
+
+        const response = await axios.post(
+          `${API_BASE_URL}/api/auth/generate-otp`,
+          payload,
+          {
+            headers: { "Content-Type": "application/json" },
+            timeout: 30000,
+          }
+        );
+
+        if (!response.data.success) {
+          throw new Error(response.data.message || "Failed to generate OTP");
         }
-      );
 
-      if (!response.data.success) {
-        throw new Error(response.data.message || "Failed to generate OTP");
+        const { otp: generatedOtp } = response.data;
+
+        // Send OTP via appropriate channel
+        if (loginMethod === "phone") {
+          await sendOtpViaWhatsApp(phone, generatedOtp);
+        } else {
+          await sendOtpViaEmail(email, generatedOtp);
+        }
+
+        setIsOtpModalOpen(true);
+        setIsLoading(false);
+        return; // Success, exit the retry loop
+      } catch (error) {
+        lastError = error;
+        console.log(
+          `OTP attempt ${attempt}/${maxRetries} failed:`,
+          error.message
+        );
+
+        // If it's the last attempt, don't wait
+        if (attempt < maxRetries) {
+          // Wait before retrying (increasing delay)
+          await new Promise((resolve) => setTimeout(resolve, attempt * 2000));
+        }
       }
+    }
 
-      const { otp: generatedOtp } = response.data;
+    // All retries failed
+    setIsLoading(false);
+    let errorMessage =
+      "Failed to send OTP after multiple attempts. Please try again later.";
 
-      // Send OTP via appropriate channel
-      if (loginMethod === "phone") {
-        await sendOtpViaWhatsApp(phone, generatedOtp);
-      } else {
-        await sendOtpViaEmail(email, generatedOtp);
-      }
+    if (lastError?.code === "ECONNABORTED") {
+      errorMessage =
+        "Server timeout. Please check your connection and try again.";
+    } else if (lastError?.code === "ERR_NETWORK") {
+      errorMessage =
+        "Network error. Please check your connection and try again.";
+    } else if (lastError?.response) {
+      errorMessage = lastError.response.data.message || errorMessage;
+    }
 
-      setIsOtpModalOpen(true);
-    } catch (error) {
-      console.error("OTP Error:", error);
-      let errorMessage = "Failed to send OTP. Please try again.";
-
-      if (error.code === "ECONNABORTED") {
-        errorMessage = "Request timeout. Please check your connection.";
-      } else if (error.response) {
-        errorMessage = error.response.data.message || errorMessage;
-      }
-
-      if (loginMethod === "phone") {
-        setPhoneError(errorMessage);
-      } else {
-        setEmailError(errorMessage);
-      }
-    } finally {
-      setIsLoading(false);
+    if (loginMethod === "phone") {
+      setPhoneError(errorMessage);
+    } else {
+      setEmailError(errorMessage);
     }
   };
 
@@ -161,34 +183,61 @@ const Login = () => {
     setIsLoading(true);
     setOtpError("");
 
-    try {
-      const payload = loginMethod === "phone" ? { phone, otp } : { email, otp };
+    const maxRetries = 5;
+    let lastError = null;
 
-      const response = await axios.post(
-        `${API_BASE_URL}/api/auth/verify-otp`,
-        payload,
-        { timeout: 5000 }
-      );
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        const payload =
+          loginMethod === "phone" ? { phone, otp } : { email, otp };
 
-      if (response.data.success && response.data.token) {
-        localStorage.setItem("authToken", response.data.token);
-        const redirectTo = location.state?.from?.pathname || "/";
-        navigate(redirectTo);
-      } else {
-        throw new Error(response.data.message || "OTP verification failed");
+        const response = await axios.post(
+          `${API_BASE_URL}/api/auth/verify-otp`,
+          payload,
+          { timeout: 20000 }
+        );
+
+        if (response.data.success && response.data.token) {
+          localStorage.setItem("authToken", response.data.token);
+          const redirectTo = location.state?.from?.pathname || "/";
+          navigate(redirectTo);
+          return; // Success, exit
+        } else {
+          throw new Error(response.data.message || "OTP verification failed");
+        }
+      } catch (error) {
+        lastError = error;
+        console.log(
+          `Verification attempt ${attempt}/${maxRetries} failed:`,
+          error.message
+        );
+
+        // If it's the last attempt, don't wait
+        if (attempt < maxRetries) {
+          // Wait before retrying
+          await new Promise((resolve) => setTimeout(resolve, 1500));
+        }
       }
-    } catch (error) {
-      console.error("OTP verification error:", error);
-      localStorage.removeItem("authToken");
-      setOtpError(
-        error.response?.data?.message ||
-          "Verification failed. Please try again."
-      );
-    } finally {
-      setIsLoading(false);
     }
-  };
 
+    // All retries failed
+    setIsLoading(false);
+    localStorage.removeItem("authToken");
+
+    let errorMessage =
+      "Verification failed after multiple attempts. Please try again.";
+    if (lastError?.response?.data?.message) {
+      errorMessage = lastError.response.data.message;
+    } else if (
+      lastError?.code === "ECONNABORTED" ||
+      lastError?.code === "ERR_NETWORK"
+    ) {
+      errorMessage =
+        "Network timeout. Please check your connection and try again.";
+    }
+
+    setOtpError(errorMessage);
+  };
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
