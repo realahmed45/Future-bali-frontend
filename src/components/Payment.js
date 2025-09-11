@@ -147,7 +147,7 @@ const Payment = () => {
       console.log("[Payment] Fetching order data from database:", orderId);
 
       const response = await axios.get(
-        `https://future-bali-backend-fixed-version.onrender.com/api/orders/${orderId}`
+        `future-bali-backend-production.up.railway.app/api/orders/${orderId}`
       );
 
       if (response.data.success) {
@@ -279,7 +279,7 @@ const Payment = () => {
 
       // Update order in database with payment information
       const response = await axios.put(
-        `https://future-bali-backend-fixed-version.onrender.com/api/orders/${orderId}`,
+        `future-bali-backend-production.up.railway.app/api/orders/${orderId}`,
         {
           paymentDetails,
           paymentStatus: "paid",

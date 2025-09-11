@@ -12,7 +12,7 @@ const Header = () => {
 
   const API_BASE_URL =
     process.env.REACT_APP_API_URL ||
-    "https://future-bali-backend-fixed-version.onrender.com";
+    "future-bali-backend-production.up.railway.app";
 
   // Check auth status continuously
   useEffect(() => {

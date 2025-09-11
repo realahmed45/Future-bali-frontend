@@ -98,7 +98,7 @@ const Package1 = () => {
       console.log("[Package1] Attempting to save to API");
       try {
         const response = await axios.post(
-          "https://future-bali-backend-fixed-version.onrender.com/api/cart/save",
+          "future-bali-backend-production.up.railway.app/api/cart/save",
           {
             ...packageData,
             totalAmount:
