@@ -112,23 +112,41 @@ const Adventure = () => {
     <div className="font-sans text-gray-800">
       {/* Hero Section */}
       <div className="relative h-screen flex justify-center items-center text-white text-center overflow-hidden">
-        {/* Desktop Video - Hidden on mobile */}
+        {/* Desktop Video - Optimized for wide screens */}
         <iframe
-          className="absolute top-0 left-0 w-full h-full object-cover hidden md:block"
+          className="absolute top-0 left-0 w-full h-full object-cover hidden lg:block"
           src="https://player.vimeo.com/video/1119007916?autoplay=1&muted=1&loop=1&controls=0&background=1&title=0&byline=0&portrait=0"
           style={{
             border: 0,
             pointerEvents: "none",
             width: "100vw",
-            minWidth: "200vh", // 16:9 aspect ratio
+            minWidth: "177.78vh", // 16:9 aspect ratio (100vh * 16/9)
             height: "100vh",
-            transform: "scale(1.2)", // Ensures full coverage
+            transform: "scale(1.1)", // Minimal scaling for desktop
+            transformOrigin: "center center",
           }}
           allow="autoplay; fullscreen"
           title="Future Bali Background Video Desktop"
         />
 
-        {/* Mobile Video - Hidden on desktop */}
+        {/* Tablet Video - Medium screens */}
+        <iframe
+          className="absolute top-0 left-0 w-full h-full object-cover hidden md:block lg:hidden"
+          src="https://player.vimeo.com/video/1119007916?autoplay=1&muted=1&loop=1&controls=0&background=1&title=0&byline=0&portrait=0"
+          style={{
+            border: 0,
+            pointerEvents: "none",
+            width: "100vw",
+            minWidth: "133.33vh", // 4:3 aspect ratio for tablets
+            height: "100vh",
+            transform: "scale(1.15)",
+            transformOrigin: "center center",
+          }}
+          allow="autoplay; fullscreen"
+          title="Future Bali Background Video Tablet"
+        />
+
+        {/* Mobile Video - Optimized for portrait/small screens */}
         <iframe
           className="absolute top-0 left-0 w-full h-full object-cover block md:hidden"
           src="https://player.vimeo.com/video/1119051178?autoplay=1&muted=1&loop=1&controls=0&background=1&title=0&byline=0&portrait=0"
@@ -136,9 +154,10 @@ const Adventure = () => {
             border: 0,
             pointerEvents: "none",
             width: "100vw",
-            minWidth: "100vh", // Adjusted for mobile aspect ratio
+            minWidth: "100vh", // 1:1 aspect ratio for mobile
             height: "100vh",
-            transform: "scale(1.1)", // Slightly less scale for mobile
+            transform: "scale(1.05)", // Minimal scaling for mobile
+            transformOrigin: "center center",
           }}
           allow="autoplay; fullscreen"
           title="Future Bali Background Video Mobile"
@@ -148,17 +167,17 @@ const Adventure = () => {
         <div className="absolute inset-0 bg-black bg-opacity-20"></div>
 
         {/* Content */}
-        <div className="relative z-10">
-          <div className="flex gap-6 mt-60 ml-12">
+        <div className="relative z-10 px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-center justify-center">
             <Link
               to="/packages"
-              className="px-6 py-3 bg-purple-700 text-white rounded-lg hover:bg-purple-600 transition shadow-md"
+              className="w-full sm:w-auto px-6 py-3 bg-purple-700 text-white rounded-lg hover:bg-purple-600 transition shadow-md text-center font-medium"
             >
               View Packages
             </Link>
             <Link
               to="/contactUs"
-              className="px-6 py-3 bg-purple-700 text-white rounded-lg hover:bg-purple-600 transition shadow-md"
+              className="w-full sm:w-auto px-6 py-3 bg-purple-700 text-white rounded-lg hover:bg-purple-600 transition shadow-md text-center font-medium"
             >
               Contact Us
             </Link>
