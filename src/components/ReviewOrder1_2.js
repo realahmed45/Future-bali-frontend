@@ -187,7 +187,7 @@ const UserInfoForm = () => {
 
       // Save user info to order directly
       const response = await axios.post(
-        "future-bali-backend-production.up.railway.app/api/orders/save-user-info",
+        "https://future-bali-backend-production.up.railway.app/api/orders/save-user-info",
         {
           userInfo: userData,
           orderId,

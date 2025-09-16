@@ -93,7 +93,7 @@ const PlaceOrder = () => {
 
       // Finalize the order with billing details
       const response = await axios.post(
-        "future-bali-backend-production.up.railway.app/api/orders/finalize",
+        "https://future-bali-backend-production.up.railway.app/api/orders/finalize",
         {
           orderId,
           billingDetails: formData,

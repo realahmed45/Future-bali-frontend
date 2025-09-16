@@ -102,7 +102,7 @@ const Package1Cart = () => {
       try {
         console.log("[Package1Cart] Verifying token with API");
         const response = await axios.get(
-          "future-bali-backend-production.up.railway.app/api/auth/verify-token",
+          "https://future-bali-backend-production.up.railway.app/api/auth/verify-token",
           {
             headers: { Authorization: `Bearer ${token}` },
             timeout: 10000,
@@ -195,7 +195,7 @@ const Package1Cart = () => {
       }
 
       const response = await axios.post(
-        "future-bali-backend-production.up.railway.app/api/cart/save",
+        "https://future-bali-backend-production.up.railway.app/api/cart/save",
         {
           // Send both email and phone - the backend will handle which one to use
           email: userIdentifier.includes("@") ? userIdentifier : null,

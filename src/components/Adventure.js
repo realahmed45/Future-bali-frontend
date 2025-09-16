@@ -112,21 +112,36 @@ const Adventure = () => {
     <div className="font-sans text-gray-800">
       {/* Hero Section */}
       <div className="relative h-screen flex justify-center items-center text-white text-center overflow-hidden">
-        {/* Vimeo Background Video */}
+        {/* Desktop Video - Hidden on mobile */}
         <iframe
-          className="absolute top-0 left-0 w-full h-full object-cover"
-          src="https://player.vimeo.com/video/1116970593?autoplay=1&muted=1&loop=1&controls=0&background=1&title=0&byline=0&portrait=0"
+          className="absolute top-0 left-0 w-full h-full object-cover hidden md:block"
+          src="https://player.vimeo.com/video/1119007916?autoplay=1&muted=1&loop=1&controls=0&background=1&title=0&byline=0&portrait=0"
           style={{
             border: 0,
             pointerEvents: "none",
             width: "100vw",
-
             minWidth: "200vh", // 16:9 aspect ratio
             height: "100vh",
             transform: "scale(1.2)", // Ensures full coverage
           }}
           allow="autoplay; fullscreen"
-          title="Future Bali Background Video"
+          title="Future Bali Background Video Desktop"
+        />
+
+        {/* Mobile Video - Hidden on desktop */}
+        <iframe
+          className="absolute top-0 left-0 w-full h-full object-cover block md:hidden"
+          src="https://player.vimeo.com/video/1119051178?autoplay=1&muted=1&loop=1&controls=0&background=1&title=0&byline=0&portrait=0"
+          style={{
+            border: 0,
+            pointerEvents: "none",
+            width: "100vw",
+            minWidth: "100vh", // Adjusted for mobile aspect ratio
+            height: "100vh",
+            transform: "scale(1.1)", // Slightly less scale for mobile
+          }}
+          allow="autoplay; fullscreen"
+          title="Future Bali Background Video Mobile"
         />
 
         {/* Dark overlay */}

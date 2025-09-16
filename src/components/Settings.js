@@ -17,7 +17,7 @@ const Settings = () => {
 
     try {
       const response = await fetch(
-        "https://future-bali-backend-1.onrender.com/update-account-details",
+        "https://future-bali-backend-production.up.railway.app/update-account-details",
         {
           method: "POST",
           headers: {
@@ -50,7 +50,7 @@ const Settings = () => {
 
     try {
       const response = await fetch(
-        "https://future-bali-backend-1.onrender.com/card-details",
+        "https://future-bali-backend-production.up.railway.app/card-details",
         {
           method: "POST",
           headers: {

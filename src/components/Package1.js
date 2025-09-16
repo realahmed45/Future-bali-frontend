@@ -98,7 +98,7 @@ const Package1 = () => {
       console.log("[Package1] Attempting to save to API");
       try {
         const response = await axios.post(
-          "future-bali-backend-production.up.railway.app/api/cart/save",
+          "https://future-bali-backend-production.up.railway.app/api/cart/save",
           {
             ...packageData,
             totalAmount:
@@ -110,7 +110,7 @@ const Package1 = () => {
           },
           {
             headers: { Authorization: `Bearer ${token}` },
-            timeout: 5000, // Add timeout
+            timeout: 5000,
           }
         );
 
@@ -149,37 +149,39 @@ const Package1 = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-indigo-50">
-      <div
-        className="flex flex-col items-center"
-        style={{ margin: "0 auto", width: "65%" }}
-      >
-        <header className="w-full h-[15vh] bg-gradient-to-r from-purple-600 via-purple-700 to-indigo-600 shadow-xl flex justify-center items-center text-white text-center rounded-b-3xl">
-          <div className="animate-fade-in-down">
-            <h1 className="text-4xl font-extrabold mb-4 tracking-wide">
+      <div className="container mx-auto px-2 lg:px-8 max-w-7xl">
+        {/* Header */}
+        <header className="w-full py-12 lg:py-16 bg-gradient-to-r from-purple-600 via-purple-700 to-indigo-600 shadow-xl flex justify-center items-center text-white text-center rounded-b-3xl mb-8 lg:mb-12">
+          <div className="px-4">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-2 lg:mb-4 tracking-wide">
               Package 1
             </h1>
-            <h className=" text-2xl font-bold mb-4 tracking-wide">
+            <h2 className="text-lg sm:text-xl lg:text-2xl font-bold tracking-wide">
               Furnished 1 bedroom house
-            </h>
+            </h2>
           </div>
         </header>
 
-        <div className="flex flex-col md:flex-row mt-12 px-6 gap-8 w-full">
-          <div className="flex-1 bg-white shadow-2xl rounded-2xl p-8 border border-purple-100 hover:shadow-3xl transition-all duration-300">
-            <h2 className="text-3xl font-bold mb-6 text-purple-700 border-b-2 border-purple-200 pb-3">
+        {/* Main Content */}
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 mb-12">
+          {/* Features Section */}
+          <div className="flex-1 bg-white shadow-2xl rounded-2xl p-6 lg:p-8 border border-purple-100">
+            <h2 className="text-2xl lg:text-3xl font-bold mb-6 text-purple-700 border-b-2 border-purple-200 pb-3">
               FEATURES
             </h2>
-            <div className="mb-4 space-y-1">
-              <p className="text-sm font-semibold text-purple-600 bg-purple-50 px-3 py-1 rounded-full inline-block">
+
+            {/* Tags */}
+            <div className="mb-6 flex flex-wrap gap-2">
+              <span className="text-xs sm:text-sm font-semibold text-purple-600 bg-purple-50 px-3 py-1 rounded-full">
                 Modern Bali Design
-              </p>
-              <p className="text-sm font-semibold text-purple-600 bg-purple-50 px-3 py-1 rounded-full inline-block ml-2">
+              </span>
+              <span className="text-xs sm:text-sm font-semibold text-purple-600 bg-purple-50 px-3 py-1 rounded-full">
                 Open concept layout
-              </p>
+              </span>
             </div>
 
-            {/* Dynamic features based on minimum sizes */}
-            <div className="space-y-3">
+            {/* Room Features */}
+            <div className="space-y-4">
               {minimumSizes.map(
                 (room, index) =>
                   room.size && (
@@ -187,30 +189,30 @@ const Package1 = () => {
                       key={index}
                       className="bg-gray-50 rounded-lg p-4 border-l-4 border-purple-500"
                     >
-                      <p className="text-sm font-bold text-purple-700">
+                      <p className="text-sm lg:text-base font-bold text-purple-700">
                         • {room.label}: {room.size}m²
                       </p>
                       {room.label.toLowerCase().includes("bedroom") && (
-                        <p className="text-gray-600 pl-4 mt-1 italic">
+                        <p className="text-gray-600 pl-4 mt-2 text-sm italic">
                           • **Add On** Walk in closet toward bathroom*
                         </p>
                       )}
                       {room.label.toLowerCase().includes("bathroom") && (
-                        <ul className="list-none pl-6 text-gray-600 mt-2 space-y-1">
-                          <li className="flex items-center">
-                            <span className="w-2 h-2 bg-purple-400 rounded-full mr-2"></span>
+                        <ul className="list-none pl-6 text-gray-600 mt-3 space-y-2">
+                          <li className="flex items-center text-sm">
+                            <span className="w-2 h-2 bg-purple-400 rounded-full mr-3 flex-shrink-0"></span>
                             Shower
                           </li>
-                          <li className="flex items-center">
-                            <span className="w-2 h-2 bg-purple-400 rounded-full mr-2"></span>
+                          <li className="flex items-center text-sm">
+                            <span className="w-2 h-2 bg-purple-400 rounded-full mr-3 flex-shrink-0"></span>
                             Toilet
                           </li>
-                          <li className="flex items-center">
-                            <span className="w-2 h-2 bg-purple-400 rounded-full mr-2"></span>
+                          <li className="flex items-center text-sm">
+                            <span className="w-2 h-2 bg-purple-400 rounded-full mr-3 flex-shrink-0"></span>
                             Sitting area
                           </li>
-                          <li className="flex items-center">
-                            <span className="w-2 h-2 bg-purple-400 rounded-full mr-2"></span>
+                          <li className="flex items-center text-sm">
+                            <span className="w-2 h-2 bg-purple-400 rounded-full mr-3 flex-shrink-0"></span>
                             Bathtub
                           </li>
                         </ul>
@@ -220,71 +222,79 @@ const Package1 = () => {
               )}
             </div>
 
-            <div className="mt-6 bg-gradient-to-r from-purple-50 to-indigo-50 rounded-lg p-4">
-              <p className="text-sm font-bold text-purple-700 mb-2">
+            {/* Furnishing Details */}
+            <div className="mt-8 bg-gradient-to-r from-purple-50 to-indigo-50 rounded-lg p-6">
+              <p className="text-sm lg:text-base font-bold text-purple-700 mb-4">
                 • All furnishing is included
               </p>
-              <ul className="list-none pl-6 text-gray-600 space-y-1">
-                <li className="flex items-center">
-                  <span className="w-2 h-2 bg-indigo-400 rounded-full mr-2"></span>
+              <ul className="list-none pl-6 text-gray-600 space-y-2">
+                <li className="flex items-center text-sm">
+                  <span className="w-2 h-2 bg-indigo-400 rounded-full mr-3 flex-shrink-0"></span>
                   Bed settings
                 </li>
-                <li className="flex items-center">
-                  <span className="w-2 h-2 bg-indigo-400 rounded-full mr-2"></span>
+                <li className="flex items-center text-sm">
+                  <span className="w-2 h-2 bg-indigo-400 rounded-full mr-3 flex-shrink-0"></span>
                   All kitchen stuff
                 </li>
-                <li className="flex items-center">
-                  <span className="w-2 h-2 bg-indigo-400 rounded-full mr-2"></span>
+                <li className="flex items-center text-sm">
+                  <span className="w-2 h-2 bg-indigo-400 rounded-full mr-3 flex-shrink-0"></span>
                   All bathroom stuff
                 </li>
               </ul>
             </div>
 
-            <div className="mt-6 space-y-4">
-              <p className="text-sm text-gray-600 leading-relaxed bg-white p-4 rounded-lg shadow-inner border">
+            {/* Description */}
+            <div className="mt-8 space-y-4">
+              <p className="text-sm lg:text-base text-gray-600 leading-relaxed bg-white p-4 lg:p-6 rounded-lg shadow-inner border">
                 We are committed to delivering quality work on time and without
                 unnecessary interruptions to the client. We follow our
                 flexibility to the best we can do to make sure cost is at the
                 lowest.
               </p>
-              <p className="text-sm text-gray-600 leading-relaxed bg-white p-4 rounded-lg shadow-inner border">
+              <p className="text-sm lg:text-base text-gray-600 leading-relaxed bg-white p-4 lg:p-6 rounded-lg shadow-inner border">
                 As soon as the construction is done, we will list the property
                 on Airbnb to maximize your return on investment (ROI).
               </p>
             </div>
           </div>
 
+          {/* Package Info & Image */}
           <div className="flex-1 space-y-6">
-            <div className="bg-white shadow-2xl rounded-2xl p-8 text-black border border-purple-100 hover:shadow-3xl transition-all duration-300">
+            {/* Package Details Card */}
+            <div className="bg-white shadow-2xl rounded-2xl p-6 lg:p-8 text-black border border-purple-100">
               <div className="mb-6">
-                <p className="text-gray-500 text-xs uppercase tracking-wider mb-1">
+                <p className="text-gray-500 text-xs uppercase tracking-wider mb-2">
                   Package
                 </p>
-                <p className="font-bold text-xl text-purple-800">
+                <p className="font-bold text-lg lg:text-xl text-purple-800 leading-tight">
                   Furnished 1 bedroom house
                 </p>
               </div>
               <div className="mb-6">
-                <p className="text-gray-500 text-xs uppercase tracking-wider mb-1">
+                <p className="text-gray-500 text-xs uppercase tracking-wider mb-2">
                   Duration
                 </p>
-                <p className="font-bold text-xl text-gray-800">
+                <p className="font-bold text-lg lg:text-xl text-gray-800 leading-tight">
                   6 months max construction period
                 </p>
               </div>
               <div>
-                <p className="text-gray-500 text-xs uppercase tracking-wider mb-1">
+                <p className="text-gray-500 text-xs uppercase tracking-wider mb-2">
                   Budget
                 </p>
-                <p className="font-bold text-3xl text-green-600">$32,000</p>
+                <p className="font-bold text-2xl lg:text-3xl text-green-600">
+                  $32,000
+                </p>
               </div>
             </div>
+
+            {/* Package Image */}
             <div className="flex justify-center">
-              <div className="relative group">
+              <div className="relative group max-w-sm lg:max-w-md">
                 <img
                   src={require("../assets/images/package1.1.png")}
                   alt="Package 1"
-                  className="w-96 rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-500 transform group-hover:scale-105"
+                  className="w-full rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-500 transform group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-purple-900/20 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </div>
@@ -292,10 +302,13 @@ const Package1 = () => {
           </div>
         </div>
 
-        <section className="w-full px-6 mt-16">
+        {/* Add Ons Section */}
+        <section className="mb-12">
           <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-purple-700 mb-4">Add Ons</h2>
-            <p className="text-gray-600 leading-relaxed max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-lg">
+            <h2 className="text-2xl lg:text-3xl font-bold text-purple-700 mb-4">
+              Add Ons
+            </h2>
+            <p className="text-sm lg:text-base text-gray-600 leading-relaxed max-w-4xl mx-auto bg-white p-4 lg:p-6 rounded-lg shadow-lg">
               Optional add-ons increase your property's minimum size, offering
               more space, value, and future flexibility. The total size can
               expand further, especially in the garden area, which can be
@@ -305,31 +318,33 @@ const Package1 = () => {
           </div>
         </section>
 
-        <section className="mt-12 px-6 w-full">
+        {/* Cost of Building Section */}
+        <section className="mb-12">
           <div className="text-center mb-8">
-            <h2 className="text-4xl font-bold text-purple-700 mb-4">
+            <h2 className="text-2xl lg:text-4xl font-bold text-purple-700 mb-4">
               COST OF BUILDING IN BALI
             </h2>
-            <h3 className="text-2xl font-semibold text-gray-800 mb-8">
+            <h3 className="text-lg lg:text-2xl font-semibold text-gray-800 mb-8">
               **The size is of minimum of what should you expect**
             </h3>
           </div>
 
-          <div className="flex flex-col lg:flex-row gap-8">
-            <div className="flex-1 bg-white shadow-2xl rounded-2xl p-8 border border-purple-100 hover:shadow-3xl transition-all duration-300">
-              <h3 className="text-2xl font-bold mb-6 text-purple-600 text-center border-b-2 border-purple-200 pb-3">
+          <div className="flex flex-col xl:flex-row gap-8">
+            {/* Included Package Table */}
+            <div className="flex-1 bg-white shadow-2xl rounded-2xl p-6 lg:p-8 border border-purple-100">
+              <h3 className="text-xl lg:text-2xl font-bold mb-6 text-purple-600 text-center border-b-2 border-purple-200 pb-3">
                 Included in this package
               </h3>
 
-              <div className="overflow-hidden rounded-xl shadow-inner">
-                <table className="w-full border-collapse">
+              <div className="overflow-x-auto rounded-xl shadow-inner">
+                <table className="w-full border-collapse min-w-full">
                   <thead>
                     <tr className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white">
-                      <th className="border-0 px-4 py-3 text-left font-bold">
+                      <th className="border-0 px-3 lg:px-4 py-3 text-left font-bold text-sm lg:text-base">
                         Rooms
                       </th>
-                      <th className="border-0 px-4 py-3 text-center font-bold">
-                        Minimum Size
+                      <th className="border-0 px-3 lg:px-4 py-3 text-center font-bold text-sm lg:text-base">
+                        Min Size
                       </th>
                     </tr>
                   </thead>
@@ -341,10 +356,10 @@ const Package1 = () => {
                           index % 2 === 0 ? "bg-gray-50" : "bg-white"
                         } hover:bg-purple-50 transition-colors duration-200`}
                       >
-                        <td className="border-0 px-4 py-3 font-semibold text-gray-800">
+                        <td className="border-0 px-3 lg:px-4 py-3 font-semibold text-gray-800 text-sm lg:text-base">
                           {room.label}
                         </td>
-                        <td className="border-0 px-4 py-3 text-center font-bold text-purple-600">
+                        <td className="border-0 px-3 lg:px-4 py-3 text-center font-bold text-purple-600 text-sm lg:text-base">
                           {room.size}
                         </td>
                       </tr>
@@ -353,11 +368,11 @@ const Package1 = () => {
                 </table>
               </div>
 
-              <div className="mt-8 bg-gradient-to-r from-purple-50 to-indigo-50 rounded-xl p-6">
-                <h4 className="text-xl font-bold mb-4 text-gray-800">
+              <div className="mt-8 bg-gradient-to-r from-purple-50 to-indigo-50 rounded-xl p-4 lg:p-6">
+                <h4 className="text-lg lg:text-xl font-bold mb-4 text-gray-800">
                   Smartly Designed Living
                 </h4>
-                <p className="text-gray-700 leading-relaxed">
+                <p className="text-sm lg:text-base text-gray-700 leading-relaxed">
                   Each property comes with generous minimum room sizes and a
                   land area of 155–170 m². The extra space of 19–30 m² is
                   professionally distributed by our team to create the best
@@ -366,39 +381,40 @@ const Package1 = () => {
               </div>
             </div>
 
-            <div className="flex-1 bg-white shadow-2xl rounded-2xl p-8 border border-purple-100 hover:shadow-3xl transition-all duration-300">
-              <h3 className="text-2xl font-bold mb-6 text-purple-600 text-center border-b-2 border-purple-200 pb-3">
+            {/* Customization Table */}
+            <div className="flex-1 bg-white shadow-2xl rounded-2xl p-6 lg:p-8 border border-purple-100">
+              <h3 className="text-xl lg:text-2xl font-bold mb-6 text-purple-600 text-center border-b-2 border-purple-200 pb-3">
                 Customize According To Your Needs
               </h3>
 
-              <div className="overflow-hidden rounded-xl shadow-inner">
-                <table className="w-full border-collapse">
+              <div className="overflow-x-auto rounded-xl shadow-inner">
+                <table className="w-full border-collapse min-w-full">
                   <thead>
                     <tr className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white">
-                      <th className="border-0 px-3 py-3 text-left font-bold text-sm">
+                      <th className="border-0 px-2 lg:px-3 py-3 text-left font-bold text-xs lg:text-sm">
                         Rooms
                       </th>
-                      <th className="border-0 px-3 py-3 text-center font-bold text-sm">
-                        Min.New Size
+                      <th className="border-0 px-2 lg:px-3 py-3 text-center font-bold text-xs lg:text-sm">
+                        Size
                       </th>
-                      <th className="border-0 px-3 py-3 text-center font-bold text-sm">
-                        Price USD
+                      <th className="border-0 px-2 lg:px-3 py-3 text-center font-bold text-xs lg:text-sm">
+                        Price
                       </th>
-                      <th className="border-0 px-3 py-3 text-center font-bold text-sm">
-                        Add Now
+                      <th className="border-0 px-2 lg:px-3 py-3 text-center font-bold text-xs lg:text-sm">
+                        Add
                       </th>
                     </tr>
                   </thead>
                   <tbody className="bg-white">
                     {[
-                      { room: "Bedroom", size: "40 ", price: 2000 },
-                      { room: "Bathroom", size: "12 ", price: 500 },
+                      { room: "Bedroom", size: "40", price: 2000 },
+                      { room: "Bathroom", size: "12", price: 500 },
                       { room: "Kitchen", size: "11", price: 1000 },
                       { room: "Storage", size: "3", price: 800 },
-                      { room: "Larger.Garden", size: "100", price: 2500 },
-                      { room: "Living.Room", size: "14 ", price: 1500 },
-                      { room: "Out..sitting", size: "9", price: 1000 },
-                      { room: "swim..Pool", size: "6", price: 4500 },
+                      { room: "Larger Garden", size: "100", price: 2500 },
+                      { room: "Living Room", size: "14", price: 1500 },
+                      { room: "Out sitting", size: "9", price: 1000 },
+                      { room: "swim Pool", size: "6", price: 4500 },
                     ].map(({ room, size, price }, index) => (
                       <tr
                         key={room}
@@ -406,53 +422,29 @@ const Package1 = () => {
                           index % 2 === 0 ? "bg-gray-50" : "bg-white"
                         } hover:bg-purple-50 transition-colors duration-200`}
                       >
-                        <td className="border-0 px-3 py-3 font-semibold">
-                          {room.split(".").map((part, idx) => {
-                            if (part.toLowerCase() === "") {
-                              return (
-                                <span
-                                  key={idx}
-                                  className="font-bold text-black text-sm"
-                                >
-                                  {part}
-                                </span>
-                              );
-                            }
-                            if (
-                              part.toLowerCase() === "room" ||
-                              part.toLowerCase() === "sitting" ||
-                              part.toLowerCase() === "pool" ||
-                              part.toLowerCase() === "garden"
-                            ) {
-                              return (
-                                <span
-                                  key={idx}
-                                  className="text-red-600 font-bold"
-                                >
-                                  {part}
-                                </span>
-                              );
-                            }
-                            return (
-                              <span key={idx} className="text-gray-800">
-                                {part}
-                              </span>
-                            );
-                          })}
+                        <td className="border-0 px-2 lg:px-3 py-3 font-semibold text-xs lg:text-sm">
+                          <span className="text-gray-800">
+                            {room.split(" ")[0]}
+                          </span>
+                          {room.split(" ")[1] && (
+                            <span className="text-red-600 font-bold ml-1">
+                              {room.split(" ").slice(1).join(" ")}
+                            </span>
+                          )}
                         </td>
-                        <td className="border-0 px-3 py-3 text-center font-bold text-purple-600">
+                        <td className="border-0 px-2 lg:px-3 py-3 text-center font-bold text-purple-600 text-xs lg:text-sm">
                           {size}
                         </td>
-                        <td className="border-0 px-3 py-3 text-center font-bold text-green-600">
+                        <td className="border-0 px-2 lg:px-3 py-3 text-center font-bold text-green-600 text-xs lg:text-sm">
                           ${price}
                         </td>
-                        <td className="border-0 px-3 py-3 text-center">
+                        <td className="border-0 px-2 lg:px-3 py-3 text-center">
                           <input
                             type="checkbox"
                             onChange={() =>
                               handleCheckboxChange(room, size, price)
                             }
-                            className="w-5 h-5 cursor-pointer accent-purple-600 transform hover:scale-110 transition-transform duration-200"
+                            className="w-4 h-4 lg:w-5 lg:h-5 cursor-pointer accent-purple-600 transform hover:scale-110 transition-transform duration-200"
                           />
                         </td>
                       </tr>
@@ -461,25 +453,24 @@ const Package1 = () => {
                 </table>
               </div>
 
-              <div className="mt-8 bg-gradient-to-r from-purple-50 to-indigo-50 rounded-xl p-6">
-                <h4 className="text-xl font-bold mb-4 text-gray-800">
+              <div className="mt-8 bg-gradient-to-r from-purple-50 to-indigo-50 rounded-xl p-4 lg:p-6">
+                <h4 className="text-lg lg:text-xl font-bold mb-4 text-gray-800">
                   Add Ons
                 </h4>
-                <p className="text-gray-700 leading-relaxed">
+                <p className="text-sm lg:text-base text-gray-700 leading-relaxed">
                   Add-ons increase minimum room sizes. Total size may vary based
                   on design, especially the garden, which can add 50 m² for
                   structures or open space. This extra land enhances overall
-                  property size to fit your lifestyle. Optional add-ons upgrade
-                  your property to a larger minimum size, providing more space,
-                  value, and future flexibility
+                  property size to fit your lifestyle.
                 </p>
               </div>
             </div>
           </div>
 
+          {/* Proceed Button */}
           <div className="mt-12 flex justify-center">
             <button
-              className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold py-4 px-8 rounded-full shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300 animate-pulse hover:animate-none"
+              className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold py-3 lg:py-4 px-6 lg:px-8 rounded-full shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300 text-sm lg:text-base"
               onClick={handleProceed}
               type="button"
             >
@@ -488,16 +479,17 @@ const Package1 = () => {
           </div>
         </section>
 
-        <section className="w-full px-6 mt-16">
-          <h2 className="text-4xl font-bold mb-8 text-purple-700 text-center">
+        {/* Construction Overview */}
+        <section className="mb-12">
+          <h2 className="text-2xl lg:text-4xl font-bold mb-8 text-purple-700 text-center">
             Construction Overview
           </h2>
-          <div className="flex flex-col lg:flex-row gap-8 bg-white shadow-2xl rounded-2xl p-8 border border-purple-100 hover:shadow-3xl transition-all duration-300">
+          <div className="flex flex-col lg:flex-row gap-8 bg-white shadow-2xl rounded-2xl p-6 lg:p-8 border border-purple-100">
             <div className="flex-1">
-              <h3 className="text-2xl font-bold mb-6 text-purple-600 border-b-2 border-purple-200 pb-3">
+              <h3 className="text-xl lg:text-2xl font-bold mb-6 text-purple-600 border-b-2 border-purple-200 pb-3">
                 Overview
               </h3>
-              <p className="text-gray-700 leading-relaxed text-base bg-gray-50 p-6 rounded-xl">
+              <p className="text-sm lg:text-base text-gray-700 leading-relaxed bg-gray-50 p-4 lg:p-6 rounded-xl">
                 Our fully furnished single bedroom house consists of one bedroom
                 of{" "}
                 {
@@ -515,20 +507,15 @@ const Package1 = () => {
                   minimumSizes.find((room) => room.label.includes("Kitchen"))
                     ?.size
                 }
-                m² and has all the necessary appliances and utensils. The
-                package includes all the furniture and accessories for the bed,
-                the kitchen, and the bathroom. We do not require any consent
-                from the clients; we just proceed with the work as planned in
-                what we believe are the best options to make sure it looks
-                amazing.
+                m² and has all the necessary appliances and utensils.
               </p>
             </div>
             <div className="flex-1 flex justify-center">
-              <div className="relative group">
+              <div className="relative group max-w-sm lg:max-w-md">
                 <img
                   src={require("../assets/images/constructionOvr.png")}
                   alt="Construction Overview"
-                  className="rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-500 transform group-hover:scale-105 max-w-full h-auto"
+                  className="w-full rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-500 transform group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-purple-900/20 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </div>
@@ -536,11 +523,12 @@ const Package1 = () => {
           </div>
         </section>
 
-        <section className="w-full px-6 mt-16 mb-16">
-          <h2 className="text-4xl font-bold mb-8 text-purple-700 text-center">
+        {/* Photo Gallery */}
+        <section className="mb-16">
+          <h2 className="text-2xl lg:text-4xl font-bold mb-8 text-purple-700 text-center">
             Photo Gallery
           </h2>
-          <div className="flex justify-center gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 max-w-6xl mx-auto">
             {[
               "package1gallery1.png",
               "package1gallery2.png",
@@ -550,7 +538,7 @@ const Package1 = () => {
                 <img
                   src={require(`../assets/images/${img}`)}
                   alt={`Gallery Image ${index + 1}`}
-                  className="w-48 h-60 object-cover rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-500 transform group-hover:scale-105"
+                  className="w-full h-48 sm:h-56 lg:h-64 object-cover rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-500 transform group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-purple-900/30 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </div>

@@ -24,7 +24,7 @@ const ReviewOrder = () => {
 
       try {
         const response = await axios.get(
-          "future-bali-backend-production.up.railway.app/api/auth/verify-token",
+          "https://future-bali-backend-production.up.railway.app/api/auth/verify-token",
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -185,7 +185,7 @@ const ReviewOrder = () => {
 
       // Create order in database
       const response = await axios.post(
-        "future-bali-backend-production.up.railway.app/api/orders/create",
+        "https://future-bali-backend-production.up.railway.app/api/orders/create",
         {
           cartId,
           basePackage,
