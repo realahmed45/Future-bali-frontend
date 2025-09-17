@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import homeImage from "../assets/images/home1.png";
 import mainImage from "../assets/images/sunset2.png";
@@ -6,6 +6,20 @@ import { FaArrowLeft, FaArrowRight, FaCheckCircle } from "react-icons/fa";
 
 const Adventure = () => {
   const navigate = useNavigate();
+  const [isMobile, setIsMobile] = useState(false);
+  const [isTablet, setIsTablet] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 480);
+      setIsTablet(window.innerWidth <= 768 && window.innerWidth > 480);
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const storyImages = [
     "adventure1.png",
     "adventure2.png",
@@ -48,12 +62,12 @@ const Adventure = () => {
     "Surfing",
   ];
   const blogDescriptions = [
-    "breathtaking waterfalls hidden in lush tropical landscapes.",
-    "Track mountains with beautiful views and fresh air.",
-    "temples, known for their unique architecture and spiritual importance",
-    "beaches, famous for soft sand, clear water, and stunning sunsets.",
-    "Long walk on rice fields, known for their green terraces and peaceful views.",
-    "Indonesia is famous for its surfing all around the world. Bali to start with",
+    "breathtaking waterfalls hidden in lush tropical landscapes.",
+    "Track mountains with beautiful views and fresh air.",
+    "temples, known for their unique architecture and spiritual importance",
+    "beaches, famous for soft sand, clear water, and stunning sunsets.",
+    "Long walk on rice fields, known for their green terraces and peaceful views.",
+    "Indonesia is famous for its surfing all around the world. Bali to start with",
   ];
   const packageDetails = {
     1: {
@@ -108,208 +122,283 @@ const Adventure = () => {
 
   const handleImageClick = (id) => setSelectedPackage(id);
 
+  const getVideoStyle = () => {
+    if (isMobile) {
+      return {
+        border: 0,
+        pointerEvents: "none",
+        width: "100%",
+        height: "100%",
+        objectFit: "cover",
+      };
+    } else if (isTablet) {
+      return {
+        border: 0,
+        pointerEvents: "none",
+        width: "100%",
+        height: "100%",
+        minHeight: "100vh",
+        objectFit: "cover",
+      };
+    } else {
+      return {
+        border: 0,
+        pointerEvents: "none",
+        width: "100vw",
+        height: "100vh",
+        minWidth: "177.78vh",
+        objectFit: "cover",
+      };
+    }
+  };
+
+  const getVideoSrc = () => {
+    if (isMobile) {
+      return "https://player.vimeo.com/video/1119051178?autoplay=1&muted=1&loop=1&controls=0&background=1&title=0&byline=0&portrait=0";
+    } else {
+      return "https://player.vimeo.com/video/1119007916?autoplay=1&muted=1&loop=1&controls=0&background=1&title=0&byline=0&portrait=0";
+    }
+  };
+
   return (
     <div className="font-sans text-gray-800">
-      {/* Hero Section */}
+      {/* Hero Section - Responsive Video */}
       <div className="relative h-screen flex justify-center items-center text-white text-center overflow-hidden">
-        {/* Desktop Video - Optimized for wide screens */}
+        {/* Single Responsive Video */}
         <iframe
-          className="absolute top-0 left-0 w-full h-full object-cover hidden lg:block"
-          src="https://player.vimeo.com/video/1119007916?autoplay=1&muted=1&loop=1&controls=0&background=1&title=0&byline=0&portrait=0"
-          style={{
-            border: 0,
-            pointerEvents: "none",
-            width: "100vw",
-            minWidth: "177.78vh", // 16:9 aspect ratio (100vh * 16/9)
-            height: "100vh",
-            transform: "scale(1.1)", // Minimal scaling for desktop
-            transformOrigin: "center center",
-          }}
+          className="absolute top-0 left-0 w-full h-full"
+          src={getVideoSrc()}
+          style={getVideoStyle()}
           allow="autoplay; fullscreen"
-          title="Future Bali Background Video Desktop"
-        />
-
-        {/* Tablet Video - Medium screens */}
-        <iframe
-          className="absolute top-0 left-0 w-full h-full object-cover hidden md:block lg:hidden"
-          src="https://player.vimeo.com/video/1119007916?autoplay=1&muted=1&loop=1&controls=0&background=1&title=0&byline=0&portrait=0"
-          style={{
-            border: 0,
-            pointerEvents: "none",
-            width: "100vw",
-            minWidth: "133.33vh", // 4:3 aspect ratio for tablets
-            height: "100vh",
-            transform: "scale(1.15)",
-            transformOrigin: "center center",
-          }}
-          allow="autoplay; fullscreen"
-          title="Future Bali Background Video Tablet"
-        />
-
-        {/* Mobile Video - Optimized for portrait/small screens */}
-        <iframe
-          className="absolute top-0 left-0 w-full h-full object-cover block md:hidden"
-          src="https://player.vimeo.com/video/1119051178?autoplay=1&muted=1&loop=1&controls=0&background=1&title=0&byline=0&portrait=0"
-          style={{
-            border: 0,
-            pointerEvents: "none",
-            width: "100vw",
-            minWidth: "100vh", // 1:1 aspect ratio for mobile
-            height: "100vh",
-            transform: "scale(1.05)", // Minimal scaling for mobile
-            transformOrigin: "center center",
-          }}
-          allow="autoplay; fullscreen"
-          title="Future Bali Background Video Mobile"
+          title="Future Bali Background Video"
         />
 
         {/* Dark overlay */}
         <div className="absolute inset-0 bg-black bg-opacity-20"></div>
 
-        {/* Content */}
-        <div className="relative z-10 px-4 sm:px-6 lg:px-8">
+        {/* Content - Responsive */}
+        <div className="relative z-10 px-4 sm:px-6 lg:px-8 mt-20 sm:mt-16 lg:mt-0">
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-center justify-center">
             <Link
               to="/packages"
-              className="w-full sm:w-auto px-6 py-3 bg-purple-700 text-white rounded-lg hover:bg-purple-600 transition shadow-md text-center font-medium"
+              className={`w-auto px-6 py-3 bg-purple-700 text-white rounded-lg hover:bg-purple-600 transition shadow-md text-center font-medium ${
+                isMobile ? "text-sm" : "text-base"
+              }`}
             >
               View Packages
             </Link>
             <Link
               to="/contactUs"
-              className="w-full sm:w-auto px-6 py-3 bg-purple-700 text-white rounded-lg hover:bg-purple-600 transition shadow-md text-center font-medium"
+              className={`w-auto px-6 py-3 bg-purple-700 text-white rounded-lg hover:bg-purple-600 transition shadow-md text-center font-medium ${
+                isMobile ? "text-sm" : "text-base"
+              }`}
             >
               Contact Us
             </Link>
           </div>
         </div>
       </div>
-      {/* Packages Section */}
-      <section className="py-8 px-4 bg-gray-50">
-        <h2 className="text-center text-lg text-gray-500 uppercase mb-2">
+
+      {/* Packages Section - Enhanced Mobile Responsiveness */}
+      <section className={`py-6 sm:py-8 px-3 sm:px-4 bg-gray-50`}>
+        <h2
+          className={`text-center text-gray-500 uppercase mb-2 ${
+            isMobile ? "text-sm" : "text-lg"
+          }`}
+        >
           Our Packages
         </h2>
-        <h3 className="text-center text-2xl font-bold mb-4">
+        <h3
+          className={`text-center font-bold mb-3 sm:mb-4 ${
+            isMobile ? "text-xl" : "text-2xl"
+          }`}
+        >
           Choose The Best For You
         </h3>
-        <p className="text-center text-gray-600 mb-6 text-sm">
+        <p
+          className={`text-center text-gray-600 mb-4 sm:mb-6 ${
+            isMobile ? "text-xs px-2" : "text-sm"
+          }`}
+        >
           We offer simple, customizable & affordable building packages, so let's
           make your dream come true.
         </p>
 
-        {/* Package Tabs */}
-        <div className="flex justify-center gap-2 mb-6 flex-wrap">
+        {/* Package Tabs - Mobile Responsive */}
+        <div className="flex justify-center gap-1 sm:gap-2 mb-4 sm:mb-6 flex-wrap px-2">
           {Object.keys(packageDetails).map((key) => (
             <button
               key={key}
               onClick={() => setSelectedPackage(Number(key))}
-              className={`py-1.5 px-3 text-xs font-semibold rounded-lg transition ${
+              className={`py-1 sm:py-1.5 px-2 sm:px-3 font-semibold rounded-lg transition ${
+                isMobile ? "text-xs" : "text-xs sm:text-sm"
+              } ${
                 selectedPackage === Number(key)
                   ? "bg-purple-600 text-white"
                   : "bg-gray-200 text-gray-700"
               }`}
             >
-              {packageDetails[key].title}
+              {isMobile ? `Package ${key}` : packageDetails[key].title}
             </button>
           ))}
         </div>
 
-        {/* Package Content */}
-        <div className="container mx-auto max-w-screen-md grid grid-cols-1 md:grid-cols-3 gap-4">
-          {Object.keys(packageDetails).map((key) => (
-            <Link
-              to={`/package${key}`}
-              key={key}
-              className={`shadow-md rounded-md overflow-hidden transition transform hover:scale-105 ${
-                selectedPackage === Number(key) ? "scale-105" : ""
-              }`}
-            >
-              <div className="aspect-[4/3] overflow-hidden">
-                <img
-                  src={require(`../assets/images/${packageDetails[key].image}`)}
-                  alt={packageDetails[key].title}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="p-4 bg-white">
-                <h3 className="text-md font-bold mb-2 text-gray-800">
-                  {packageDetails[key].title}
-                </h3>
-                <ul className="space-y-1 text-gray-600 text-xs">
-                  {packageDetails[key].description.map((item, index) => (
-                    <li key={index} className="flex gap-1 items-center">
-                      <FaCheckCircle className="text-purple-600 text-sm" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </Link>
-          ))}
+        {/* Package Content - Mobile Responsive Grid */}
+        <div className="container mx-auto max-w-screen-md">
+          <div
+            className={`grid gap-3 sm:gap-4 ${
+              isMobile
+                ? "grid-cols-1"
+                : isTablet
+                ? "grid-cols-2"
+                : "grid-cols-1 md:grid-cols-3"
+            }`}
+          >
+            {Object.keys(packageDetails).map((key) => (
+              <Link
+                to={`/package${key}`}
+                key={key}
+                className={`shadow-md rounded-md overflow-hidden transition transform hover:scale-105 ${
+                  selectedPackage === Number(key) ? "scale-105" : ""
+                }`}
+              >
+                <div className="aspect-[4/3] overflow-hidden">
+                  <img
+                    src={require(`../assets/images/${packageDetails[key].image}`)}
+                    alt={packageDetails[key].title}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className={`bg-white ${isMobile ? "p-3" : "p-4"}`}>
+                  <h3
+                    className={`font-bold mb-2 text-gray-800 ${
+                      isMobile ? "text-sm" : "text-md"
+                    }`}
+                  >
+                    {packageDetails[key].title}
+                  </h3>
+                  <ul
+                    className={`space-y-1 text-gray-600 ${
+                      isMobile ? "text-xs" : "text-xs"
+                    }`}
+                  >
+                    {packageDetails[key].description.map((item, index) => (
+                      <li key={index} className="flex gap-1 items-center">
+                        <FaCheckCircle
+                          className={`text-purple-600 ${
+                            isMobile ? "text-xs" : "text-sm"
+                          }`}
+                        />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* Our Story Section */}
-      <div className="py-16 bg-white">
+      {/* Our Story Section - Mobile Responsive */}
+      <div className={`bg-white ${isMobile ? "py-8" : "py-16"}`}>
         <div
-          className="mx-auto px-6 flex items-center justify-between"
-          style={{ width: "824px" }}
+          className={`mx-auto px-4 sm:px-6 ${
+            isMobile ? "max-w-full" : isTablet ? "max-w-3xl" : "max-w-4xl"
+          }`}
         >
-          <div className="w-1/3">
-            <div className="aspect-[3/4] overflow-hidden rounded-lg shadow-md mb-28">
-              <img
-                src={require(`../assets/images/sunset1.jpg`)}
-                alt="Our Story"
-                className="w-full h-full object-cover"
-              />
-            </div>
-          </div>
-          <div className="w-2/3 pl-6">
-            <h3 className="text-xl text-purple-600 font-semibold mb-2">
-              A New beginning
-            </h3>
-            <h2 className="text-3xl font-bold text-gray-800 mb-4">
-              Dream Holiday Investment
-            </h2>
-            <p className="text-base text-gray-600 leading-relaxed mb-4">
-              Step into the new life with a unique holiday property investment.
-              Here we have Secure dream getaway, create memories in paradise,
-              and build a smart future. Enjoying all the luxury at a fraction of
-              the cost. Every stay is an adventure, every moment feels like
-              missing my new adventure home.
-            </p>
-            <p className=" font-bold text-1xl text-gray-600 leading-relaxed mb-4">
-              {" "}
-              Your dream. Your holiday. Your investment. Your new life.
-            </p>
-
-            <div className="relative mt-4">
-              <div className="aspect-[16/9] overflow-hidden rounded-lg shadow-md">
+          <div
+            className={`flex items-center justify-between ${
+              isMobile || isTablet ? "flex-col gap-6" : "flex-row"
+            }`}
+          >
+            <div className={`${isMobile || isTablet ? "w-full" : "w-1/3"}`}>
+              <div
+                className={`aspect-[3/4] overflow-hidden rounded-lg shadow-md ${
+                  isMobile || isTablet ? "mb-4" : "mb-28"
+                }`}
+              >
                 <img
-                  src={require(`../assets/images/${storyImages[currentImageIndex]}`)}
-                  alt="Story Slider"
+                  src={require(`../assets/images/sunset1.jpg`)}
+                  alt="Our Story"
                   className="w-full h-full object-cover"
                 />
               </div>
-              <button
-                className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-purple-700 transition"
-                onClick={handlePrevious}
+            </div>
+            <div
+              className={`${isMobile || isTablet ? "w-full" : "w-2/3 pl-6"}`}
+            >
+              <h3
+                className={`text-purple-600 font-semibold mb-2 ${
+                  isMobile ? "text-lg" : "text-xl"
+                }`}
               >
-                <FaArrowLeft />
-              </button>
-              <button
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-purple-700 transition"
-                onClick={handleNext}
+                A New beginning
+              </h3>
+              <h2
+                className={`font-bold text-gray-800 mb-3 sm:mb-4 ${
+                  isMobile ? "text-2xl" : "text-3xl"
+                }`}
               >
-                <FaArrowRight />
-              </button>
+                Dream Holiday Investment
+              </h2>
+              <p
+                className={`text-gray-600 leading-relaxed mb-3 sm:mb-4 ${
+                  isMobile ? "text-sm" : "text-base"
+                }`}
+              >
+                Step into the new life with a unique holiday property
+                investment. Here we have Secure dream getaway, create memories
+                in paradise, and build a smart future. Enjoying all the luxury
+                at a fraction of the cost. Every stay is an adventure, every
+                moment feels like missing my new adventure home.
+              </p>
+              <p
+                className={`font-bold text-gray-600 leading-relaxed mb-3 sm:mb-4 ${
+                  isMobile ? "text-sm" : "text-lg"
+                }`}
+              >
+                Your dream. Your holiday. Your investment. Your new life.
+              </p>
+
+              <div className="relative mt-4">
+                <div className="aspect-[16/9] overflow-hidden rounded-lg shadow-md">
+                  <img
+                    src={require(`../assets/images/${storyImages[currentImageIndex]}`)}
+                    alt="Story Slider"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <button
+                  className={`absolute left-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white rounded-full hover:bg-purple-700 transition ${
+                    isMobile ? "p-1.5" : "p-2"
+                  }`}
+                  onClick={handlePrevious}
+                >
+                  <FaArrowLeft className={isMobile ? "text-sm" : "text-base"} />
+                </button>
+                <button
+                  className={`absolute right-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white rounded-full hover:bg-purple-700 transition ${
+                    isMobile ? "p-1.5" : "p-2"
+                  }`}
+                  onClick={handleNext}
+                >
+                  <FaArrowRight
+                    className={isMobile ? "text-sm" : "text-base"}
+                  />
+                </button>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Main Image Section */}
-        <div className="py-12 bg-white">
-          <div className="mx-auto px-6" style={{ width: "824px" }}>
+        {/* Main Image Section - Mobile Responsive */}
+        <div className={`bg-white ${isMobile ? "py-8" : "py-12"}`}>
+          <div
+            className={`mx-auto px-4 sm:px-6 ${
+              isMobile ? "max-w-full" : isTablet ? "max-w-3xl" : "max-w-4xl"
+            }`}
+          >
             <div className="aspect-[16/9] overflow-hidden rounded-lg shadow-lg">
               <img
                 src={mainImage}
@@ -321,18 +410,37 @@ const Adventure = () => {
         </div>
       </div>
 
-      {/* Gallery Section - Redesigned for consistency */}
-      <div className="py-16 bg-gray-50 text-center px-4">
-        <h2 className="text-4xl font-extrabold text-purple-700 mb-2">
+      {/* Gallery Section - Mobile Responsive */}
+      <div
+        className={`bg-gray-50 text-center px-3 sm:px-4 ${
+          isMobile ? "py-8" : "py-16"
+        }`}
+      >
+        <h2
+          className={`font-extrabold text-purple-700 mb-2 ${
+            isMobile ? "text-2xl" : "text-4xl"
+          }`}
+        >
           Our Gallery
         </h2>
-        <p className="text-lg font-bold text-gray-600 mb-8">
+        <p
+          className={`font-bold text-gray-600 mb-6 sm:mb-8 ${
+            isMobile ? "text-base" : "text-lg"
+          }`}
+        >
           Our Projects Blend Well With The Surroundings
         </p>
 
-        {/* Consistent Grid Layout */}
         <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div
+            className={`grid gap-3 sm:gap-4 ${
+              isMobile
+                ? "grid-cols-2"
+                : isTablet
+                ? "grid-cols-3"
+                : "grid-cols-2 md:grid-cols-4"
+            }`}
+          >
             {galleryImages.map((img, index) => (
               <div
                 key={index}
@@ -348,7 +456,7 @@ const Adventure = () => {
                 <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
                   <div className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <svg
-                      className="w-8 h-8"
+                      className={isMobile ? "w-6 h-6" : "w-8 h-8"}
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -368,18 +476,37 @@ const Adventure = () => {
         </div>
       </div>
 
-      {/* Blogs Section - Improved consistency */}
-      <div className="py-16 bg-gray-100 text-center px-4">
-        <h2 className="text-4xl font-extrabold text-purple-700 mb-2">
+      {/* Blogs Section - Mobile Responsive */}
+      <div
+        className={`bg-gray-100 text-center px-3 sm:px-4 ${
+          isMobile ? "py-8" : "py-16"
+        }`}
+      >
+        <h2
+          className={`font-extrabold text-purple-700 mb-2 ${
+            isMobile ? "text-2xl" : "text-4xl"
+          }`}
+        >
           Explore Bali
         </h2>
-        <p className="text-lg font-bold text-gray-600 mb-8">
+        <p
+          className={`font-bold text-gray-600 mb-6 sm:mb-8 ${
+            isMobile ? "text-base" : "text-lg"
+          }`}
+        >
           What is bali famous for
         </p>
 
-        {/* Consistent Grid Layout for Blogs */}
         <div className="max-w-4xl mx-auto">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          <div
+            className={`grid gap-4 sm:gap-6 ${
+              isMobile
+                ? "grid-cols-1"
+                : isTablet
+                ? "grid-cols-2"
+                : "grid-cols-1 sm:grid-cols-2 md:grid-cols-3"
+            }`}
+          >
             {blogImages.map((img, index) => (
               <div
                 key={index}
@@ -392,12 +519,19 @@ const Adventure = () => {
                     className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
                   />
                 </div>
-                <div className="p-6">
-                  <h3 className="text-lg font-bold text-gray-800 mb-3">
+                <div className={isMobile ? "p-4" : "p-6"}>
+                  <h3
+                    className={`font-bold text-gray-800 mb-2 sm:mb-3 ${
+                      isMobile ? "text-base" : "text-lg"
+                    }`}
+                  >
                     {blogTitles[index] || `Blog Title ${index + 1}`}
                   </h3>
-
-                  <p className="text-gray-600 text-sm leading-relaxed">
+                  <p
+                    className={`text-gray-600 leading-relaxed ${
+                      isMobile ? "text-xs" : "text-sm"
+                    }`}
+                  >
                     {blogDescriptions[index % blogDescriptions.length]}
                   </p>
                   <div className="mt-4"></div>

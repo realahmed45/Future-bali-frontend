@@ -26,6 +26,12 @@ const Login = () => {
     emailjs.init("zVTuReodh-Rdvi0n_");
   }, []);
 
+  // FIXED: Clear any existing session on component mount
+  useEffect(() => {
+    // Clear any existing authentication when user visits login page
+    localStorage.removeItem("authToken");
+  }, []);
+
   const handleCloseModal = () => {
     setPhone("");
     setEmail("");
@@ -198,9 +204,16 @@ const Login = () => {
         );
 
         if (response.data.success && response.data.token) {
+          // FIXED: Clear any existing tokens before setting new one
+          localStorage.removeItem("authToken");
           localStorage.setItem("authToken", response.data.token);
-          const redirectTo = location.state?.from?.pathname || "/";
-          navigate(redirectTo);
+
+          // FIXED: Add a small delay to ensure token is set before navigation
+          setTimeout(() => {
+            const redirectTo = location.state?.from?.pathname || "/";
+            navigate(redirectTo);
+          }, 100);
+
           return; // Success, exit
         } else {
           throw new Error(response.data.message || "OTP verification failed");
@@ -238,6 +251,7 @@ const Login = () => {
 
     setOtpError(errorMessage);
   };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">

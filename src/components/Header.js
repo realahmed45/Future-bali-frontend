@@ -7,20 +7,27 @@ const Header = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
-  const [userIdentifier, setUserIdentifier] = useState(""); // Can be email or phone
+  const [userIdentifier, setUserIdentifier] = useState("");
+  const [userId, setUserId] = useState(""); // Add user ID tracking
   const navigate = useNavigate();
 
   const API_BASE_URL =
     process.env.REACT_APP_API_URL ||
     "https://future-bali-backend-production.up.railway.app";
 
-  // Check auth status continuously
+  // FIXED: More robust auth verification with proper error handling
   useEffect(() => {
+    let isComponentMounted = true; // Prevent state updates if component unmounts
+
     const verifyAuthStatus = async () => {
       const token = localStorage.getItem("authToken");
+
       if (!token) {
-        setIsLoggedIn(false);
-        setUserIdentifier("");
+        if (isComponentMounted) {
+          setIsLoggedIn(false);
+          setUserIdentifier("");
+          setUserId("");
+        }
         return;
       }
 
@@ -29,43 +36,107 @@ const Header = () => {
           `${API_BASE_URL}/api/auth/verify-token`,
           {
             headers: { Authorization: `Bearer ${token}` },
+            timeout: 10000, // 10 second timeout
           }
         );
 
-        setIsLoggedIn(response.data.success);
-        if (response.data.success && response.data.user) {
-          // Set user identifier (email or phone)
-          if (response.data.user.email) {
-            setUserIdentifier(response.data.user.email);
-          } else if (response.data.user.phone) {
-            setUserIdentifier(response.data.user.phone);
+        if (isComponentMounted) {
+          if (response.data.success && response.data.user) {
+            // FIXED: Verify user ID matches to prevent session mixups
+            const currentUserId = response.data.user.id;
+
+            // If we have a different user ID, clear everything
+            if (userId && userId !== currentUserId) {
+              console.warn("User ID mismatch detected, clearing session");
+              localStorage.removeItem("authToken");
+              setIsLoggedIn(false);
+              setUserIdentifier("");
+              setUserId("");
+              return;
+            }
+
+            setIsLoggedIn(true);
+            setUserId(currentUserId);
+
+            // Set user identifier
+            if (response.data.user.email) {
+              setUserIdentifier(response.data.user.email);
+            } else if (response.data.user.phone) {
+              setUserIdentifier(response.data.user.phone);
+            } else {
+              setUserIdentifier("User");
+            }
+          } else {
+            // Invalid token response
+            localStorage.removeItem("authToken");
+            setIsLoggedIn(false);
+            setUserIdentifier("");
+            setUserId("");
           }
         }
       } catch (error) {
         console.error("Token verification error:", error);
-        localStorage.removeItem("authToken");
-        setIsLoggedIn(false);
-        setUserIdentifier("");
+
+        if (isComponentMounted) {
+          // Clear invalid token
+          localStorage.removeItem("authToken");
+          setIsLoggedIn(false);
+          setUserIdentifier("");
+          setUserId("");
+        }
       }
     };
 
     // Check immediately on mount
     verifyAuthStatus();
 
-    // Then check every 3 seconds
-    const intervalId = setInterval(verifyAuthStatus, 3000);
+    // FIXED: Reduce polling frequency and add visibility check
+    const intervalId = setInterval(() => {
+      // Only verify if page is visible (prevents unnecessary API calls)
+      if (document.visibilityState === "visible") {
+        verifyAuthStatus();
+      }
+    }, 30000); // Changed from 3 seconds to 30 seconds
 
-    // Cleanup interval on unmount
-    return () => clearInterval(intervalId);
-  }, [API_BASE_URL]);
+    // Cleanup function
+    return () => {
+      isComponentMounted = false;
+      clearInterval(intervalId);
+    };
+  }, [API_BASE_URL, userId]); // Add userId as dependency
 
-  const handleLogout = () => {
+  // FIXED: Enhanced logout with server-side logout call
+  const handleLogout = async () => {
     if (window.confirm("Are you sure you want to log out?")) {
-      localStorage.removeItem("authToken");
-      setIsLoggedIn(false);
-      setUserIdentifier("");
-      setShowOptions(false);
-      navigate("/");
+      try {
+        const token = localStorage.getItem("authToken");
+        if (token) {
+          // Call logout endpoint
+          await axios
+            .post(
+              `${API_BASE_URL}/api/auth/logout`,
+              {},
+              {
+                headers: { Authorization: `Bearer ${token}` },
+                timeout: 5000,
+              }
+            )
+            .catch(() => {
+              // Ignore logout API errors, still clear local storage
+              console.log("Logout API call failed, but clearing local session");
+            });
+        }
+      } catch (error) {
+        console.error("Logout error:", error);
+      } finally {
+        // Always clear local session regardless of API call result
+        localStorage.removeItem("authToken");
+        setIsLoggedIn(false);
+        setUserIdentifier("");
+        setUserId("");
+        setShowOptions(false);
+        navigate("/");
+      }
     }
   };
 
@@ -84,7 +155,6 @@ const Header = () => {
     if (userIdentifier.includes("@")) {
       return userIdentifier.substring(0, 1).toUpperCase();
     } else {
-      // For phone numbers, use the first character or a generic icon
       return "U";
     }
   };
@@ -96,9 +166,23 @@ const Header = () => {
     if (userIdentifier.includes("@")) {
       return userIdentifier;
     } else {
-      return `+${userIdentifier}`; // Format phone number with +
+      return `${userIdentifier}`;
     }
   };
+
+  // FIXED: Add click outside handler for dropdown
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (showOptions && !event.target.closest(".user-dropdown")) {
+        setShowOptions(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showOptions]);
 
   return (
     <>
@@ -147,7 +231,7 @@ const Header = () => {
 
           {/* Auth Section */}
           {isLoggedIn ? (
-            <div className="relative">
+            <div className="relative user-dropdown">
               <button
                 className="flex items-center space-x-2 bg-purple-600 px-4 py-2 rounded-md hover:bg-purple-500"
                 onClick={() => setShowOptions(!showOptions)}
@@ -160,7 +244,7 @@ const Header = () => {
 
               {showOptions && (
                 <div className="absolute right-0 mt-2 w-48 bg-white text-black rounded-md shadow-lg z-50">
-                  <div className="px-4 py-2 text-gray-600 border-b">
+                  <div className="px-4 py-2 text-gray-600 border-b text-sm">
                     {getUserDisplayText()}
                   </div>
                   <Link
