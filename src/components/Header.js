@@ -90,20 +90,131 @@ const Header = () => {
     // Check immediately on mount
     verifyAuthStatus();
 
-    // FIXED: Reduce polling frequency and add visibility check
+    // FIXED: Listen for localStorage changes (login/logout from other tabs/components)
+    const handleStorageChange = (e) => {
+      if (e.key === "authToken") {
+        console.log("Auth token changed, verifying status");
+        verifyAuthStatus();
+      }
+    };
+
+    // Add storage event listener
+    window.addEventListener("storage", handleStorageChange);
+
+    // FIXED: Also listen for focus events to check when user returns to tab
+    const handleFocus = () => {
+      if (document.visibilityState === "visible") {
+        verifyAuthStatus();
+      }
+    };
+
+    window.addEventListener("focus", handleFocus);
+    document.addEventListener("visibilitychange", handleFocus);
+
+    // FIXED: Reduce polling frequency but still check periodically
     const intervalId = setInterval(() => {
       // Only verify if page is visible (prevents unnecessary API calls)
       if (document.visibilityState === "visible") {
         verifyAuthStatus();
       }
-    }, 30000); // Changed from 3 seconds to 30 seconds
+    }, 5000); // Check every 5 seconds instead of 30
 
     // Cleanup function
     return () => {
       isComponentMounted = false;
       clearInterval(intervalId);
+      window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener("focus", handleFocus);
+      document.removeEventListener("visibilitychange", handleFocus);
     };
   }, [API_BASE_URL, userId]); // Add userId as dependency
+
+  // FIXED: Additional effect to detect immediate token changes
+  useEffect(() => {
+    const checkTokenChange = () => {
+      const token = localStorage.getItem("authToken");
+
+      // If token exists and we're not logged in, verify immediately
+      if (token && !isLoggedIn) {
+        console.log("Token detected, verifying immediately");
+        verifyAuthStatus();
+      }
+
+      // If no token and we think we're logged in, clear state
+      if (!token && isLoggedIn) {
+        console.log("No token found, clearing login state");
+        setIsLoggedIn(false);
+        setUserIdentifier("");
+        setUserId("");
+      }
+    };
+
+    const verifyAuthStatus = async () => {
+      const token = localStorage.getItem("authToken");
+
+      if (!token) {
+        setIsLoggedIn(false);
+        setUserIdentifier("");
+        setUserId("");
+        return;
+      }
+
+      try {
+        const response = await axios.get(
+          `${API_BASE_URL}/api/auth/verify-token`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+            timeout: 10000,
+          }
+        );
+
+        if (response.data.success && response.data.user) {
+          const currentUserId = response.data.user.id;
+
+          if (userId && userId !== currentUserId) {
+            console.warn("User ID mismatch detected, clearing session");
+            localStorage.removeItem("authToken");
+            setIsLoggedIn(false);
+            setUserIdentifier("");
+            setUserId("");
+            return;
+          }
+
+          setIsLoggedIn(true);
+          setUserId(currentUserId);
+
+          if (response.data.user.email) {
+            setUserIdentifier(response.data.user.email);
+          } else if (response.data.user.phone) {
+            setUserIdentifier(response.data.user.phone);
+          } else {
+            setUserIdentifier("User");
+          }
+        } else {
+          localStorage.removeItem("authToken");
+          setIsLoggedIn(false);
+          setUserIdentifier("");
+          setUserId("");
+        }
+      } catch (error) {
+        console.error("Token verification error:", error);
+        localStorage.removeItem("authToken");
+        setIsLoggedIn(false);
+        setUserIdentifier("");
+        setUserId("");
+      }
+    };
+
+    // Check immediately when component mounts or updates
+    checkTokenChange();
+
+    // Set up an interval to check for token changes more frequently
+    const quickCheckInterval = setInterval(checkTokenChange, 1000);
+
+    return () => {
+      clearInterval(quickCheckInterval);
+    };
+  }, [isLoggedIn, API_BASE_URL, userId]);
 
   // FIXED: Enhanced logout with server-side logout call
   const handleLogout = async () => {

@@ -13,9 +13,7 @@ const AuthModal = ({ isOpen, onClose, onLoginSuccess }) => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const API_BASE_URL =
-    process.env.REACT_APP_API_URL ||
-    "https://future-bali-backend-production.up.railway.app";
+  const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
 
   // Initialize EmailJS
   useEffect(() => {

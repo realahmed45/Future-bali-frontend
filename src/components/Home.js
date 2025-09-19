@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
+
 import { Play, MapPin } from "lucide-react";
 import Frame1 from "../assets/images/Frame1.png";
 import Framesmall from "../assets/images/Framesmall.png";
@@ -108,10 +110,13 @@ const NuanuHomepage = () => {
                 <p className="text-xs text-gray-600 mb-2 leading-tight">
                   select your future home with available futures
                 </p>
-                <button className="bg-black text-white px-3 py-1.5 lg:px-4 lg:py-2 rounded-full text-xs font-medium hover:bg-gray-800 transition-colors flex items-center justify-center space-x-1 w-full">
-                  <span>See Options</span>
-                  <span className="ml-1">→</span>
-                </button>
+
+                <Link to="/packages" className="w-full">
+                  <button className="bg-black text-white px-3 py-1.5 lg:px-4 lg:py-2 rounded-full text-xs font-medium hover:bg-gray-800 transition-colors flex items-center justify-center space-x-1 w-full">
+                    <span>See Options</span>
+                    <span className="ml-1">→</span>
+                  </button>
+                </Link>
               </div>
             </div>
           </div>

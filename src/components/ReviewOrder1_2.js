@@ -31,6 +31,19 @@ const UserInfoForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
+  // Helper function to get today's date in YYYY-MM-DD format
+  const getTodayDate = () => {
+    const today = new Date();
+    return today.toISOString().split("T")[0];
+  };
+
+  // Helper function to get minimum date (assuming max age of 120 years)
+  const getMinDate = () => {
+    const minDate = new Date();
+    minDate.setFullYear(minDate.getFullYear() - 120);
+    return minDate.toISOString().split("T")[0];
+  };
+
   const handleInputChange = (index, field, value) => {
     const newPeople = [...people];
     newPeople[index] = {
@@ -105,6 +118,27 @@ const UserInfoForm = () => {
     }
   };
 
+  const validateDateOfBirth = (dob) => {
+    if (!dob) return "Date of birth is required";
+
+    const selectedDate = new Date(dob);
+    const today = new Date();
+    const minDate = new Date();
+    minDate.setFullYear(minDate.getFullYear() - 120);
+
+    // Check if date is in the future
+    if (selectedDate > today) {
+      return "Date of birth cannot be in the future";
+    }
+
+    // Check if date is too far in the past (more than 120 years ago)
+    if (selectedDate < minDate) {
+      return "Please enter a valid date of birth";
+    }
+
+    return null;
+  };
+
   const validateForm = () => {
     const newErrors = {};
 
@@ -115,9 +149,13 @@ const UserInfoForm = () => {
       if (!person.phone.trim()) {
         newErrors[`${index}-phone`] = "Phone number is required";
       }
-      if (!person.dob) {
-        newErrors[`${index}-dob`] = "Date of birth is required";
+
+      // Enhanced date of birth validation
+      const dobError = validateDateOfBirth(person.dob);
+      if (dobError) {
+        newErrors[`${index}-dob`] = dobError;
       }
+
       if (!person.address.trim()) {
         newErrors[`${index}-address`] = "Address is required";
       }
@@ -149,7 +187,7 @@ const UserInfoForm = () => {
 
   const handleNext = async () => {
     if (!validateForm()) {
-      alert("Please fill in all required fields");
+      alert("Please fill in all required fields correctly");
       return;
     }
 
@@ -296,13 +334,15 @@ const UserInfoForm = () => {
               )}
             </div>
 
-            {/* Date of Birth Field */}
+            {/* Date of Birth Field - Enhanced with validation */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Date of Birth *
               </label>
               <input
                 type="date"
+                min={getMinDate()}
+                max={getTodayDate()}
                 className={`w-full p-2 border rounded-md ${
                   errors[`${index}-dob`] ? "border-red-500" : "border-gray-300"
                 }`}

@@ -1,18 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import emailjs from "@emailjs/browser";
-import ContractPDFGenerator from "./ContractPDFGenerator"; // Import the PDF generator
+import ContractPDFGenerator from "./ContractPDFGenerator";
 
-// Initialize EmailJS
-emailjs.init("Q7YaSuUUOzO-j_ffb"); // Replace with your actual public key
-
-// Enhanced Modal Component for Payment Success
 const PaymentSuccessModal = ({
   showModal,
   handleClose,
   paymentInfo,
   onDownloadContract,
+  isGeneratingPDF,
 }) => {
   if (!showModal) return null;
 
@@ -37,27 +33,27 @@ const PaymentSuccessModal = ({
             </svg>
           </div>
           <h2 className="text-2xl font-bold text-white mb-2">
-            Payment Successful!
+            Payment Confirmed!
           </h2>
-          <p className="text-green-100">Your order has been confirmed</p>
+          <p className="text-green-100">Your order has been processed</p>
         </div>
 
         {/* Payment Details */}
         <div className="p-6">
           <div className="space-y-3">
             <div className="flex justify-between">
-              <span className="text-gray-600">Transaction ID:</span>
-              <span className="font-semibold">{paymentInfo.transactionId}</span>
+              <span className="text-gray-600">Order ID:</span>
+              <span className="font-semibold">{paymentInfo.orderId}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-600">Amount Paid:</span>
+              <span className="text-gray-600">Amount:</span>
               <span className="font-semibold text-green-600">
-                ${paymentInfo.amountPaid}
+                ${paymentInfo.totalAmount}
               </span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-600">Payment Method:</span>
-              <span className="font-semibold">PayPal</span>
+              <span className="font-semibold">Bank Transfer</span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-600">Date:</span>
@@ -67,15 +63,21 @@ const PaymentSuccessModal = ({
             </div>
           </div>
 
-          <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-            <p className="text-blue-800 text-sm mb-3">
-              📧 A confirmation email has been sent with contract details.
+          <div className="mt-6 p-4 bg-green-50 rounded-lg">
+            <p className="text-green-800 text-sm mb-3">
+              ✅ Contract emails have been sent automatically to all parties.
             </p>
+            <p className="text-green-700 text-xs">
+              • Customer email: Contract copy delivered
+              <br />• Admin team: Notified of new contract
+            </p>
+          </div>
 
-            {/* DOWNLOAD BUTTON */}
+          <div className="mt-4">
             <button
               onClick={onDownloadContract}
-              className="w-full bg-purple-600 text-white py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors flex items-center justify-center space-x-2"
+              disabled={isGeneratingPDF}
+              className="w-full bg-purple-600 text-white py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors flex items-center justify-center space-x-2 disabled:opacity-50"
             >
               <svg
                 className="w-5 h-5"
@@ -90,7 +92,9 @@ const PaymentSuccessModal = ({
                   d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                 />
               </svg>
-              <span>Generate & Download Contract PDF</span>
+              <span>
+                {isGeneratingPDF ? "Generating..." : "Download Contract PDF"}
+              </span>
             </button>
           </div>
 
@@ -99,6 +103,124 @@ const PaymentSuccessModal = ({
             className="w-full mt-4 bg-gray-100 text-gray-700 py-3 rounded-lg font-semibold hover:bg-gray-200 transition-colors"
           >
             Continue
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const BankDetailsModal = ({ showModal, onConfirm, onCancel, totalAmount }) => {
+  if (!showModal) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-lg shadow-2xl w-full max-w-lg max-h-[90vh] overflow-hidden flex flex-col">
+        {/* Header - Fixed */}
+        <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-6 text-center flex-shrink-0">
+          <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg
+              className="w-8 h-8 text-blue-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
+              />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-bold text-white mb-2">Bank Transfer</h2>
+          <p className="text-blue-100">Please transfer the total amount</p>
+        </div>
+
+        {/* Scrollable Content */}
+        <div className="flex-1 overflow-y-auto p-6">
+          {/* Amount to Pay */}
+          <div className="bg-green-50 p-4 rounded-lg mb-6 text-center">
+            <p className="text-green-700 text-sm mb-1">Amount to Transfer:</p>
+            <p className="text-3xl font-bold text-green-600">${totalAmount}</p>
+          </div>
+
+          {/* Bank Details */}
+          <div className="bg-gray-50 p-4 rounded-lg mb-6">
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">
+              Transfer to this account (USD):
+            </h3>
+            <div className="space-y-3 text-sm">
+              <div className="flex justify-between">
+                <span className="text-gray-600">Company:</span>
+                <span className="font-semibold">Future Life Bali</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">Account Name:</span>
+                <span className="font-semibold">Future Life Bali</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">Bank:</span>
+                <span className="font-semibold">BRI</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">Account Number:</span>
+                <span className="font-semibold">2134-02-000056-50-5</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">Swift Code:</span>
+                <span className="font-semibold">BRINIDJA</span>
+              </div>
+              <div className="flex justify-between align-top">
+                <span className="text-gray-600">Address:</span>
+                <span className="font-semibold text-right">
+                  Jl. By Pass Ngurah Rai
+                  <br />
+                  NO 888xx
+                  <br />
+                  Denpasar 80221
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">Currency:</span>
+                <span className="font-semibold text-green-600">USD 🇺🇸</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">Reference:</span>
+                <span className="font-semibold text-blue-600">
+                  Villa Investment
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Instructions */}
+          <div className="bg-yellow-50 p-4 rounded-lg mb-6">
+            <h4 className="font-semibold text-yellow-800 mb-2">
+              Instructions:
+            </h4>
+            <ol className="text-sm text-yellow-700 space-y-1 list-decimal list-inside">
+              <li>Transfer the exact amount: ${totalAmount}</li>
+              <li>Use "Villa Investment" as reference</li>
+              <li>Send transfer screenshot to WhatsApp: +62 818-1818-5522</li>
+              <li>Click "I've Sent the Money" below after transfer</li>
+            </ol>
+          </div>
+        </div>
+
+        {/* Action Buttons - Fixed at bottom */}
+        <div className="flex-shrink-0 p-6 pt-0 space-y-3">
+          <button
+            onClick={onConfirm}
+            className="w-full bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors"
+          >
+            I've Sent the Money
+          </button>
+          <button
+            onClick={onCancel}
+            className="w-full bg-gray-300 text-gray-700 py-2 rounded-lg font-semibold hover:bg-gray-400 transition-colors"
+          >
+            Cancel
           </button>
         </div>
       </div>
@@ -131,10 +253,12 @@ const Payment = () => {
       selectedAddOns.reduce((sum, addOn) => sum + (addOn.price || 0), 0);
 
   const [showModal, setShowModal] = useState(false);
+  const [showBankModal, setShowBankModal] = useState(false);
   const [paymentInfo, setPaymentInfo] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [orderData, setOrderData] = useState(null);
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
+  const [isEmailSending, setIsEmailSending] = useState(false);
 
   // Fetch complete order data
   const fetchOrderData = async () => {
@@ -185,42 +309,99 @@ const Payment = () => {
     loadOrderData();
   }, [orderId]);
 
-  // Send simple email with confirmation
-  const sendConfirmationEmail = async (orderData, paymentDetails) => {
+  // Generate PDF and get base64 data
+  const generatePDFData = async () => {
+    if (!orderData) {
+      throw new Error("Order data not available");
+    }
+
     try {
-      console.log("[Payment] Sending confirmation email via EmailJS...");
+      console.log("[Payment] Generating PDF for email...");
 
-      const templateParams = {
-        to_email: orderData.userInfo?.[0]?.email || orderData.userEmail,
-        to_name: orderData.userInfo?.[0]?.name || "Customer",
-        order_id: orderId,
-        total_amount: orderData.totalAmount,
-        transaction_id: paymentDetails.transactionId,
-        package_title: orderData.basePackage?.title,
-        from_name: "My Future Life Bali",
-      };
+      // Generate PDF using the existing component
+      const pages = document.querySelectorAll(".contract-page");
+      const { jsPDF } = await import("jspdf");
+      const html2canvas = (await import("html2canvas")).default;
 
-      console.log("[Payment] Email template params:", templateParams);
+      const pdf = new jsPDF("p", "mm", "a4");
 
-      // Send email via EmailJS
-      const emailResult = await emailjs.send(
-        "service_1xbcnks", // Replace with your Service ID
-        "template_en3ml57", // Replace with your Template ID
-        templateParams,
-        "Q7YaSuUUOzO-j_ffb" // Replace with your Public Key
-      );
+      for (let i = 0; i < pages.length; i++) {
+        if (i > 0) pdf.addPage();
 
-      console.log("[Payment] Email sent successfully:", emailResult);
-      return emailResult;
+        const canvas = await html2canvas(pages[i], {
+          scale: 10,
+          useCORS: true,
+          allowTaint: true,
+          backgroundColor: "#ffffff",
+          width: pages[i].offsetWidth,
+          height: pages[i].offsetHeight,
+        });
+
+        const imgData = canvas.toDataURL("image/jpeg", 0.6);
+        const imgWidth = 210;
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+        pdf.addImage(imgData, "JPEG", 0, 0, imgWidth, imgHeight);
+      }
+
+      // Get PDF as base64
+      const pdfBase64 = pdf.output("datauristring");
+      console.log("[Payment] PDF generated successfully");
+
+      return pdfBase64;
     } catch (error) {
-      console.error("[Payment] Email sending failed:", error);
-      alert(
-        "Payment successful! Email sending failed, but you can download your contract."
-      );
+      console.error("[Payment] Error generating PDF:", error);
+      throw error;
     }
   };
 
-  // Generate PDF contract using frontend component
+  // Automatically send contract emails
+  const sendContractEmails = async () => {
+    if (!orderData) {
+      throw new Error("Order data not available");
+    }
+
+    setIsEmailSending(true);
+
+    try {
+      console.log("[Payment] Automatically sending contract emails...");
+
+      // Generate PDF data
+      const pdfBase64 = await generatePDFData();
+
+      // Send to backend email service with Titan email
+      const response = await axios.post(
+        "https://future-bali-backend-production.up.railway.app/api/email/send-contract",
+        {
+          orderId: orderId,
+          pdfBase64: pdfBase64,
+          customerEmail: orderData.userInfo?.[0]?.email || orderData.userEmail,
+          customerName: orderData.userInfo?.[0]?.name || "Customer",
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          timeout: 180000,
+        }
+      );
+
+      if (response.data.success) {
+        console.log("[Payment] Emails sent successfully:", response.data);
+        return true;
+      } else {
+        throw new Error(response.data.message || "Failed to send emails");
+      }
+    } catch (error) {
+      console.error("[Payment] Email sending failed:", error);
+      // Don't block the flow, just log the error
+      return false;
+    } finally {
+      setIsEmailSending(false);
+    }
+  };
+
+  // Generate PDF for download
   const generateAndDownloadContract = async () => {
     if (!orderData) {
       alert("Order data not available. Please try again.");
@@ -230,9 +411,9 @@ const Payment = () => {
     setIsGeneratingPDF(true);
 
     try {
-      console.log("[Payment] Generating PDF contract...");
+      console.log("[Payment] Generating PDF for download...");
       await pdfGeneratorRef.current.generatePDF();
-      console.log("[Payment] PDF generated and downloaded successfully");
+      console.log("[Payment] PDF downloaded successfully");
     } catch (error) {
       console.error("[Payment] Error generating PDF:", error);
       alert("Failed to generate PDF. Please try again.");
@@ -241,12 +422,18 @@ const Payment = () => {
     }
   };
 
-  const handlePayment = async (type) => {
+  const handlePayment = async () => {
     if (!orderId) {
       alert("Order ID is missing. Please try again.");
       return;
     }
 
+    // Show bank details modal
+    setShowBankModal(true);
+  };
+
+  const handlePaymentConfirmation = async () => {
+    setShowBankModal(false);
     setIsLoading(true);
 
     try {
@@ -260,29 +447,19 @@ const Payment = () => {
 
       setOrderData(fullOrderData);
 
-      const paymentAmount =
-        type === "full" ? fullOrderData.totalAmount || calculatedTotal : 2000;
-      const transactionId = `TXN${Date.now()}${Math.random()
-        .toString(36)
-        .substr(2, 4)
-        .toUpperCase()}`;
-
-      const paymentDetails = {
-        transactionId,
-        amountPaid: paymentAmount,
-        paymentType: type,
-        paymentMethod: "PayPal",
-        paymentDate: new Date().toISOString(),
-      };
-
-      console.log("[Payment] Updating order with payment details...");
+      const totalAmount = fullOrderData.totalAmount || calculatedTotal;
 
       // Update order in database with payment information
       const response = await axios.put(
         `https://future-bali-backend-production.up.railway.app/api/orders/${orderId}`,
         {
-          paymentDetails,
-          paymentStatus: "paid",
+          paymentDetails: {
+            paymentMethod: "Bank Transfer",
+            paymentDate: new Date().toISOString(),
+            amount: totalAmount,
+            status: "pending_verification",
+          },
+          paymentStatus: "pending",
           orderStatus: "confirmed",
         },
         {
@@ -294,12 +471,16 @@ const Payment = () => {
       );
 
       if (response.data.success) {
-        console.log("[Payment] Order updated successfully, sending email...");
+        console.log("[Payment] Order updated successfully");
 
-        // Send confirmation email
-        await sendConfirmationEmail(fullOrderData, paymentDetails);
+        // Automatically send contract emails
+        await sendContractEmails();
 
-        setPaymentInfo(paymentDetails);
+        setPaymentInfo({
+          orderId: orderId,
+          totalAmount: totalAmount,
+          paymentMethod: "Bank Transfer",
+        });
         setShowModal(true);
       } else {
         throw new Error(response.data.message || "Failed to update order");
@@ -352,11 +533,11 @@ const Payment = () => {
         </p>
       </div>
 
-      {/* Order Summary Section */}
+      {/* Order Summary Section - Complete Details */}
       <div className="bg-white rounded-lg shadow-md p-6 mb-8">
         <h2 className="text-2xl font-bold text-gray-800 mb-6">Order Summary</h2>
 
-        {/* Customer Information - FROM REAL DATABASE */}
+        {/* Customer Information */}
         {orderData?.userInfo && orderData.userInfo.length > 0 && (
           <div className="mb-6">
             <h3 className="text-lg font-semibold text-purple-600 mb-3">
@@ -396,16 +577,14 @@ const Payment = () => {
                     </div>
                     <div>
                       <span className="font-medium text-blue-800">
-                        Passport/ID:
+                        Passport:
                       </span>
                       <span className="ml-2">{user.passportId}</span>
                     </div>
-                    <div>
-                      <span className="font-medium text-blue-800">
-                        Address:
-                      </span>
-                      <span className="ml-2">{user.address}</span>
-                    </div>
+                  </div>
+                  <div className="mt-2">
+                    <span className="font-medium text-blue-800">Address:</span>
+                    <span className="ml-2">{user.address}</span>
                   </div>
                 </div>
               ))}
@@ -413,7 +592,7 @@ const Payment = () => {
           </div>
         )}
 
-        {/* Base Package - FROM REAL DATABASE */}
+        {/* Base Package */}
         <div className="mb-6">
           <h3 className="text-lg font-semibold text-purple-600 mb-3">
             Base Package
@@ -427,11 +606,11 @@ const Payment = () => {
                 ${orderData?.basePackage?.price || basePackage.price}
               </span>
             </div>
-            <p className="text-sm text-gray-600 mb-3">
-              Duration:{" "}
-              {orderData?.basePackage?.duration || basePackage.duration} • Fully
-              furnished villa
-            </p>
+            {orderData?.basePackage?.duration && (
+              <p className="text-sm text-gray-600 mb-3">
+                Duration: {orderData.basePackage.duration}
+              </p>
+            )}
             {orderData?.basePackage?.details && (
               <div className="grid grid-cols-2 md:grid-cols-3 gap-2 text-sm">
                 {orderData.basePackage.details.map((detail, index) => (
@@ -450,7 +629,7 @@ const Payment = () => {
           </div>
         </div>
 
-        {/* Add-ons - FROM REAL DATABASE */}
+        {/* Add-ons */}
         {((orderData?.selectedAddOns && orderData.selectedAddOns.length > 0) ||
           (selectedAddOns && selectedAddOns.length > 0)) && (
           <div className="mb-6">
@@ -482,7 +661,7 @@ const Payment = () => {
           </div>
         )}
 
-        {/* Inheritance Contacts - FROM REAL DATABASE */}
+        {/* Inheritance Contacts */}
         {orderData?.inheritanceContacts &&
           orderData.inheritanceContacts.length > 0 && (
             <div className="mb-6">
@@ -518,7 +697,7 @@ const Payment = () => {
                       {contact.passportId && (
                         <div>
                           <span className="font-medium text-green-800">
-                            Passport/ID:
+                            Passport:
                           </span>
                           <span className="ml-2 text-green-700">
                             {contact.passportId}
@@ -528,7 +707,7 @@ const Payment = () => {
                       {contact.percentage && (
                         <div>
                           <span className="font-medium text-green-800">
-                            Inheritance Share:
+                            Share:
                           </span>
                           <span className="ml-2 text-green-700 font-bold bg-green-100 px-2 py-1 rounded">
                             {contact.percentage}%
@@ -542,7 +721,7 @@ const Payment = () => {
             </div>
           )}
 
-        {/* Emergency Contacts - FROM REAL DATABASE */}
+        {/* Emergency Contacts */}
         {orderData?.emergencyContacts &&
           orderData.emergencyContacts.length > 0 && (
             <div className="mb-6">
@@ -578,7 +757,7 @@ const Payment = () => {
                       {contact.passportId && (
                         <div className="md:col-span-2">
                           <span className="font-medium text-yellow-800">
-                            Passport/ID:
+                            Passport:
                           </span>
                           <span className="ml-2 text-yellow-700">
                             {contact.passportId}
@@ -592,7 +771,7 @@ const Payment = () => {
             </div>
           )}
 
-        {/* Billing Details - If Available */}
+        {/* Billing Details */}
         {orderData?.billingDetails && (
           <div className="mb-6">
             <h3 className="text-lg font-semibold text-purple-600 mb-3">
@@ -632,7 +811,7 @@ const Payment = () => {
           </div>
         )}
 
-        {/* Total - CALCULATED FROM REAL DATABASE DATA */}
+        {/* Total */}
         <div className="border-t pt-4">
           <div className="flex justify-between items-center text-xl font-bold">
             <span>Total Investment</span>
@@ -640,164 +819,61 @@ const Payment = () => {
               ${orderData?.totalAmount || calculatedTotal}
             </span>
           </div>
-          {orderData && (
-            <div className="mt-2 p-3 bg-green-50 rounded-lg">
-              <p className="text-sm text-green-700">
-                ✅ <strong>Order data loaded from database</strong> (Order ID:{" "}
-                {orderData._id})
-              </p>
-              <p className="text-xs text-green-600 mt-1">
-                All customer information, contacts, and package details verified
-              </p>
-            </div>
-          )}
         </div>
       </div>
 
-      {/* Payment Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Payment Method */}
-        <div className="bg-white p-6 shadow-md rounded-lg">
-          <h3 className="text-lg font-semibold mb-4 text-gray-800">
-            Select Payment Method
-          </h3>
-          <div className="border-2 border-purple-200 rounded-lg p-4 bg-purple-50">
-            <label className="flex items-center space-x-3">
-              <input
-                type="radio"
-                name="payment"
-                className="w-5 h-5 text-purple-600"
-                defaultChecked
-              />
-              <div className="flex items-center space-x-2">
-                <span className="text-gray-700 font-medium text-lg">
-                  PayPal
-                </span>
-                <span className="text-xs bg-purple-100 text-purple-600 px-2 py-1 rounded">
-                  Recommended
-                </span>
-              </div>
-            </label>
-          </div>
-        </div>
-
-        {/* Card Details */}
-        <div className="bg-white p-6 shadow-md rounded-lg">
-          <h3 className="text-lg font-semibold mb-4 text-gray-800">
-            Card Details
-          </h3>
-          <form className="space-y-4">
-            <div>
-              <label className="block text-gray-800 font-semibold mb-2">
-                Card Number
-              </label>
-              <input
-                type="text"
-                placeholder="1234 5678 9012 3456"
-                className="w-full border border-gray-300 px-3 py-2 rounded-md focus:ring-2 focus:ring-purple-600 focus:border-purple-600"
-              />
-            </div>
-            <div>
-              <label className="block text-gray-800 font-semibold mb-2">
-                Card Holder
-              </label>
-              <input
-                type="text"
-                placeholder="John Doe"
-                value={
-                  orderData?.userInfo?.[0]?.name ||
-                  `${billingDetails.firstName || ""} ${
-                    billingDetails.lastName || ""
-                  }`
-                }
-                className="w-full border border-gray-300 px-3 py-2 rounded-md focus:ring-2 focus:ring-purple-600 focus:border-purple-600"
-              />
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-gray-800 font-semibold mb-2">
-                  Expiry
-                </label>
-                <input
-                  type="text"
-                  placeholder="MM/YY"
-                  className="w-full border border-gray-300 px-3 py-2 rounded-md focus:ring-2 focus:ring-purple-600 focus:border-purple-600"
-                />
-              </div>
-              <div>
-                <label className="block text-gray-800 font-semibold mb-2">
-                  CVV
-                </label>
-                <input
-                  type="password"
-                  placeholder="123"
-                  className="w-full border border-gray-300 px-3 py-2 rounded-md focus:ring-2 focus:ring-purple-600 focus:border-purple-600"
-                />
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-
-      {/* Payment Buttons */}
+      {/* Payment Button */}
       <div className="mt-8 bg-white p-6 rounded-lg shadow-md">
         <div className="text-center">
-          <h3 className="text-lg font-semibold mb-4">
-            Choose Your Payment Option
-          </h3>
-
-          <div className="space-y-4">
-            <button
-              onClick={() => handlePayment("full")}
-              disabled={isLoading}
-              className="w-full bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white py-4 px-8 rounded-lg font-bold text-lg transition-all transform hover:scale-105 disabled:opacity-50 disabled:transform-none"
-            >
-              {isLoading
-                ? "Processing..."
-                : `Pay Full Amount ${
-                    orderData?.totalAmount || calculatedTotal
-                  }`}
-            </button>
-
-            <div className="flex items-center justify-center space-x-4">
-              <div className="h-px bg-gray-300 flex-1"></div>
-              <span className="text-gray-500 font-semibold">OR</span>
-              <div className="h-px bg-gray-300 flex-1"></div>
-            </div>
-
-            <button
-              onClick={() => handlePayment("partial")}
-              disabled={isLoading}
-              className="w-full border-2 border-purple-600 text-purple-600 hover:bg-purple-600 hover:text-white py-4 px-8 rounded-lg font-bold text-lg transition-all transform hover:scale-105 disabled:opacity-50 disabled:transform-none"
-            >
-              {isLoading ? "Processing..." : "Pay $2000 Deposit"}
-            </button>
-          </div>
-
-          <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-            <p className="text-blue-800 text-sm">
-              💡 <strong>Deposit Option:</strong> Pay $2000 deposit via PayPal
-              and transfer the remaining amount to our bank account within 1
-              week. Send transfer screenshot via WhatsApp.
+          <h3 className="text-lg font-semibold mb-4">Complete Payment</h3>
+          <div className="mb-6 p-4 bg-blue-50 rounded-lg">
+            <p className="text-blue-800 text-sm mb-2">
+              Payment Method: Bank Transfer
+            </p>
+            <p className="text-blue-700 text-xs">
+              You'll receive bank details after clicking the button below
             </p>
           </div>
+          <button
+            onClick={handlePayment}
+            disabled={isLoading}
+            className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white py-4 px-8 rounded-lg font-bold text-lg transition-all transform hover:scale-105 disabled:opacity-50 disabled:transform-none"
+          >
+            {isLoading
+              ? "Processing..."
+              : `Proceed to Payment - ${
+                  orderData?.totalAmount || calculatedTotal
+                }`}
+          </button>
         </div>
       </div>
 
+      {/* Bank Details Modal */}
+      <BankDetailsModal
+        showModal={showBankModal}
+        onConfirm={handlePaymentConfirmation}
+        onCancel={() => setShowBankModal(false)}
+        totalAmount={orderData?.totalAmount || calculatedTotal}
+      />
+
+      {/* Payment Success Modal */}
       <PaymentSuccessModal
         showModal={showModal}
         handleClose={handleCloseModal}
         paymentInfo={paymentInfo}
         onDownloadContract={generateAndDownloadContract}
+        isGeneratingPDF={isGeneratingPDF}
       />
 
-      {/* Loading overlay for PDF generation */}
-      {isGeneratingPDF && (
+      {/* Loading overlay for email sending and PDF generation */}
+      {(isEmailSending || isGeneratingPDF) && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-xl text-center">
             <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600 mb-4"></div>
             <p className="text-gray-700 font-medium">
-              Generating Contract PDF...
+              {isEmailSending
+                ? "Sending Contract Emails..."
+                : "Generating Contract PDF..."}
             </p>
             <p className="text-gray-500 text-sm mt-2">
               This may take a few moments

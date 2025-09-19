@@ -143,7 +143,8 @@ const ContractPDFGenerator = forwardRef(({ contractData }, ref) => {
           <div>Villa price: $ {contractData?.totalAmount || 32000}</div>
           <div>
             Initial payment 90% of Villa price ${" "}
-            {contractData?.totalAmount || 32000}
+            {Math.round((contractData?.totalAmount || 32000) * 0.9)} pay now and
+            the rest 2 weeks after completion
           </div>
         </div>
 
@@ -749,7 +750,7 @@ const ContractPDFGenerator = forwardRef(({ contractData }, ref) => {
         <PageFooter pageNumber={10} />
       </div>
 
-      {/* PAGE 11 - Attachment B YOUR DETAILS */}
+      {/* PAGE 11 - Attachment B BILLING DETAILS (FIXED) */}
       <div
         className="contract-page bg-white p-12 min-h-[297mm] flex flex-col"
         style={{ width: "210mm", fontSize: "12px", lineHeight: "1.5" }}
@@ -757,8 +758,55 @@ const ContractPDFGenerator = forwardRef(({ contractData }, ref) => {
         <LogoHeader pageNumber={11} />
 
         <h3 className="text-base font-bold mb-6">
-          Attachment B YOUR DETAILS AND INFORMATION
+          Attachment B BILLING DETAILS AND CUSTOMER INFORMATION
         </h3>
+
+        {contractData?.billingDetails ? (
+          <div className="space-y-4">
+            <div className="mb-4">
+              <div className="font-bold mb-2">BILLING INFORMATION:</div>
+              <div className="ml-4 space-y-1">
+                <div>
+                  • First Name:{" "}
+                  {contractData.billingDetails.firstName || "Not provided"}
+                </div>
+                <div>
+                  • Last Name:{" "}
+                  {contractData.billingDetails.lastName || "Not provided"}
+                </div>
+                <div>
+                  • Email: {contractData.billingDetails.email || "Not provided"}
+                </div>
+                <div>
+                  • Phone: {contractData.billingDetails.phone || "Not provided"}
+                </div>
+                <div>
+                  • Country:{" "}
+                  {contractData.billingDetails.country || "Not provided"}
+                </div>
+                <div>
+                  • Address:{" "}
+                  {contractData.billingDetails.address || "Not provided"}
+                </div>
+                {contractData.billingDetails.notes && (
+                  <div>• Notes: {contractData.billingDetails.notes}</div>
+                )}
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="mb-4">
+            <div className="font-bold mb-2">BILLING INFORMATION:</div>
+            <div className="ml-4 space-y-1">
+              <div>• First Name: _________________________</div>
+              <div>• Last Name: _________________________</div>
+              <div>• Email: _____________________________</div>
+              <div>• Phone: ____________________________</div>
+              <div>• Country: ___________________________</div>
+              <div>• Address: ___________________________</div>
+            </div>
+          </div>
+        )}
 
         {contractData?.userInfo?.[0] ? (
           <div className="space-y-4">
@@ -814,7 +862,7 @@ const ContractPDFGenerator = forwardRef(({ contractData }, ref) => {
         <PageFooter pageNumber={11} />
       </div>
 
-      {/* PAGE 12 - ATTACHMENT C INHERITANCE */}
+      {/* PAGE 12 - ATTACHMENT C INHERITANCE & D EMERGENCY (FIXED) */}
       <div
         className="contract-page bg-white p-12 min-h-[297mm] flex flex-col"
         style={{ width: "210mm", fontSize: "12px", lineHeight: "1.5" }}
@@ -831,11 +879,13 @@ const ContractPDFGenerator = forwardRef(({ contractData }, ref) => {
                 <div className="text-red-600 font-medium mb-2">
                   {index + 1}) Name: {contact.name}
                 </div>
+                <div className="mb-2">Phone Number: {contact.phoneNumber}</div>
                 <div className="mb-2">
-                  Date of Birth:{" "}
-                  {contact.dob || "______________________________"}
+                  Passport ID: {contact.passportId || "Not provided"}
                 </div>
-                <div className="mb-2">Percentage: {contact.percentage}%</div>
+                <div className="mb-2">
+                  Percentage: {contact.percentage || "Not specified"}%
+                </div>
               </div>
             ))
           : Array.from({ length: 3 }, (_, i) => (
@@ -844,7 +894,10 @@ const ContractPDFGenerator = forwardRef(({ contractData }, ref) => {
                   {i + 1}) Name: ___________________________________
                 </div>
                 <div className="mb-2">
-                  Date of Birth: ______________________________
+                  Phone Number: ______________________________
+                </div>
+                <div className="mb-2">
+                  Passport ID: ______________________________
                 </div>
                 <div className="mb-2">
                   Percentage: ______________________________
@@ -862,35 +915,28 @@ const ContractPDFGenerator = forwardRef(({ contractData }, ref) => {
           ? contractData.emergencyContacts.map((contact, index) => (
               <div key={index} className="mb-4">
                 <div className="text-red-600 font-medium">
-                  {index + 1}) Name & ID and phone number:
+                  {index + 1}) Name: {contact.name}
                 </div>
                 <div className="ml-4">
-                  {contact.name} - ID: {contact.passportId || "Not provided"} -
-                  Phone: {contact.phoneNumber}
+                  • Phone Number: {contact.phoneNumber}
                 </div>
               </div>
             ))
           : Array.from({ length: 2 }, (_, i) => (
               <div key={i} className="mb-4">
                 <div className="text-red-600 font-medium">
-                  {i + 1}) Name & ID and phone number:
+                  {i + 1}) Name: ___________________________________
                 </div>
                 <div className="ml-4">
-                  _________________________________________________
+                  • Phone Number: ______________________________
                 </div>
               </div>
             ))}
 
-        <div className="mt-8">
-          <h3 className="text-base font-bold mb-4 text-red-600">
-            ATTACHMENT E Billing Details
-          </h3>
-        </div>
-
         <PageFooter pageNumber={12} />
       </div>
 
-      {/* PAGE 14 - ATTACHMENT F - Customer Details */}
+      {/* PAGE 13 - ATTACHMENT F - Customer Details */}
       <div
         className="contract-page bg-white p-12 min-h-[297mm] flex flex-col"
         style={{ width: "210mm", fontSize: "12px", lineHeight: "1.5" }}
@@ -955,7 +1001,7 @@ const ContractPDFGenerator = forwardRef(({ contractData }, ref) => {
         <PageFooter pageNumber={13} />
       </div>
 
-      {/* PAGE 15 - PASSPORT/ID FRONT IMAGE */}
+      {/* PAGE 14 - PASSPORT/ID FRONT IMAGE */}
       <div
         className="contract-page bg-white p-12 min-h-[297mm] flex flex-col"
         style={{ width: "210mm", fontSize: "12px", lineHeight: "1.5" }}
@@ -1014,7 +1060,7 @@ const ContractPDFGenerator = forwardRef(({ contractData }, ref) => {
         <PageFooter pageNumber={14} />
       </div>
 
-      {/* PAGE 16 - PASSPORT/ID BACK IMAGE */}
+      {/* PAGE 15 - PASSPORT/ID BACK IMAGE */}
       <div
         className="contract-page bg-white p-12 min-h-[297mm] flex flex-col"
         style={{ width: "210mm", fontSize: "12px", lineHeight: "1.5" }}
@@ -1073,7 +1119,7 @@ const ContractPDFGenerator = forwardRef(({ contractData }, ref) => {
         <PageFooter pageNumber={15} />
       </div>
 
-      {/* PAGE 16 - FINAL PAGE: Attachments D & E */}
+      {/* PAGE 16 - FINAL PAGE: Signatures */}
       <div
         className="contract-page bg-white p-12 min-h-[297mm] flex flex-col"
         style={{ width: "210mm", fontSize: "12px", lineHeight: "1.5" }}

@@ -299,10 +299,7 @@ const PlaceOrder = () => {
                 <td className="p-3 border text-gray-700">${addOn.price}</td>
               </tr>
             ))}
-            <tr className="font-medium">
-              <td className="p-3 border text-gray-700">Add-ons Subtotal</td>
-              <td className="p-3 border text-gray-700">${addOnTotal}</td>
-            </tr>
+
             <tr className="font-semibold text-purple-600">
               <td className="p-3 border text-lg">Total</td>
               <td className="p-3 border text-lg">${totalCost}</td>

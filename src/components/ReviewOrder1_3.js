@@ -20,6 +20,8 @@ const InheritanceForm = () => {
       phoneNumber: "",
       passportId: "",
       percentage: "",
+      passportImage: null,
+      passportImagePreview: "",
     },
   ]);
 
@@ -36,6 +38,55 @@ const InheritanceForm = () => {
     }
   };
 
+  const handleImageChange = (contactId, e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Validate file size (5MB limit)
+      if (file.size > 5 * 1024 * 1024) {
+        alert("File size must be less than 5MB");
+        return;
+      }
+
+      // Validate file type
+      const allowedTypes = [
+        "image/jpeg",
+        "image/jpg",
+        "image/png",
+        "application/pdf",
+      ];
+      if (!allowedTypes.includes(file.type)) {
+        alert("Only JPEG, PNG, and PDF files are allowed");
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setContacts((prev) =>
+          prev.map((contact) =>
+            contact.id === contactId
+              ? {
+                  ...contact,
+                  passportImage: event.target.result, // Store base64 directly
+                  passportImagePreview: event.target.result,
+                }
+              : contact
+          )
+        );
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const removeImage = (contactId) => {
+    setContacts((prev) =>
+      prev.map((contact) =>
+        contact.id === contactId
+          ? { ...contact, passportImage: null, passportImagePreview: "" }
+          : contact
+      )
+    );
+  };
+
   const addContact = () => {
     const newContact = {
       id: Date.now(),
@@ -43,6 +94,8 @@ const InheritanceForm = () => {
       phoneNumber: "",
       passportId: "",
       percentage: "",
+      passportImage: null,
+      passportImagePreview: "",
     };
     setContacts((prev) => [...prev, newContact]);
   };
@@ -111,6 +164,7 @@ const InheritanceForm = () => {
               phoneNumber: contact.phoneNumber,
               passportId: contact.passportId,
               percentage: contact.percentage,
+              passportImage: contact.passportImage, // Include base64 image
             })),
             orderId,
           },
@@ -273,6 +327,54 @@ const InheritanceForm = () => {
                       )
                     }
                   />
+                </div>
+
+                {/* Passport Image Upload - New Field */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Passport/ID Image (Optional)
+                  </label>
+                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center cursor-pointer hover:border-gray-400 relative h-48">
+                    <input
+                      type="file"
+                      accept="image/*,.pdf"
+                      className="hidden"
+                      id={`passport-image-${contact.id}`}
+                      onChange={(e) => handleImageChange(contact.id, e)}
+                    />
+                    <label
+                      htmlFor={`passport-image-${contact.id}`}
+                      className="cursor-pointer h-full w-full flex items-center justify-center"
+                    >
+                      {contact.passportImagePreview ? (
+                        <div className="relative h-full w-full">
+                          <img
+                            src={contact.passportImagePreview}
+                            alt="Passport Preview"
+                            className="max-h-full max-w-full object-contain"
+                          />
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              removeImage(contact.id);
+                            }}
+                            className="absolute top-2 right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-600"
+                          >
+                            ×
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="flex flex-col items-center justify-center">
+                          <span className="text-3xl text-gray-400">+</span>
+                          <span className="text-sm text-gray-500 mt-2">
+                            Upload Passport/ID Image
+                          </span>
+                        </div>
+                      )}
+                    </label>
+                  </div>
                 </div>
               </div>
             </div>

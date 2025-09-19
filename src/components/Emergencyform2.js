@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { uploadFileToServer } from "../utils/fileupload";
 import { SuccessToast } from "./SuccessTost";
 
 const ContactForm2 = () => {
@@ -19,9 +18,6 @@ const ContactForm2 = () => {
       id: 1,
       name: "",
       phoneNumber: "",
-      passportId: "",
-      idImage: null,
-      idImagePreview: "",
     },
   ]);
 
@@ -38,63 +34,11 @@ const ContactForm2 = () => {
     }
   };
 
-  const handleImageChange = (contactId, e) => {
-    const file = e.target.files[0];
-    if (file) {
-      // Validate file size (5MB limit)
-      if (file.size > 5 * 1024 * 1024) {
-        alert("File size must be less than 5MB");
-        return;
-      }
-
-      // Validate file type
-      const allowedTypes = [
-        "image/jpeg",
-        "image/jpg",
-        "image/png",
-        "application/pdf",
-      ];
-      if (!allowedTypes.includes(file.type)) {
-        alert("Only JPEG, PNG, and PDF files are allowed");
-        return;
-      }
-
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        setContacts((prev) =>
-          prev.map((contact) =>
-            contact.id === contactId
-              ? {
-                  ...contact,
-                  idImage: file,
-                  idImagePreview: event.target.result,
-                }
-              : contact
-          )
-        );
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const removeImage = (contactId) => {
-    setContacts((prev) =>
-      prev.map((contact) =>
-        contact.id === contactId
-          ? { ...contact, idImage: null, idImagePreview: "" }
-          : contact
-      )
-    );
-  };
-
   const addContact = () => {
     const newContact = {
       id: Date.now(),
       name: "",
       phoneNumber: "",
-      passportId: "",
-      idImage: null,
-      idImagePreview: "",
     };
     setContacts((prev) => [...prev, newContact]);
   };
@@ -151,31 +95,6 @@ const ContactForm2 = () => {
     try {
       if (!skipForm) {
         console.log(
-          "[ContactForm2] Uploading images and saving emergency contacts"
-        );
-
-        // Upload images if they exist
-        const contactsWithImages = await Promise.all(
-          contacts.map(async (contact) => {
-            let idImageUrl = null;
-
-            if (contact.idImage) {
-              try {
-                idImageUrl = await uploadFileToServer(contact.idImage);
-              } catch (error) {
-                console.error("Error uploading ID image:", error);
-                // Continue with null if upload fails
-              }
-            }
-
-            return {
-              ...contact,
-              idImage: idImageUrl,
-            };
-          })
-        );
-
-        console.log(
           "[ContactForm2] Saving emergency contacts for order:",
           orderId
         );
@@ -183,7 +102,7 @@ const ContactForm2 = () => {
         await axios.post(
           "https://future-bali-backend-production.up.railway.app/api/orders/save-emergency",
           {
-            contacts: contactsWithImages,
+            contacts: contacts,
             orderId,
           },
           {
@@ -304,70 +223,6 @@ const ContactForm2 = () => {
                         {errors[`${contact.id}-phoneNumber`]}
                       </p>
                     )}
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Passport/ ID Number (Optional)
-                  </label>
-                  <input
-                    type="text"
-                    className="w-full p-2 border border-gray-300 rounded-md"
-                    value={contact.passportId}
-                    onChange={(e) =>
-                      handleInputChange(
-                        contact.id,
-                        "passportId",
-                        e.target.value
-                      )
-                    }
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Passport/ID Image (Optional)
-                  </label>
-                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center cursor-pointer hover:border-gray-400 relative h-48">
-                    <input
-                      type="file"
-                      accept="image/*,.pdf"
-                      className="hidden"
-                      id={`id-image-${contact.id}`}
-                      onChange={(e) => handleImageChange(contact.id, e)}
-                    />
-                    <label
-                      htmlFor={`id-image-${contact.id}`}
-                      className="cursor-pointer h-full w-full flex items-center justify-center"
-                    >
-                      {contact.idImagePreview ? (
-                        <div className="relative h-full w-full">
-                          <img
-                            src={contact.idImagePreview}
-                            alt="ID Preview"
-                            className="max-h-full max-w-full object-contain"
-                          />
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              removeImage(contact.id);
-                            }}
-                            className="absolute top-2 right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-600"
-                          >
-                            ×
-                          </button>
-                        </div>
-                      ) : (
-                        <div className="flex flex-col items-center justify-center">
-                          <span className="text-3xl text-gray-400">+</span>
-                          <span className="text-sm text-gray-500 mt-2">
-                            Upload Image
-                          </span>
-                        </div>
-                      )}
-                    </label>
                   </div>
                 </div>
               </div>

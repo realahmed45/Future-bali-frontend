@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
-import emailjs from "@emailjs/browser";
 import { FaTimes } from "react-icons/fa";
 
 const Login = () => {
@@ -20,11 +19,6 @@ const Login = () => {
   const API_BASE_URL =
     process.env.REACT_APP_API_URL ||
     "https://future-bali-backend-production.up.railway.app";
-
-  // Initialize EmailJS
-  useEffect(() => {
-    emailjs.init("zVTuReodh-Rdvi0n_");
-  }, []);
 
   // FIXED: Clear any existing session on component mount
   useEffect(() => {
@@ -50,38 +44,6 @@ const Login = () => {
 
   const validateEmail = (email) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  };
-
-  // Send OTP via EmailJS
-  const sendOtpViaEmail = async (email, otp) => {
-    try {
-      await emailjs.send(
-        "service_clikdn4",
-        "template_gvxyd5q",
-        {
-          to_email: email,
-          otp: otp,
-        },
-        "Q7YaSuUUOzO-j_ffb"
-      );
-      return true;
-    } catch (error) {
-      console.error("EmailJS error:", error);
-      throw new Error("Failed to send email");
-    }
-  };
-
-  // Send OTP via WhatsApp (simulated for now)
-  const sendOtpViaWhatsApp = async (phone, otp) => {
-    try {
-      console.log("SIMULATION: Sending WhatsApp to:", phone, "OTP:", otp);
-      // Simulate API call - replace with UltraMsg later
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      return true;
-    } catch (error) {
-      console.error("WhatsApp error:", error);
-      throw new Error("Failed to send WhatsApp message");
-    }
   };
 
   const sendOtp = async () => {
@@ -129,17 +91,19 @@ const Login = () => {
           throw new Error(response.data.message || "Failed to generate OTP");
         }
 
-        const { otp: generatedOtp } = response.data;
+        console.log("OTP Response:", response.data);
 
-        // Send OTP via appropriate channel
-        if (loginMethod === "phone") {
-          await sendOtpViaWhatsApp(phone, generatedOtp);
-        } else {
-          await sendOtpViaEmail(email, generatedOtp);
-        }
-
+        // Backend now handles sending the OTP via email or WhatsApp
+        // No need for frontend email sending
         setIsOtpModalOpen(true);
         setIsLoading(false);
+
+        // Show success message based on delivery method
+        if (response.data.note) {
+          // Fallback case - show the note
+          alert(response.data.note);
+        }
+
         return; // Success, exit the retry loop
       } catch (error) {
         lastError = error;
@@ -328,8 +292,8 @@ const Login = () => {
                   <p className="text-red-500 text-sm mt-1">{emailError}</p>
                 )}
                 <p className="text-sm text-gray-500 mt-2">
-                  Enter your email address. We'll send a verification code via
-                  email.
+                  Enter your email address. We'll send a verification code from
+                  info@futurelifebali.com.
                 </p>
               </div>
             )}
@@ -351,7 +315,7 @@ const Login = () => {
             <div className="mb-6">
               <p className="text-gray-600 mb-4 text-center">
                 We've sent a 6-digit code to your{" "}
-                {loginMethod === "phone" ? "WhatsApp number" : "email"}{" "}
+                {loginMethod === "phone" ? "WhatsApp number" : "email address"}{" "}
                 {loginMethod === "phone" ? phone : email}
               </p>
               <div className="mb-4">
