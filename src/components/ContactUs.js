@@ -54,7 +54,7 @@ const ContactUs = () => {
                     </div>
                     <div>
                       <p className="text-purple-200 text-sm">Direct Line</p>
-                      <p className="text-xl font-semibold">+62 818-1818-5522</p>
+                      <p className="text-xl font-semibold">+62 877-4487-7888</p>
                     </div>
                   </div>
 

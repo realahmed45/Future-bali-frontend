@@ -174,7 +174,7 @@ const Footer = () => {
           <img src={logo} alt="Future Life Logo" style={styles.logo} />
           <div style={styles.contactInfo}>
             <p style={styles.callText}>CALL US TODAY</p>
-            <p style={styles.phoneNumber}>+62 818-1818-5522</p>
+            <p style={styles.phoneNumber}>+62 877-4487-7888</p>
           </div>
           <div style={styles.socialIcons}>
             <a
