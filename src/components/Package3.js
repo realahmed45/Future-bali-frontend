@@ -83,7 +83,7 @@ const Package3 = () => {
       const packageData = {
         selectedAddOns,
         basePackage: {
-          title: "Furnished Swimming Pool Package",
+          title: "Furnished 2 bedroom package",
           price: 36000,
           duration: "4-6 months",
           details: [
@@ -159,7 +159,7 @@ const Package3 = () => {
               Package 3
             </h1>
             <h2 className="text-lg sm:text-xl lg:text-2xl font-bold tracking-wide">
-              Furnished Swimming Pool Package
+              Furnished 2 bedroom package
             </h2>
           </div>
         </header>
@@ -279,7 +279,7 @@ const Package3 = () => {
                   Package
                 </p>
                 <p className="font-bold text-lg lg:text-xl text-purple-800 leading-tight">
-                  Swimming Pool Package
+                  2 bedroom package
                 </p>
               </div>
               <div className="mb-6">
@@ -511,7 +511,7 @@ const Package3 = () => {
                 Overview
               </h3>
               <p className="text-sm lg:text-base text-gray-700 leading-relaxed bg-gray-50 p-4 lg:p-6 rounded-xl">
-                Our Swimming Pool Package features{" "}
+                Our Package features{" "}
                 {
                   minimumSizes.find((room) => room.label.includes("Bedrooms"))
                     ?.size

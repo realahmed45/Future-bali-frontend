@@ -12,6 +12,9 @@ const PaymentSuccessModal = ({
 }) => {
   if (!showModal) return null;
 
+  // Calculate the pay now amount (90% of total)
+  const payNowAmount = Math.round(paymentInfo.totalAmount * 0.9);
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg shadow-2xl max-w-md w-full mx-4 overflow-hidden">
@@ -46,9 +49,15 @@ const PaymentSuccessModal = ({
               <span className="font-semibold">{paymentInfo.orderId}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-600">Amount:</span>
-              <span className="font-semibold text-green-600">
+              <span className="text-gray-600">Total Investment:</span>
+              <span className="font-semibold text-purple-600">
                 ${paymentInfo.totalAmount}
+              </span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-600">Amount Paid Now:</span>
+              <span className="font-semibold text-green-600 text-lg">
+                ${payNowAmount}
               </span>
             </div>
             <div className="flex justify-between">
@@ -65,7 +74,8 @@ const PaymentSuccessModal = ({
 
           <div className="mt-6 p-4 bg-green-50 rounded-lg">
             <p className="text-green-800 text-sm mb-3">
-              ✅ Contract emails have been sent automatically to all parties.
+              ✅ Contract emails will be sent automatically in 10 mins to all
+              parties.
             </p>
             <p className="text-green-700 text-xs">
               • Customer email: Contract copy delivered
@@ -110,7 +120,7 @@ const PaymentSuccessModal = ({
   );
 };
 
-const BankDetailsModal = ({ showModal, onConfirm, onCancel, totalAmount }) => {
+const BankDetailsModal = ({ showModal, onConfirm, onCancel, payNowAmount }) => {
   if (!showModal) return null;
 
   return (
@@ -134,7 +144,7 @@ const BankDetailsModal = ({ showModal, onConfirm, onCancel, totalAmount }) => {
             </svg>
           </div>
           <h2 className="text-2xl font-bold text-white mb-2">Bank Transfer</h2>
-          <p className="text-blue-100">Please transfer the total amount</p>
+          <p className="text-blue-100">Please transfer the amount below</p>
         </div>
 
         {/* Scrollable Content */}
@@ -142,7 +152,10 @@ const BankDetailsModal = ({ showModal, onConfirm, onCancel, totalAmount }) => {
           {/* Amount to Pay */}
           <div className="bg-green-50 p-4 rounded-lg mb-6 text-center">
             <p className="text-green-700 text-sm mb-1">Amount to Transfer:</p>
-            <p className="text-3xl font-bold text-green-600">${totalAmount}</p>
+            <p className="text-3xl font-bold text-green-600">${payNowAmount}</p>
+            <p className="text-green-600 text-xs mt-1">
+              (90% of total investment)
+            </p>
           </div>
 
           {/* Bank Details */}
@@ -200,7 +213,7 @@ const BankDetailsModal = ({ showModal, onConfirm, onCancel, totalAmount }) => {
               Instructions:
             </h4>
             <ol className="text-sm text-yellow-700 space-y-1 list-decimal list-inside">
-              <li>Transfer the exact amount: ${totalAmount}</li>
+              <li>Transfer the exact amount: ${payNowAmount}</li>
               <li>Use "Villa Investment" as reference</li>
               <li>Send transfer screenshot to WhatsApp: +62 818-1818-5522</li>
               <li>Click "I've Sent the Money" below after transfer</li>
@@ -259,6 +272,10 @@ const Payment = () => {
   const [orderData, setOrderData] = useState(null);
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
   const [isEmailSending, setIsEmailSending] = useState(false);
+
+  // Calculate pay now amount (90% of total)
+  const totalAmount = orderData?.totalAmount || calculatedTotal;
+  const payNowAmount = Math.round(totalAmount * 0.9);
 
   // Fetch complete order data
   const fetchOrderData = async () => {
@@ -369,7 +386,7 @@ const Payment = () => {
       // Generate PDF data
       const pdfBase64 = await generatePDFData();
 
-      // Send to backend email service with Titan email
+      // Send to backend email service with Resend API
       const response = await axios.post(
         "https://future-bali-backend-production.up.railway.app/api/email/send-contract",
         {
@@ -811,13 +828,101 @@ const Payment = () => {
           </div>
         )}
 
-        {/* Total */}
+        {/* Total Investment */}
         <div className="border-t pt-4">
-          <div className="flex justify-between items-center text-xl font-bold">
+          <div className="flex justify-between items-center text-xl font-bold mb-3">
             <span>Total Investment</span>
-            <span className="text-purple-600">
-              ${orderData?.totalAmount || calculatedTotal}
-            </span>
+            <span className="text-purple-600">${totalAmount}</span>
+          </div>
+
+          {/* Pay Now Amount */}
+          <div className="flex justify-between items-center text-lg font-semibold bg-green-50 p-3 rounded-lg">
+            <span className="text-green-800">Pay Now (90%)</span>
+            <span className="text-green-600">${payNowAmount}</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Payment Method Section with Bank Details */}
+      <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+        <h3 className="text-2xl font-bold text-gray-800 mb-6">
+          Payment Method
+        </h3>
+
+        <div className="bg-blue-50 p-4 rounded-lg mb-6">
+          <div className="flex items-center mb-4">
+            <svg
+              className="w-8 h-8 text-blue-600 mr-3"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
+              />
+            </svg>
+            <h4 className="text-lg font-semibold text-blue-800">
+              Bank Transfer (USD)
+            </h4>
+          </div>
+
+          <div className="bg-white p-4 rounded-lg">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+              <div>
+                <span className="font-medium text-gray-700">Company:</span>
+                <span className="ml-2 font-semibold">Future Life Bali</span>
+              </div>
+              <div>
+                <span className="font-medium text-gray-700">Account Name:</span>
+                <span className="ml-2 font-semibold">Future Life Bali</span>
+              </div>
+              <div>
+                <span className="font-medium text-gray-700">Bank:</span>
+                <span className="ml-2 font-semibold">BRI</span>
+              </div>
+              <div>
+                <span className="font-medium text-gray-700">
+                  Account Number:
+                </span>
+                <span className="ml-2 font-semibold text-blue-600">
+                  2134-02-000056-50-5
+                </span>
+              </div>
+              <div>
+                <span className="font-medium text-gray-700">Swift Code:</span>
+                <span className="ml-2 font-semibold text-blue-600">
+                  BRINIDJA
+                </span>
+              </div>
+              <div>
+                <span className="font-medium text-gray-700">Currency:</span>
+                <span className="ml-2 font-semibold text-green-600">
+                  USD 🇺🇸
+                </span>
+              </div>
+              <div className="md:col-span-2">
+                <span className="font-medium text-gray-700">Bank Address:</span>
+                <span className="ml-2 font-semibold">
+                  Jl. By Pass Ngurah Rai NO 888xx, Denpasar 80221
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-4 p-3 bg-yellow-50 rounded-lg">
+            <p className="text-yellow-800 text-sm font-medium">
+              📝 Transfer Instructions:
+            </p>
+            <ul className="text-yellow-700 text-xs mt-2 space-y-1">
+              <li>
+                • Transfer exactly ${payNowAmount} (90% of total investment)
+              </li>
+              <li>• Use "Villa Investment" as reference</li>
+              <li>• Send screenshot to WhatsApp: +62 818-1818-5522</li>
+            </ul>
           </div>
         </div>
       </div>
@@ -826,12 +931,12 @@ const Payment = () => {
       <div className="mt-8 bg-white p-6 rounded-lg shadow-md">
         <div className="text-center">
           <h3 className="text-lg font-semibold mb-4">Complete Payment</h3>
-          <div className="mb-6 p-4 bg-blue-50 rounded-lg">
-            <p className="text-blue-800 text-sm mb-2">
-              Payment Method: Bank Transfer
+          <div className="mb-6 p-4 bg-green-50 rounded-lg">
+            <p className="text-green-800 text-lg font-bold mb-2">
+              Amount to Pay: ${payNowAmount}
             </p>
-            <p className="text-blue-700 text-xs">
-              You'll receive bank details after clicking the button below
+            <p className="text-green-700 text-sm">
+              (90% of total investment - remaining 10% due later)
             </p>
           </div>
           <button
@@ -839,11 +944,7 @@ const Payment = () => {
             disabled={isLoading}
             className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white py-4 px-8 rounded-lg font-bold text-lg transition-all transform hover:scale-105 disabled:opacity-50 disabled:transform-none"
           >
-            {isLoading
-              ? "Processing..."
-              : `Proceed to Payment - ${
-                  orderData?.totalAmount || calculatedTotal
-                }`}
+            {isLoading ? "Processing..." : `Pay Now - ${payNowAmount}`}
           </button>
         </div>
       </div>
@@ -853,7 +954,7 @@ const Payment = () => {
         showModal={showBankModal}
         onConfirm={handlePaymentConfirmation}
         onCancel={() => setShowBankModal(false)}
-        totalAmount={orderData?.totalAmount || calculatedTotal}
+        payNowAmount={payNowAmount}
       />
 
       {/* Payment Success Modal */}

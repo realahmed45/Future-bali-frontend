@@ -158,7 +158,7 @@ const Package2 = () => {
               Package 2
             </h1>
             <h2 className="text-lg sm:text-xl lg:text-2xl font-bold tracking-wide">
-              Furnished 2 bedroom house
+              Furnished 1 bedroom house
             </h2>
           </div>
         </header>
@@ -268,7 +268,7 @@ const Package2 = () => {
                   Package
                 </p>
                 <p className="font-bold text-lg lg:text-xl text-purple-800 leading-tight">
-                  Furnished 2 bedroom house
+                  Furnished 1 bedroom house
                 </p>
               </div>
               <div className="mb-6">
@@ -490,7 +490,7 @@ const Package2 = () => {
                 Overview
               </h3>
               <p className="text-sm lg:text-base text-gray-700 leading-relaxed bg-gray-50 p-4 lg:p-6 rounded-xl">
-                Our fully furnished two bedroom house features{" "}
+                Our fully furnished one bedroom house features{" "}
                 {
                   minimumSizes.find((room) => room.label.includes("Bedroom"))
                     ?.size
