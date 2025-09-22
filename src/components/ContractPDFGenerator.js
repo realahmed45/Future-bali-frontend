@@ -145,7 +145,7 @@ const ContractPDFGenerator = forwardRef(({ contractData }, ref) => {
           <div>
             Initial payment 90% of Villa price ${" "}
             {Math.round((contractData?.totalAmount || 32000) * 0.9)} pay now and
-            the rest 2 weeks after completion
+            the rest 10% 2 weeks after completion
           </div>
         </div>
 
@@ -243,7 +243,7 @@ const ContractPDFGenerator = forwardRef(({ contractData }, ref) => {
         <div className="mb-4 ml-4">
           <div>• Construction</div>
           <div>
-            • Fully Furnished ( Furnishing are paid by future life PT & owned by
+            • Fully Furnished (Furnishing are paid by future life PT & owned by
             future life PT)
           </div>
           <div>• 1 bedroom</div>
@@ -266,7 +266,7 @@ const ContractPDFGenerator = forwardRef(({ contractData }, ref) => {
           original Price
         </div>
         <div className="mb-4">
-          pool ( yes or no) (
+          pool (yes or no) (
           {contractData?.selectedAddOns?.some((addon) =>
             addon.room?.toLowerCase().includes("pool")
           )
@@ -286,6 +286,412 @@ const ContractPDFGenerator = forwardRef(({ contractData }, ref) => {
             ? contractData.userInfo.map((user) => user.name).join(" & ")
             : "………"}
           ' and 50% for 'My Future Life Bali'."
+        </div>
+
+        <h3 className="text-base font-bold mb-2">Article 1b this time only</h3>
+        <div className="mb-6">
+          The parties agree that, for this time only, '
+          {contractData?.userInfo?.length > 0
+            ? contractData.userInfo.map((user) => user.name).join(" & ")
+            : "………"}
+          ' will pay 90% of $ mentioned above initially. before we start. And
+          the rest 10% after start
+        </div>
+
+        <h3 className="text-base font-bold mb-2">
+          Article 1c length of contract and Lease
+        </h3>
+        <div className="mb-2">The term of this agreement is 23 years,</div>
+        <div className="mb-2">
+          The rental of the land for the 23-year period is covered by the
+          Payment that is mentioned payment, valid until : date mentioned
+          beginning of the contract
+        </div>
+        <div>
+          For the lease $500 needs to be paid after 8 years to cover the last 15
+          years of the 23 year total lease period.
+        </div>
+
+        <PageFooter pageNumber={2} />
+      </div>
+
+      {/* PAGE 3 - Article 1d & 2a & 2b */}
+      <div
+        className="contract-page bg-white p-12 min-h-[297mm] flex flex-col"
+        style={{ width: "210mm", fontSize: "12px", lineHeight: "1.5" }}
+      >
+        <LogoHeader pageNumber={3} />
+
+        <h3 className="text-base font-bold mb-2">
+          Article 1d Responsibilities Clause of My future Life
+        </h3>
+        <div className="mb-4">
+          My future Life party acknowledges and agrees to undertake and be fully
+          responsible for all aspects of the management, marketing, and
+          day-to-day operations for a period of 23 years, commencing on [start
+          date] and concluding on [end date]. And it is the only party that can
+          decide on this , My future Life can allocate the responsibilities
+          under another management in the future and still be responsible for My
+          future Life.
+        </div>
+
+        <div className="mb-2">
+          These responsibilities include but are not limited to:
+        </div>
+        <div className="mb-4 ml-4">
+          <div>1. Managing all bookings and reservations.</div>
+          <div>
+            2. Overseeing and executing marketing strategies to promote the
+            property.
+          </div>
+          <div>
+            3. Handling all day-to-day operational activities to ensure smooth
+            functioning.
+          </div>
+          <div>
+            4. Arranging and supervising necessary maintenance and repairs as
+            required.
+          </div>
+          <div>
+            5. Managing the rental process, including tenant relations and
+            contract oversight.
+          </div>
+        </div>
+
+        <div className="mb-6">
+          The undersigned shall perform these duties with diligence, integrity,
+          and professionalism, ensuring the property operates efficiently and
+          profitably throughout the specified term.
+        </div>
+
+        <h3 className="text-base font-bold mb-2">
+          Article 2a: PAYMENT OF PROFIT
+        </h3>
+        <div className="mb-6">
+          The profit of the "
+          {contractData?.userInfo?.length > 0
+            ? contractData.userInfo.map((user) => user.name).join(" & ")
+            : "………"}
+          " will be paid to a **** bank account via bank transfer every 3
+          months.
+        </div>
+
+        <h3 className="text-base font-bold mb-2">
+          Article 2b : no contact / inheritance
+        </h3>
+        <div className="font-bold mb-2 underline">No contact</div>
+        <div className="mb-4">
+          If there is no contact from '
+          {contractData?.userInfo?.length > 0
+            ? contractData.userInfo.map((user) => user.name).join(" & ")
+            : "………"}
+          ' to 'My Future Life Bali' for 9-12 months, 'My Future Life Bali' must
+          attempt to contact '
+          {contractData?.userInfo?.length > 0
+            ? contractData.userInfo.map((user) => user.name).join(" & ")
+            : "………"}
+          's relatives or the appropriate embassy.
+        </div>
+
+        <div className="mb-4">
+          Please mention 2 contact with phone number in NO CONTACT EMERGENCY
+          ATTACHMENT D
+        </div>
+
+        <div className="font-bold mb-2 underline">inheritance</div>
+        <div>
+          • "If there is no contact from '
+          {contractData?.userInfo?.length > 0
+            ? contractData.userInfo.map((user) => user.name).join(" & ")
+            : "………"}
+          ' to 'My Future Life Bali' for 9-12 months, 'My Future Life Bali' must
+          attempt to contact '
+          {contractData?.userInfo?.length > 0
+            ? contractData.userInfo.map((user) => user.name).join(" & ")
+            : "………"}
+          's relatives or the appropriate embassy.
+        </div>
+
+        <PageFooter pageNumber={3} />
+      </div>
+
+      {/* PAGE 4 - Inheritance continuation & Article 2c */}
+      <div
+        className="contract-page bg-white p-12 min-h-[297mm] flex flex-col"
+        style={{ width: "210mm", fontSize: "12px", lineHeight: "1.5" }}
+      >
+        <LogoHeader pageNumber={4} />
+
+        <div className="mb-4">
+          • If '
+          {contractData?.userInfo?.length > 0
+            ? contractData.userInfo.map((user) => user.name).join(" & ")
+            : "………"}
+          ' passes away, the profit will be paid to the inheritor mentioned in
+          their will..
+        </div>
+
+        <div className="mb-4">
+          • If no inheritor is mentioned, 'My Future Life Bali' will distribute
+          the profit as follows: If '
+          {contractData?.userInfo?.length > 0
+            ? contractData.userInfo.map((user) => user.name).join(" & ")
+            : "………"}
+          ' has parents, siblings, or any other designated persons listed in
+          this contract, the profit will be paid to them in the specified order
+          and percentages. If no such persons are listed or available, the
+          profit distribution will follow applicable inheritance laws.
+        </div>
+
+        <div className="mb-4">
+          • The term 'children' refers to all children of the couple, and the
+          profit will be distributed equally among them."
+        </div>
+
+        <div className="mb-6">
+          The designated inheritors and their respective shares are: ATTACHMENT
+          C INHERITANCE
+        </div>
+
+        <h3 className="text-base font-bold mb-2">
+          Article 2c Guarantor Profit Sharing and ROI Terms first 2 years
+        </h3>
+
+        <div className="mb-2">1. Income calculation %</div>
+        <div className="mb-4 ml-4">
+          • ROI calculation will begin 3 months after the construction period
+          ends and the project is launched in the market.
+        </div>
+
+        <div className="mb-2">2. Income Below 6%</div>
+        <div className="mb-4 ml-4">
+          <div>
+            • "If the project does not generate an income of at least 6%, with
+            70%/30% profit sharing to '
+            {contractData?.userInfo?.length > 0
+              ? contractData.userInfo.map((user) => user.name).join(" & ")
+              : "………"}
+            ' and 30% to 'My Future Life Bali', please read article 2D
+          </div>
+          <div>
+            • '
+            {contractData?.userInfo?.length > 0
+              ? contractData.userInfo.map((user) => user.name).join(" & ")
+              : "………"}
+            ' has the right to withdraw and request a 75% refund of the initial
+            investment , will be returned.
+          </div>
+          <div>
+            • '
+            {contractData?.userInfo?.length > 0
+              ? contractData.userInfo.map((user) => user.name).join(" & ")
+              : "………"}
+            ' will allow a 6-month period for 'My Future Life Bali' to repay the
+            amount."
+          </div>
+        </div>
+
+        <div className="mb-2">3. Term Validity of Article 2c</div>
+        <div className="mb-6 ml-4">
+          • "This article of the contract is valid only for the first 2 years of
+          the agreement."
+        </div>
+
+        <h3 className="text-base font-bold">
+          Article 2D Profit Sharing and ROI Terms after first 0 years till year
+          20
+        </h3>
+
+        <PageFooter pageNumber={4} />
+      </div>
+
+      {/* PAGE 5 - Article 2D & 2e */}
+      <div
+        className="contract-page bg-white p-12 min-h-[297mm] flex flex-col"
+        style={{ width: "210mm", fontSize: "12px", lineHeight: "1.5" }}
+      >
+        <LogoHeader pageNumber={5} />
+
+        <div className="mb-8">
+          • If the return on investment (ROI) is below 12% from year 0 to year
+          20, '
+          {contractData?.userInfo?.length > 0
+            ? contractData.userInfo.map((user) => user.name).join(" & ")
+            : "………"}
+          ' will receive 70% of the profit instead of 50%, and 'My Future Life
+          Bali' will receive 30%.
+        </div>
+
+        <h3 className="text-base font-bold mb-2">
+          Article 2e Guarantor Clause: during construction period
+        </h3>
+
+        <div className="mb-2">1. Guarantor Obligation:</div>
+        <div className="mb-4 ml-4">
+          • My Secret Home will act as a guarantor only during the construction
+          period, which shall not exceed six (6) months. The guarantor
+          obligation ends either upon the completion of the construction or when
+          the property is launched for rental in the market, whichever occurs
+          first.
+        </div>
+
+        <div className="mb-2">2. Completion Guarantee:</div>
+        <div className="mb-4 ml-4">
+          • If the construction is not completed within the six (6) month
+          period, My Secret Home will ensure the full repayment of the invested
+          amount plus an additional $ USD 500 to the "
+          {contractData?.userInfo?.length > 0
+            ? contractData.userInfo.map((user) => user.name).join(" & ")
+            : "………"}
+          ".
+        </div>
+
+        <div className="mb-2">3. Repayment Method:</div>
+        <div className="mb-4 ml-4">
+          • The repayment, including the additional $ USD 500, will be
+          facilitated by My Secret Home. The "
+          {contractData?.userInfo?.length > 0
+            ? contractData.userInfo.map((user) => user.name).join(" & ")
+            : "………"}
+          " will be entitled to 30% of the revenue generated by My Secret Home
+          until the full amount, including the additional $ USD 500, is paid.
+        </div>
+
+        <div className="mb-2">4. Transparency and Reporting:</div>
+        <div className="mb-4 ml-4">
+          • From the start date of this clause, the "
+          {contractData?.userInfo?.length > 0
+            ? contractData.userInfo.map((user) => user.name).join(" & ")
+            : "………"}
+          " shall have the right to access and review the full income records of
+          My Secret Home to ensure transparency and accurate repayment
+          calculations.
+        </div>
+
+        <PageFooter pageNumber={5} />
+      </div>
+
+      {/* PAGE 6 - Article 2f Contingency Fund */}
+      <div
+        className="contract-page bg-white p-12 min-h-[297mm] flex flex-col"
+        style={{ width: "210mm", fontSize: "12px", lineHeight: "1.5" }}
+      >
+        <LogoHeader pageNumber={6} />
+
+        <h3 className="text-base font-bold mb-2">
+          Article 2f Contingency Fund /Replenishment of Fund:
+        </h3>
+
+        <div className="mb-2 font-medium">
+          Establishment of Contingency Fund:
+        </div>
+        <div className="mb-4">
+          1. A contingency fund (the "Fund") shall be established to cover
+          unforeseen future expenses or emergencies.
+        </div>
+
+        <div className="mb-2 font-medium">Fund Amount:</div>
+        <div className="mb-4">
+          2. The target amount for the Fund is set at two thousand USD (USD
+          2000).
+        </div>
+
+        <div className="mb-2 font-medium">Monthly Contributions:</div>
+        <div className="mb-4">
+          3. The contingency fund shall be built up over time with monthly
+          contributions from '
+          {contractData?.userInfo?.length > 0
+            ? contractData.userInfo.map((user) => user.name).join(" & ")
+            : "………"}
+          's profit. Each month, an average of seventy USD (70) shall be set
+          aside from '
+          {contractData?.userInfo?.length > 0
+            ? contractData.userInfo.map((user) => user.name).join(" & ")
+            : "………"}
+          's profit until the fund reaches the target amount of average of USD
+          2000, till we reach 35 million Indonesian Rupiah (IDR 35,000,000). And
+          will increase by 10% every year
+        </div>
+
+        <div className="mb-2 font-medium">Utilization of Fund:</div>
+        <div className="mb-4">
+          4. In the event of any contingency or unforeseen expense, the cost
+          shall be covered equally from the profits of both '
+          {contractData?.userInfo?.length > 0
+            ? contractData.userInfo.map((user) => user.name).join(" & ")
+            : "………"}
+          ' and 'My Future Life Bali'. The necessary amount will be withdrawn
+          from the contingency fund to cover these expenses.
+        </div>
+
+        <div className="mb-4">
+          5. If the profit-sharing arrangement is 60/40 with '
+          {contractData?.userInfo?.length > 0
+            ? contractData.userInfo.map((user) => user.name).join(" & ")
+            : "………"}
+          ' receiving 60%, then '
+          {contractData?.userInfo?.length > 0
+            ? contractData.userInfo.map((user) => user.name).join(" & ")
+            : "………"}
+          ' will pay 60% of the unforeseen expenses from the contingency fund.
+        </div>
+
+        <PageFooter pageNumber={6} />
+      </div>
+
+      {/* PAGE 7 - Article 2g On-Plan Purchase & Article 3 Force Majeure */}
+      <div
+        className="contract-page bg-white p-12 min-h-[297mm] flex flex-col"
+        style={{ width: "210mm", fontSize: "12px", lineHeight: "1.5" }}
+      >
+        <LogoHeader pageNumber={7} />
+
+        <h3 className="text-base font-bold mb-2">
+          Article 2g : On-Plan Purchase Clause
+        </h3>
+
+        <div className="mb-2">1. Reservation and Initial Payment</div>
+        <div className="mb-4 ml-4">
+          ○ A non-refundable deposit of $8,000 USD is required upfront to
+          reserve an On-plan villa.
+        </div>
+
+        <div className="mb-2">2. Construction and Buyer's Option</div>
+        <div className="mb-4 ml-4">
+          <div>○ The villa will be constructed,,,</div>
+          <div>
+            ○ design and specifications will in full control of 'My Future Life
+            Bali, 'and My Future Life Bali will decide on the design and
+            specifications
+          </div>
+          <div>
+            ○ Upon completion, the buyer has the option to proceed with the
+            purchase or withdraw from the agreement.
+          </div>
+        </div>
+
+        <div className="mb-2">3. Withdrawal and Price Adjustment</div>
+        <div className="mb-4 ml-4">
+          <div>
+            ○ If the buyer decides not to proceed with the purchase after
+            construction, the initial $8,000 USD deposit is forfeited.
+          </div>
+          <div>
+            ○ Additionally, if the buyer chooses to proceed with the purchase,
+            the total price of the villa will increase by $4,000 USD.
+          </div>
+        </div>
+
+        <div className="mb-2">4. Activation of Clause</div>
+        <div className="mb-4 ml-4">
+          ○ This clause is only valid on the day of sign-up and cannot be
+          applied retroactively or modified thereafter.
+        </div>
+
+        <div className="mb-2">Want On-Plan Purchase yes or no: ( no )</div>
+        <div className="mb-6">
+          If "My Future Life Bali" has not or will not mentioned above it is
+          automatically no
         </div>
 
         <h3 className="text-base font-bold mb-2">
@@ -415,7 +821,7 @@ const ContractPDFGenerator = forwardRef(({ contractData }, ref) => {
             original Price
           </div>
           <div>
-            Wish pool ( yes or no):{" "}
+            Wish pool (yes or no):{" "}
             {contractData?.selectedAddOns?.some((addon) =>
               addon.room?.toLowerCase().includes("pool")
             )
@@ -546,7 +952,7 @@ const ContractPDFGenerator = forwardRef(({ contractData }, ref) => {
         <PageFooter pageNumber={11} />
       </div>
 
-      {/* PAGE 12 - ATTACHMENT C INHERITANCE (ALL CONTACTS) & D EMERGENCY (ALL CONTACTS) */}
+      {/* PAGE 12 - ATTACHMENT C INHERITANCE WITH INLINE PASSPORT IMAGES */}
       <div
         className="contract-page bg-white p-12 min-h-[297mm] flex flex-col"
         style={{ width: "210mm", fontSize: "12px", lineHeight: "1.5" }}
@@ -563,7 +969,7 @@ const ContractPDFGenerator = forwardRef(({ contractData }, ref) => {
           ? contractData.inheritanceContacts.map((contact, index) => (
               <div
                 key={index}
-                className="mb-6 p-3 border border-red-200 rounded"
+                className="mb-8 p-4 border-2 border-red-200 rounded"
               >
                 <div className="text-red-600 font-medium mb-2">
                   {index + 1}) Name: {contact.name}
@@ -572,12 +978,39 @@ const ContractPDFGenerator = forwardRef(({ contractData }, ref) => {
                 <div className="mb-2">
                   Passport ID: {contact.passportId || "Not provided"}
                 </div>
-                <div className="mb-2">
+                <div className="mb-4">
                   Percentage: {contact.percentage || "Not specified"}%
                 </div>
+
+                {/* PASSPORT IMAGE INLINE */}
                 {contact.passportImage && (
-                  <div className="text-sm text-red-600">
-                    ✓ Passport image attached
+                  <div className="mt-4">
+                    <div className="font-medium text-red-600 mb-2">
+                      Passport Image:
+                    </div>
+                    <div className="flex justify-center">
+                      {contact.passportImage.startsWith(
+                        "data:application/pdf"
+                      ) ? (
+                        <div className="w-64 h-40 bg-gray-100 flex items-center justify-center border-2 border-red-300 rounded">
+                          <div className="text-center">
+                            <div className="text-2xl mb-2">📄</div>
+                            <span className="text-gray-600 text-sm">
+                              PDF Document
+                            </span>
+                            <div className="text-xs text-gray-500 mt-1">
+                              Passport - {contact.name}
+                            </div>
+                          </div>
+                        </div>
+                      ) : (
+                        <img
+                          src={contact.passportImage}
+                          alt={`Passport - ${contact.name}`}
+                          className="max-w-64 max-h-40 object-contain border-2 border-red-300 rounded shadow-lg"
+                        />
+                      )}
+                    </div>
                   </div>
                 )}
               </div>
@@ -596,8 +1029,21 @@ const ContractPDFGenerator = forwardRef(({ contractData }, ref) => {
                 <div className="mb-2">
                   Percentage: ______________________________
                 </div>
+                <div className="mb-2">
+                  Passport Image: ______________________________
+                </div>
               </div>
             ))}
+
+        <PageFooter pageNumber={12} />
+      </div>
+
+      {/* PAGE 13 - ATTACHMENT D EMERGENCY CONTACTS */}
+      <div
+        className="contract-page bg-white p-12 min-h-[297mm] flex flex-col"
+        style={{ width: "210mm", fontSize: "12px", lineHeight: "1.5" }}
+      >
+        <LogoHeader pageNumber={13} />
 
         <h3 className="text-base font-bold mb-4 text-red-600">
           ATTACHMENT D NO CONTACT EMERGENCY (
@@ -611,7 +1057,7 @@ const ContractPDFGenerator = forwardRef(({ contractData }, ref) => {
           ? contractData.emergencyContacts.map((contact, index) => (
               <div
                 key={index}
-                className="mb-4 p-3 border border-red-200 rounded"
+                className="mb-6 p-3 border border-red-200 rounded"
               >
                 <div className="text-red-600 font-medium">
                   {index + 1}) Name: {contact.name}
@@ -642,7 +1088,7 @@ const ContractPDFGenerator = forwardRef(({ contractData }, ref) => {
               </div>
             ))}
 
-        <PageFooter pageNumber={12} />
+        <PageFooter pageNumber={13} />
       </div>
 
       {/* DYNAMIC PAGES FOR PASSPORT IMAGES - ALL USERS */}
@@ -653,7 +1099,7 @@ const ContractPDFGenerator = forwardRef(({ contractData }, ref) => {
             className="contract-page bg-white p-12 min-h-[297mm] flex flex-col"
             style={{ width: "210mm", fontSize: "12px", lineHeight: "1.5" }}
           >
-            <LogoHeader pageNumber={13 + userIndex * 2} />
+            <LogoHeader pageNumber={14 + userIndex * 2} />
 
             <h3 className="text-base font-bold mb-6 text-center">
               IDENTIFICATION DOCUMENTS - {user.name}
@@ -706,7 +1152,7 @@ const ContractPDFGenerator = forwardRef(({ contractData }, ref) => {
               )}
             </div>
 
-            <PageFooter pageNumber={13 + userIndex * 2} />
+            <PageFooter pageNumber={14 + userIndex * 2} />
           </div>
 
           {/* PASSPORT/ID BACK IMAGE */}
@@ -714,7 +1160,7 @@ const ContractPDFGenerator = forwardRef(({ contractData }, ref) => {
             className="contract-page bg-white p-12 min-h-[297mm] flex flex-col"
             style={{ width: "210mm", fontSize: "12px", lineHeight: "1.5" }}
           >
-            <LogoHeader pageNumber={14 + userIndex * 2} />
+            <LogoHeader pageNumber={15 + userIndex * 2} />
 
             <h3 className="text-base font-bold mb-6 text-center">
               IDENTIFICATION DOCUMENTS - {user.name}
@@ -767,74 +1213,10 @@ const ContractPDFGenerator = forwardRef(({ contractData }, ref) => {
               )}
             </div>
 
-            <PageFooter pageNumber={14 + userIndex * 2} />
+            <PageFooter pageNumber={15 + userIndex * 2} />
           </div>
         </React.Fragment>
       ))}
-
-      {/* DYNAMIC PAGES FOR INHERITANCE PASSPORT IMAGES */}
-      {contractData?.inheritanceContacts?.map(
-        (contact, contactIndex) =>
-          contact.passportImage && (
-            <div
-              key={`inheritance-${contactIndex}`}
-              className="contract-page bg-white p-12 min-h-[297mm] flex flex-col"
-              style={{ width: "210mm", fontSize: "12px", lineHeight: "1.5" }}
-            >
-              <LogoHeader
-                pageNumber={
-                  15 + (contractData?.userInfo?.length || 0) * 2 + contactIndex
-                }
-              />
-
-              <h3 className="text-base font-bold mb-6 text-center text-red-600">
-                INHERITANCE CONTACT PASSPORT
-              </h3>
-              <h4 className="text-base font-semibold mb-8 text-center">
-                {contact.name} - Passport/ID Document
-              </h4>
-
-              <div className="flex-1 flex items-center justify-center">
-                <div className="w-full max-w-md">
-                  {contact.passportImage.startsWith("data:application/pdf") ? (
-                    <div className="h-80 bg-gray-100 flex items-center justify-center border-2 border-red-300 rounded">
-                      <div className="text-center">
-                        <div className="text-4xl mb-4">📄</div>
-                        <span className="text-gray-600 text-lg">
-                          PDF Document
-                        </span>
-                        <div className="text-sm text-gray-500 mt-2">
-                          Inheritance Contact Passport - {contact.name}
-                        </div>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="text-center">
-                      <img
-                        src={contact.passportImage}
-                        alt={`Passport - ${contact.name}`}
-                        className="max-w-full max-h-80 mx-auto object-contain border-2 border-red-300 rounded shadow-lg"
-                      />
-                      <div className="text-sm text-red-600 mt-4">
-                        Inheritance Contact Passport - {contact.name}
-                      </div>
-                      <div className="text-xs text-gray-500 mt-2">
-                        Share: {contact.percentage}% | Phone:{" "}
-                        {contact.phoneNumber}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              <PageFooter
-                pageNumber={
-                  15 + (contractData?.userInfo?.length || 0) * 2 + contactIndex
-                }
-              />
-            </div>
-          )
-      )}
 
       {/* DYNAMIC PAGES FOR EMERGENCY CONTACT ID IMAGES */}
       {contractData?.emergencyContacts?.map(
@@ -847,12 +1229,7 @@ const ContractPDFGenerator = forwardRef(({ contractData }, ref) => {
             >
               <LogoHeader
                 pageNumber={
-                  16 +
-                  (contractData?.userInfo?.length || 0) * 2 +
-                  (contractData?.inheritanceContacts?.filter(
-                    (c) => c.passportImage
-                  ).length || 0) +
-                  contactIndex
+                  16 + (contractData?.userInfo?.length || 0) * 2 + contactIndex
                 }
               />
 
@@ -899,12 +1276,7 @@ const ContractPDFGenerator = forwardRef(({ contractData }, ref) => {
 
               <PageFooter
                 pageNumber={
-                  16 +
-                  (contractData?.userInfo?.length || 0) * 2 +
-                  (contractData?.inheritanceContacts?.filter(
-                    (c) => c.passportImage
-                  ).length || 0) +
-                  contactIndex
+                  16 + (contractData?.userInfo?.length || 0) * 2 + contactIndex
                 }
               />
             </div>
@@ -920,8 +1292,6 @@ const ContractPDFGenerator = forwardRef(({ contractData }, ref) => {
           pageNumber={
             17 +
             (contractData?.userInfo?.length || 0) * 2 +
-            (contractData?.inheritanceContacts?.filter((c) => c.passportImage)
-              .length || 0) +
             (contractData?.emergencyContacts?.filter((c) => c.idImage).length ||
               0)
           }
@@ -976,8 +1346,6 @@ const ContractPDFGenerator = forwardRef(({ contractData }, ref) => {
           pageNumber={
             17 +
             (contractData?.userInfo?.length || 0) * 2 +
-            (contractData?.inheritanceContacts?.filter((c) => c.passportImage)
-              .length || 0) +
             (contractData?.emergencyContacts?.filter((c) => c.idImage).length ||
               0)
           }
