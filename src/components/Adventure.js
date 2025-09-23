@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import homeImage from "../assets/images/home1.png";
 import mainImage from "../assets/images/sunset2.png";
+import heroVideo from "../assets/images/futurelife.mp4";
 import { FaArrowLeft, FaArrowRight, FaCheckCircle } from "react-icons/fa";
 
 const Adventure = () => {
@@ -122,56 +123,21 @@ const Adventure = () => {
 
   const handleImageClick = (id) => setSelectedPackage(id);
 
-  const getVideoStyle = () => {
-    if (isMobile) {
-      return {
-        border: 0,
-        pointerEvents: "none",
-        width: "100%",
-        height: "100%",
-        objectFit: "cover",
-      };
-    } else if (isTablet) {
-      return {
-        border: 0,
-        pointerEvents: "none",
-        width: "100%",
-        height: "100%",
-        minHeight: "100vh",
-        objectFit: "cover",
-      };
-    } else {
-      return {
-        border: 0,
-        pointerEvents: "none",
-        width: "100vw",
-        height: "100vh",
-        minWidth: "177.78vh",
-        objectFit: "cover",
-      };
-    }
-  };
-
-  const getVideoSrc = () => {
-    if (isMobile) {
-      return "https://player.vimeo.com/video/1119051178?autoplay=1&muted=1&loop=1&controls=0&background=1&title=0&byline=0&portrait=0";
-    } else {
-      return "https://player.vimeo.com/video/1119007916?autoplay=1&muted=1&loop=1&controls=0&background=1&title=0&byline=0&portrait=0";
-    }
-  };
-
   return (
     <div className="font-sans text-gray-800">
-      {/* Hero Section - Responsive Video */}
+      {/* Hero Section - Local Video */}
       <div className="relative h-screen flex justify-center items-center text-white text-center overflow-hidden">
-        {/* Single Responsive Video */}
-        <iframe
-          className="absolute top-0 left-0 w-full h-full"
-          src={getVideoSrc()}
-          style={getVideoStyle()}
-          allow="autoplay; fullscreen"
-          title="Future Bali Background Video"
-        />
+        {/* Local Video Background */}
+        <video
+          className="absolute top-0 left-0 w-full h-full object-cover"
+          autoPlay
+          muted
+          loop
+          playsInline
+        >
+          <source src={heroVideo} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
 
         {/* Dark overlay */}
         <div className="absolute inset-0 bg-black bg-opacity-20"></div>
