@@ -144,8 +144,8 @@ const ContractPDFGenerator = forwardRef(({ contractData }, ref) => {
           <div>Villa price: $ {contractData?.totalAmount || 32000}</div>
           <div>
             Initial payment 90% of Villa price ${" "}
-            {Math.round((contractData?.totalAmount || 32000) * 0.9)} pay now and
-            the rest 10% 2 weeks after completion
+            {Math.round((contractData?.totalAmount || 32000) * 0.9)} needs to be
+            paid or within 2 weeks now and the rest 10% 2 weeks after completion
           </div>
         </div>
 
@@ -742,7 +742,7 @@ const ContractPDFGenerator = forwardRef(({ contractData }, ref) => {
           Article 6: USD Vs Indonesian Rupiah
         </h3>
         <div className="mb-6">
-          The USD is mentioned as an example value and currency. Payments will
+          The USD mentioned is the price for the product /package. Payments will
           be made in Rupiah, and all calculations, including ROI on investment,
           will be based on Rupiah relative to the amount received by My Future
           Life Bali.
