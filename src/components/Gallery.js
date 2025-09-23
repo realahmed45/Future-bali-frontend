@@ -6,30 +6,53 @@ const Gallery = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  // Remove indexes 47, 33, 26, 20 from all arrays
-  const excludedIndexes = [47, 33, 26, 20];
-
+  // Define images for each category with their folder paths
   const imagePaths = {
-    All: Array.from({ length: 48 }, (_, i) => i + 1)
-      .filter((index) => !excludedIndexes.includes(index))
-      .map((index) => {
-        if (index === 1) return 28;
-        if (index === 2) return 34;
-        return index;
-      }),
-    Bedroom: [28, 34, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16].filter(
-      (index) => !excludedIndexes.includes(index)
-    ),
-    Kitchen: [17, 18, 19, 21, 22, 23, 24, 25, 27, 28].filter(
-      (index) => !excludedIndexes.includes(index)
-    ),
-    Garden: [29, 30, 31, 32, 34, 35, 36, 37, 38, 39, 40].filter(
-      (index) => !excludedIndexes.includes(index)
-    ),
-    Pool: [41, 42, 43, 44, 45, 46, 48].filter(
-      (index) => !excludedIndexes.includes(index)
-    ),
+    // All images from all folders combined
+    All: [
+      ...Array.from({ length: 16 }, (_, i) => ({
+        folder: "bedroom",
+        index: i + 1,
+      })),
+      ...Array.from({ length: 12 }, (_, i) => ({
+        folder: "bathroom",
+        index: i + 1,
+      })),
+      ...Array.from({ length: 15 }, (_, i) => ({
+        folder: "garden",
+        index: i + 1,
+      })),
+      ...Array.from({ length: 10 }, (_, i) => ({
+        folder: "kitchen",
+        index: i + 1,
+      })),
+      ...Array.from({ length: 8 }, (_, i) => ({
+        folder: "pool",
+        index: i + 1,
+      })),
+    ],
+    Bedroom: Array.from({ length: 16 }, (_, i) => ({
+      folder: "bedroom",
+      index: i + 1,
+    })),
+    Bathroom: Array.from({ length: 12 }, (_, i) => ({
+      folder: "bathroom",
+      index: i + 1,
+    })),
+    Garden: Array.from({ length: 15 }, (_, i) => ({
+      folder: "garden",
+      index: i + 1,
+    })),
+    Kitchen: Array.from({ length: 10 }, (_, i) => ({
+      folder: "kitchen",
+      index: i + 1,
+    })),
+    Pool: Array.from({ length: 8 }, (_, i) => ({
+      folder: "pool",
+      index: i + 1,
+    })),
   };
+
   const handleCategoryChange = (newCategory) => {
     setIsSlidingOut(true);
     setTimeout(() => {
@@ -83,6 +106,11 @@ const Gallery = () => {
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [selectedImage, currentImageIndex]);
 
+  // Helper function to get image source path
+  const getImageSrc = (imageObj) => {
+    return require(`../assets/${imageObj.folder}/${imageObj.index}.jpeg`);
+  };
+
   return (
     <div className="p-6 bg-gradient-to-br from-purple-50 to-white min-h-screen">
       {/* Header Section */}
@@ -95,38 +123,40 @@ const Gallery = () => {
 
       {/* Category Buttons */}
       <div className="flex flex-wrap justify-center gap-3 mb-8">
-        {["All", "Bedroom", "Kitchen", "Garden", "Pool"].map((item) => (
-          <button
-            key={item}
-            onClick={() => handleCategoryChange(item)}
-            className={`py-2 px-6 text-sm font-medium transition duration-300 rounded-full shadow-lg transform hover:scale-105 ${
-              category === item
-                ? "bg-purple-600 text-white shadow-purple-300"
-                : "bg-white text-purple-600 border-2 border-purple-200 hover:bg-purple-600 hover:text-white hover:border-purple-600"
-            }`}
-          >
-            {item} ({imagePaths[item].length})
-          </button>
-        ))}
+        {["All", "Bedroom", "Bathroom", "Garden", "Kitchen", "Pool"].map(
+          (item) => (
+            <button
+              key={item}
+              onClick={() => handleCategoryChange(item)}
+              className={`py-2 px-6 text-sm font-medium transition duration-300 rounded-full shadow-lg transform hover:scale-105 ${
+                category === item
+                  ? "bg-purple-600 text-white shadow-purple-300"
+                  : "bg-white text-purple-600 border-2 border-purple-200 hover:bg-purple-600 hover:text-white hover:border-purple-600"
+              }`}
+            >
+              {item} ({imagePaths[item].length})
+            </button>
+          )
+        )}
       </div>
 
       {/* Gallery Images - 4 per row */}
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {imagePaths[category].map((image, index) => (
+          {imagePaths[category].map((imageObj, index) => (
             <div
-              key={image}
+              key={`${imageObj.folder}-${imageObj.index}`}
               className={`relative overflow-hidden rounded-lg shadow-lg transform transition-all duration-300 hover:scale-105 hover:shadow-xl cursor-pointer ${
                 isSlidingOut
                   ? "opacity-0 translate-y-4"
                   : "opacity-100 translate-y-0"
               }`}
-              onClick={() => openModal(image, index)}
+              onClick={() => openModal(imageObj, index)}
             >
               <div className="aspect-square">
                 <img
-                  src={require(`../assets/images/${image}.jpeg`)}
-                  alt={`${category} Image ${image}`}
+                  src={getImageSrc(imageObj)}
+                  alt={`${imageObj.folder} Image ${imageObj.index}`}
                   className="w-full h-full object-cover"
                   loading="lazy"
                 />
@@ -231,8 +261,8 @@ const Gallery = () => {
             onClick={(e) => e.stopPropagation()}
           >
             <img
-              src={require(`../assets/images/${selectedImage}.jpeg`)}
-              alt={`${category} Image ${selectedImage}`}
+              src={getImageSrc(selectedImage)}
+              alt={`${selectedImage.folder} Image ${selectedImage.index}`}
               className="max-w-full max-h-full w-auto h-auto object-contain rounded-lg shadow-2xl"
               style={{ maxHeight: "85vh", maxWidth: "90vw" }}
             />
