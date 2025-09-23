@@ -16,6 +16,7 @@ const Adventure = () => {
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [videoError, setVideoError] = useState(false);
   const [showPlayButton, setShowPlayButton] = useState(true);
+  const [hideBackgroundImage, setHideBackgroundImage] = useState(false);
   const videoRef = useRef(null);
 
   // Multiple video sources for better compatibility
@@ -47,6 +48,11 @@ const Adventure = () => {
   const handleVideoLoad = () => {
     setVideoLoaded(true);
     setShowPlayButton(false);
+
+    // Hide background image after 1 second when video starts playing
+    setTimeout(() => {
+      setHideBackgroundImage(true);
+    }, 1000);
   };
 
   const handleVideoError = () => {
@@ -69,14 +75,14 @@ const Adventure = () => {
     "adventure9.png",
   ];
   const galleryImages = [
-    "40.jpeg",
-    "41.jpeg",
-    "45.jpeg",
-    "48.jpeg",
-    "33.jpeg",
-    "21.jpeg",
-    "29.jpeg",
-    "17.jpeg",
+    "1.png",
+    "2.jpeg",
+    "3.png",
+    "5.jpeg",
+    "6.jpeg",
+    "10.jpeg",
+    "11.png",
+    "12.jpeg",
   ];
   const blogImages = [
     "blog1.jpeg",
@@ -109,7 +115,7 @@ const Adventure = () => {
   const packageDetails = {
     1: {
       title: " Fully furnisded Single Bedroom Villa",
-      image: "1.jpeg",
+      image: "1.png",
       description: [
         "Modern design",
         "Land: 155m²",
@@ -119,7 +125,7 @@ const Adventure = () => {
     },
     2: {
       title: "Fully Furnished Bedroom Villa With Pool",
-      image: "3.jpeg",
+      image: "two.png",
       description: [
         "Luxury pool",
         "Built-up: 65m²",
@@ -129,7 +135,7 @@ const Adventure = () => {
     },
     3: {
       title: "Fully furnished Two Bedroom Villa",
-      image: "2.jpeg",
+      image: "4.jpeg",
       description: [
         "Perfect for families",
         "Built-up: 80m² min",
@@ -163,13 +169,15 @@ const Adventure = () => {
     <div className="font-sans text-gray-800">
       {/* Hero Section - Fixed Video Implementation */}
       <div className="relative h-screen flex justify-center items-center text-white text-center overflow-hidden">
-        {/* Background Image (always shown, video will cover it) */}
-        <div
-          className="absolute top-0 left-0 w-full h-full bg-cover bg-center"
-          style={{
-            backgroundImage: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url(${mainImage})`,
-          }}
-        />
+        {/* Background Image (conditionally shown) */}
+        {!hideBackgroundImage && (
+          <div
+            className="absolute top-0 left-0 w-full h-full bg-cover bg-center transition-opacity duration-500"
+            style={{
+              backgroundImage: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url(${mainImage})`,
+            }}
+          />
+        )}
 
         {/* Vimeo Video (covers background when loaded) */}
         <iframe

@@ -6,51 +6,82 @@ const Gallery = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  // Define images for each category with their folder paths
-  const imagePaths = {
-    // All images from all folders combined
-    All: [
-      ...Array.from({ length: 16 }, (_, i) => ({
-        folder: "bedroom",
-        index: i + 1,
-      })),
-      ...Array.from({ length: 12 }, (_, i) => ({
-        folder: "bathroom",
-        index: i + 1,
-      })),
-      ...Array.from({ length: 15 }, (_, i) => ({
-        folder: "garden",
-        index: i + 1,
-      })),
-      ...Array.from({ length: 10 }, (_, i) => ({
-        folder: "kitchen",
-        index: i + 1,
-      })),
-      ...Array.from({ length: 8 }, (_, i) => ({
-        folder: "pool",
-        index: i + 1,
-      })),
+  // Define exact image files for each category based on your folder structure
+  const imageFiles = {
+    Bathroom: [
+      "Bathroom 1.png",
+      "Bathroom 2.jpg",
+      "Bathroom 3.jpg",
+      "Bathroom 4.jpeg",
+      "Bathroom 5.png",
+      "Bathroom 6.jpeg",
+      "Bathroom 7.png",
+      "Bathroom 8.jpg",
+      "Bathroom 9.png",
+      "Bathroom 10.png",
     ],
-    Bedroom: Array.from({ length: 16 }, (_, i) => ({
-      folder: "bedroom",
-      index: i + 1,
+    Bedroom: [
+      "1.png",
+      "2.jpeg",
+      "3.png",
+      "4.jpeg",
+      "5.jpeg",
+      "6.jpeg",
+      "7.png",
+      "8.png",
+      "9.jpeg",
+      "10.jpeg",
+      "11.jpg",
+    ],
+    Garden: [
+      "1.png",
+      "2.jpeg",
+      "3.jpeg",
+      "4.jpeg",
+      "5.jpeg",
+      "6.jpeg",
+      "7.png",
+      "8.png",
+    ],
+    Kitchen: ["1.png", "2.jpeg", "3.png", "4.png"],
+    Pool: ["1.png", "2.png", "3.jpeg", "4.jpeg", "5.jpeg", "6.jpeg", "7.png"],
+  };
+
+  // Create image paths with folder structure (using exact folder names)
+  const imagePaths = {
+    All: [
+      ...imageFiles.Bedroom.map((filename) => ({
+        folder: "Bedroom",
+        filename,
+      })),
+      ...imageFiles.Bathroom.map((filename) => ({
+        folder: "Bathroom",
+        filename,
+      })),
+      ...imageFiles.Garden.map((filename) => ({ folder: "Garden", filename })),
+      ...imageFiles.Kitchen.map((filename) => ({
+        folder: "Kitchen",
+        filename,
+      })),
+      ...imageFiles.Pool.map((filename) => ({ folder: "Pool", filename })),
+    ],
+    Bedroom: imageFiles.Bedroom.map((filename) => ({
+      folder: "Bedroom",
+      filename,
     })),
-    Bathroom: Array.from({ length: 12 }, (_, i) => ({
-      folder: "bathroom",
-      index: i + 1,
+    Bathroom: imageFiles.Bathroom.map((filename) => ({
+      folder: "Bathroom",
+      filename,
     })),
-    Garden: Array.from({ length: 15 }, (_, i) => ({
-      folder: "garden",
-      index: i + 1,
+    Garden: imageFiles.Garden.map((filename) => ({
+      folder: "Garden",
+      filename,
     })),
-    Kitchen: Array.from({ length: 10 }, (_, i) => ({
-      folder: "kitchen",
-      index: i + 1,
+    Kitchen: imageFiles.Kitchen.map((filename) => ({
+      folder: "Kitchen",
+      filename,
     })),
-    Pool: Array.from({ length: 8 }, (_, i) => ({
-      folder: "pool",
-      index: i + 1,
-    })),
+    Pool: imageFiles.Pool.map((filename) => ({ folder: "Pool", filename })),
   };
 
   const handleCategoryChange = (newCategory) => {
@@ -108,7 +139,14 @@ const Gallery = () => {
 
   // Helper function to get image source path
   const getImageSrc = (imageObj) => {
-    return require(`../assets/${imageObj.folder}/${imageObj.index}.jpeg`);
+    try {
+      return require(`../assets/${imageObj.folder}/${imageObj.filename}`);
+    } catch (error) {
+      console.warn(
+        `Image not found: assets/${imageObj.folder}/${imageObj.filename}`
+      );
+      return null;
+    }
   };
 
   return (
@@ -145,7 +183,7 @@ const Gallery = () => {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {imagePaths[category].map((imageObj, index) => (
             <div
-              key={`${imageObj.folder}-${imageObj.index}`}
+              key={`${imageObj.folder}-${imageObj.filename}`}
               className={`relative overflow-hidden rounded-lg shadow-lg transform transition-all duration-300 hover:scale-105 hover:shadow-xl cursor-pointer ${
                 isSlidingOut
                   ? "opacity-0 translate-y-4"
@@ -156,7 +194,7 @@ const Gallery = () => {
               <div className="aspect-square">
                 <img
                   src={getImageSrc(imageObj)}
-                  alt={`${imageObj.folder} Image ${imageObj.index}`}
+                  alt={`${imageObj.folder} - ${imageObj.filename}`}
                   className="w-full h-full object-cover"
                   loading="lazy"
                 />
@@ -262,7 +300,7 @@ const Gallery = () => {
           >
             <img
               src={getImageSrc(selectedImage)}
-              alt={`${selectedImage.folder} Image ${selectedImage.index}`}
+              alt={`${selectedImage.folder} - ${selectedImage.filename}`}
               className="max-w-full max-h-full w-auto h-auto object-contain rounded-lg shadow-2xl"
               style={{ maxHeight: "85vh", maxWidth: "90vw" }}
             />
