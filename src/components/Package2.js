@@ -83,7 +83,7 @@ const Package2 = () => {
       const packageData = {
         selectedAddOns,
         basePackage: {
-          title: "Furnished 2 bedroom house",
+          title: "Furnished 1 bedroom house with pool",
           price: 37000,
           duration: "4-6 months",
           details: [
@@ -158,7 +158,7 @@ const Package2 = () => {
               Package 2
             </h1>
             <h2 className="text-lg sm:text-xl lg:text-2xl font-bold tracking-wide">
-              Furnished 1 bedroom house
+              Furnished 1 bedroom house with pool
             </h2>
           </div>
         </header>
@@ -268,7 +268,7 @@ const Package2 = () => {
                   Package
                 </p>
                 <p className="font-bold text-lg lg:text-xl text-purple-800 leading-tight">
-                  Furnished 1 bedroom house
+                  Furnished 1 bedroom house with pool
                 </p>
               </div>
               <div className="mb-6">
