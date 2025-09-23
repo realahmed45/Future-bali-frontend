@@ -2,7 +2,12 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import homeImage from "../assets/images/home1.png";
 import mainImage from "../assets/images/sunset2.png";
-import { FaArrowLeft, FaArrowRight, FaCheckCircle } from "react-icons/fa";
+import {
+  FaArrowLeft,
+  FaArrowRight,
+  FaCheckCircle,
+  FaPlay,
+} from "react-icons/fa";
 
 const Adventure = () => {
   const navigate = useNavigate();
@@ -10,11 +15,16 @@ const Adventure = () => {
   const [isTablet, setIsTablet] = useState(false);
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [videoError, setVideoError] = useState(false);
+  const [showPlayButton, setShowPlayButton] = useState(true);
   const videoRef = useRef(null);
 
-  // Direct download link from Google Drive
-  const heroVideo =
-    "https://drive.google.com/uc?export=download&id=1w4ADBvQ-lq-UZg7GJvswi1bov1Ynvipd";
+  // Multiple video sources for better compatibility
+  const videoSources = [
+    // Option 1: Try original Vimeo link (most reliable)
+    "https://player.vimeo.com/video/1119007916?autoplay=1&muted=1&loop=1&controls=0&background=1&title=0&byline=0&portrait=0",
+    // Option 2: Alternative Vimeo for mobile
+    "https://player.vimeo.com/video/1119051178?autoplay=1&muted=1&loop=1&controls=0&background=1&title=0&byline=0&portrait=0",
+  ];
 
   useEffect(() => {
     const handleResize = () => {
@@ -27,19 +37,54 @@ const Adventure = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Preload video for faster loading
-  useEffect(() => {
+  const handlePlayClick = () => {
+    setShowPlayButton(false);
     if (videoRef.current) {
-      videoRef.current.load();
+      videoRef.current.play().catch(console.error);
     }
-  }, []);
+  };
 
   const handleVideoLoad = () => {
     setVideoLoaded(true);
+    setShowPlayButton(false);
   };
 
   const handleVideoError = () => {
     setVideoError(true);
+  };
+
+  const getVideoStyle = () => {
+    if (isMobile) {
+      return {
+        border: 0,
+        pointerEvents: "none",
+        width: "100%",
+        height: "100%",
+        objectFit: "cover",
+      };
+    } else if (isTablet) {
+      return {
+        border: 0,
+        pointerEvents: "none",
+        width: "100%",
+        height: "100%",
+        minHeight: "100vh",
+        objectFit: "cover",
+      };
+    } else {
+      return {
+        border: 0,
+        pointerEvents: "none",
+        width: "100vw",
+        height: "100vh",
+        minWidth: "177.78vh",
+        objectFit: "cover",
+      };
+    }
+  };
+
+  const getVideoSrc = () => {
+    return isMobile ? videoSources[1] : videoSources[0];
   };
 
   const storyImages = [
@@ -146,43 +191,35 @@ const Adventure = () => {
 
   return (
     <div className="font-sans text-gray-800">
-      {/* Hero Section - Optimized Video Loading */}
+      {/* Hero Section - Fixed Video Implementation */}
       <div className="relative h-screen flex justify-center items-center text-white text-center overflow-hidden">
-        {/* Fallback Background Image (shows while video loads) */}
-        {(!videoLoaded || videoError) && (
-          <div
-            className="absolute top-0 left-0 w-full h-full bg-cover bg-center"
-            style={{
-              backgroundImage: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url(${mainImage})`,
-            }}
-          />
-        )}
+        {/* Background Image (fallback) */}
+        <div
+          className="absolute top-0 left-0 w-full h-full bg-cover bg-center"
+          style={{
+            backgroundImage: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url(${mainImage})`,
+          }}
+        />
 
-        {/* Optimized Video Background */}
-        {!videoError && (
-          <video
-            ref={videoRef}
-            className={`absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-1000 ${
-              videoLoaded ? "opacity-100" : "opacity-0"
-            }`}
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="metadata"
-            onLoadedData={handleVideoLoad}
-            onError={handleVideoError}
+        {/* Vimeo Video (most reliable for autoplay) */}
+        <iframe
+          className="absolute top-0 left-0 w-full h-full"
+          src={getVideoSrc()}
+          style={getVideoStyle()}
+          allow="autoplay; fullscreen"
+          title="Future Bali Background Video"
+          onLoad={handleVideoLoad}
+          onError={handleVideoError}
+        />
+
+        {/* Manual Play Button (if needed) */}
+        {showPlayButton && (
+          <button
+            onClick={handlePlayClick}
+            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-30 bg-black bg-opacity-50 text-white rounded-full p-4 hover:bg-opacity-70 transition-all"
           >
-            <source src={heroVideo} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-        )}
-
-        {/* Loading indicator */}
-        {!videoLoaded && !videoError && (
-          <div className="absolute top-4 right-4 z-20">
-            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
-          </div>
+            <FaPlay className="w-8 h-8" />
+          </button>
         )}
 
         {/* Dark overlay */}
@@ -211,7 +248,8 @@ const Adventure = () => {
         </div>
       </div>
 
-      {/* Packages Section - Enhanced Mobile Responsiveness */}
+      {/* Rest of your sections remain the same */}
+      {/* Packages Section */}
       <section className={`py-6 sm:py-8 px-3 sm:px-4 bg-gray-50`}>
         <h2
           className={`text-center text-gray-500 uppercase mb-2 ${
@@ -236,7 +274,6 @@ const Adventure = () => {
           make your dream come true.
         </p>
 
-        {/* Package Tabs - Mobile Responsive */}
         <div className="flex justify-center gap-1 sm:gap-2 mb-4 sm:mb-6 flex-wrap px-2">
           {Object.keys(packageDetails).map((key) => (
             <button
@@ -255,7 +292,6 @@ const Adventure = () => {
           ))}
         </div>
 
-        {/* Package Content - Mobile Responsive Grid */}
         <div className="container mx-auto max-w-screen-md">
           <div
             className={`grid gap-3 sm:gap-4 ${
@@ -312,7 +348,7 @@ const Adventure = () => {
         </div>
       </section>
 
-      {/* Our Story Section - Mobile Responsive */}
+      {/* Our Story Section */}
       <div className={`bg-white ${isMobile ? "py-8" : "py-16"}`}>
         <div
           className={`mx-auto px-4 sm:px-6 ${
@@ -404,7 +440,6 @@ const Adventure = () => {
           </div>
         </div>
 
-        {/* Main Image Section - Mobile Responsive */}
         <div className={`bg-white ${isMobile ? "py-8" : "py-12"}`}>
           <div
             className={`mx-auto px-4 sm:px-6 ${
@@ -422,7 +457,7 @@ const Adventure = () => {
         </div>
       </div>
 
-      {/* Gallery Section - Mobile Responsive */}
+      {/* Gallery Section */}
       <div
         className={`bg-gray-50 text-center px-3 sm:px-4 ${
           isMobile ? "py-8" : "py-16"
@@ -488,7 +523,7 @@ const Adventure = () => {
         </div>
       </div>
 
-      {/* Blogs Section - Mobile Responsive */}
+      {/* Blogs Section */}
       <div
         className={`bg-gray-100 text-center px-3 sm:px-4 ${
           isMobile ? "py-8" : "py-16"
