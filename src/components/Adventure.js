@@ -1,14 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import homeImage from "../assets/images/home1.png";
 import mainImage from "../assets/images/sunset2.png";
-import heroVideo from "../assets/images/futurelife.mp4";
 import { FaArrowLeft, FaArrowRight, FaCheckCircle } from "react-icons/fa";
 
 const Adventure = () => {
   const navigate = useNavigate();
   const [isMobile, setIsMobile] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
+  const [videoLoaded, setVideoLoaded] = useState(false);
+  const [videoError, setVideoError] = useState(false);
+  const videoRef = useRef(null);
+
+  // Direct download link from Google Drive
+  const heroVideo =
+    "https://drive.google.com/uc?export=download&id=1w4ADBvQ-lq-UZg7GJvswi1bov1Ynvipd";
 
   useEffect(() => {
     const handleResize = () => {
@@ -20,6 +26,21 @@ const Adventure = () => {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  // Preload video for faster loading
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.load();
+    }
+  }, []);
+
+  const handleVideoLoad = () => {
+    setVideoLoaded(true);
+  };
+
+  const handleVideoError = () => {
+    setVideoError(true);
+  };
 
   const storyImages = [
     "adventure1.png",
@@ -125,19 +146,44 @@ const Adventure = () => {
 
   return (
     <div className="font-sans text-gray-800">
-      {/* Hero Section - Local Video */}
+      {/* Hero Section - Optimized Video Loading */}
       <div className="relative h-screen flex justify-center items-center text-white text-center overflow-hidden">
-        {/* Local Video Background */}
-        <video
-          className="absolute top-0 left-0 w-full h-full object-cover"
-          autoPlay
-          muted
-          loop
-          playsInline
-        >
-          <source src={heroVideo} type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
+        {/* Fallback Background Image (shows while video loads) */}
+        {(!videoLoaded || videoError) && (
+          <div
+            className="absolute top-0 left-0 w-full h-full bg-cover bg-center"
+            style={{
+              backgroundImage: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url(${mainImage})`,
+            }}
+          />
+        )}
+
+        {/* Optimized Video Background */}
+        {!videoError && (
+          <video
+            ref={videoRef}
+            className={`absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-1000 ${
+              videoLoaded ? "opacity-100" : "opacity-0"
+            }`}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            onLoadedData={handleVideoLoad}
+            onError={handleVideoError}
+          >
+            <source src={heroVideo} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        )}
+
+        {/* Loading indicator */}
+        {!videoLoaded && !videoError && (
+          <div className="absolute top-4 right-4 z-20">
+            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
+          </div>
+        )}
 
         {/* Dark overlay */}
         <div className="absolute inset-0 bg-black bg-opacity-20"></div>
