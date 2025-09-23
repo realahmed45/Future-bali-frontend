@@ -39,7 +39,6 @@ const Adventure = () => {
 
   const handlePlayClick = () => {
     setShowPlayButton(false);
-    setVideoLoaded(true); // Hide background immediately on play
     if (videoRef.current) {
       videoRef.current.play().catch(console.error);
     }
@@ -48,44 +47,10 @@ const Adventure = () => {
   const handleVideoLoad = () => {
     setVideoLoaded(true);
     setShowPlayButton(false);
-    // Hide background image immediately when video loads
-    setTimeout(() => {
-      setVideoLoaded(true);
-    }, 100);
   };
 
   const handleVideoError = () => {
     setVideoError(true);
-  };
-
-  const getVideoStyle = () => {
-    if (isMobile) {
-      return {
-        border: 0,
-        pointerEvents: "none",
-        width: "100%",
-        height: "100%",
-        objectFit: "cover",
-      };
-    } else if (isTablet) {
-      return {
-        border: 0,
-        pointerEvents: "none",
-        width: "100%",
-        height: "100%",
-        minHeight: "100vh",
-        objectFit: "cover",
-      };
-    } else {
-      return {
-        border: 0,
-        pointerEvents: "none",
-        width: "100vw",
-        height: "100vh",
-        minWidth: "177.78vh",
-        objectFit: "cover",
-      };
-    }
   };
 
   const getVideoSrc = () => {
@@ -198,21 +163,26 @@ const Adventure = () => {
     <div className="font-sans text-gray-800">
       {/* Hero Section - Fixed Video Implementation */}
       <div className="relative h-screen flex justify-center items-center text-white text-center overflow-hidden">
-        {/* Background Image (only shows when video hasn't loaded) */}
-        {!videoLoaded && (
-          <div
-            className="absolute top-0 left-0 w-full h-full bg-cover bg-center transition-opacity duration-500"
-            style={{
-              backgroundImage: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url(${mainImage})`,
-            }}
-          />
-        )}
+        {/* Background Image (always shown, video will cover it) */}
+        <div
+          className="absolute top-0 left-0 w-full h-full bg-cover bg-center"
+          style={{
+            backgroundImage: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url(${mainImage})`,
+          }}
+        />
 
-        {/* Vimeo Video (most reliable for autoplay) */}
+        {/* Vimeo Video (covers background when loaded) */}
         <iframe
-          className="absolute top-0 left-0 w-full h-full"
+          className="absolute top-0 left-0 w-full h-full object-cover"
           src={getVideoSrc()}
-          style={getVideoStyle()}
+          style={{
+            border: 0,
+            width: "100%",
+            height: "100%",
+            position: "absolute",
+            top: 0,
+            left: 0,
+          }}
           allow="autoplay; fullscreen"
           title="Future Bali Background Video"
           onLoad={handleVideoLoad}
@@ -220,7 +190,7 @@ const Adventure = () => {
         />
 
         {/* Manual Play Button (if needed) */}
-        {showPlayButton && !videoLoaded && (
+        {showPlayButton && (
           <button
             onClick={handlePlayClick}
             className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-30 bg-black bg-opacity-50 text-white rounded-full p-4 hover:bg-opacity-70 transition-all"
