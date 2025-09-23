@@ -21,47 +21,11 @@ const Package3Cart = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userIdentifier, setUserIdentifier] = useState(null);
 
-  // Get minimum sizes based on package type
-  const getMinimumSizes = (packageTitle) => {
-    const title = packageTitle?.toLowerCase() || "";
-
-    if (title.includes("furnished 1 bedroom") || title.includes("package 1")) {
-      return [
-        { label: "1 Bedroom", size: "30 m²" },
-        { label: "1 Bathroom", size: "9 m²" },
-        { label: "Kitchen", size: "7 m²" },
-        { label: "Storage", size: "" },
-        { label: "Garden", size: "80 m²" },
-        { label: "Living room", size: "10 m²" },
-      ];
-    } else if (
-      title.includes("furnished 2 bedroom") ||
-      title.includes("package 2")
-    ) {
-      return [
-        { label: "1 Bedroom", size: "30 m²" },
-        { label: "1 Bathroom", size: "9 m²" },
-        { label: "Kitchen", size: "7 m²" },
-        { label: "Storage", size: "" },
-        { label: "Garden", size: "80 m²" },
-        { label: "Living room", size: "10 m²" },
-        { label: "Pool", size: "6 m²" },
-      ];
-    } else if (title.includes("swimming pool") || title.includes("package 3")) {
-      return [
-        { label: "2 Bedrooms", size: "40 m²" },
-        { label: "2 Bathrooms", size: "9 m²" },
-        { label: "Kitchen", size: "7 m²" },
-        { label: "Storage", size: "" },
-        { label: "Garden", size: "80 m²" },
-        { label: "Living room", size: "10 m²" },
-      ];
-    }
-
-    // Default fallback
+  // Get minimum sizes for Package 3 - Furnished 2 bedroom house
+  const getMinimumSizes = () => {
     return [
-      { label: "1 Bedroom", size: "30 m²" },
-      { label: "1 Bathroom", size: "9 m²" },
+      { label: "2 Bedrooms", size: "40 m²" },
+      { label: "2 Bathrooms", size: "9 m²" },
       { label: "Kitchen", size: "7 m²" },
       { label: "Storage", size: "" },
       { label: "Garden", size: "80 m²" },
@@ -69,18 +33,17 @@ const Package3Cart = () => {
     ];
   };
 
-  // Default base package data - Updated for Package 3
+  // Default base package data - Package 3
   const defaultBasePackage = {
-    title: "Swimming Pool Package",
+    title: "Furnished 2 bedroom package",
     price: 36000,
     duration: "4-6 months",
     details: [
-      { label: "Bedroom", size: "36 m²" },
-      { label: "Living room", size: "12 m²" },
-      { label: "Kitchen", size: "12 m²" },
-      { label: "Bathroom", size: "10 m²" },
-      { label: "Gardens", size: "80 m²" },
-      { label: "Swimming pool", size: "9 m²" },
+      { label: "2 Bedrooms", size: "40 m²" },
+      { label: "2 Bathrooms", size: "9 m²" },
+      { label: "Kitchen", size: "7 m²" },
+      { label: "Garden", size: "80 m²" },
+      { label: "Living room", size: "10 m²" },
     ],
   };
 
@@ -330,7 +293,7 @@ const Package3Cart = () => {
   }
 
   // Get minimum sizes for display
-  const minimumSizes = getMinimumSizes(cartData.basePackage.title);
+  const minimumSizes = getMinimumSizes();
 
   return (
     <div className="font-sans bg-gray-50 text-gray-800 max-w-3xl mx-auto p-4 rounded-lg shadow-md">
