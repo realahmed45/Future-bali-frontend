@@ -2,6 +2,9 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import homeImage from "../assets/images/home1.png";
 import mainImage from "../assets/images/sunset2.png";
+import heroVideo from "../assets/futurelife.mp4";
+import heroVideoMobile from "../assets/futurelife-mobile.mp4";
+import fallbackImage from "../assets/Future life img.png";
 import {
   FaArrowLeft,
   FaArrowRight,
@@ -15,17 +18,10 @@ const Adventure = () => {
   const [isTablet, setIsTablet] = useState(false);
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [videoError, setVideoError] = useState(false);
-  const [showPlayButton, setShowPlayButton] = useState(true);
+  const [showPlayButton, setShowPlayButton] = useState(false);
   const [hideBackgroundImage, setHideBackgroundImage] = useState(false);
+  const [videoCanPlay, setVideoCanPlay] = useState(false);
   const videoRef = useRef(null);
-
-  // Multiple video sources for better compatibility
-  const videoSources = [
-    // Option 1: Try original Vimeo link (most reliable)
-    "https://player.vimeo.com/video/1119007916?autoplay=1&muted=1&loop=1&controls=0&background=1&title=0&byline=0&portrait=0",
-    // Option 2: Alternative Vimeo for mobile
-    "https://player.vimeo.com/video/1119051178?autoplay=1&muted=1&loop=1&controls=0&background=1&title=0&byline=0&portrait=0",
-  ];
 
   useEffect(() => {
     const handleResize = () => {
@@ -41,26 +37,58 @@ const Adventure = () => {
   const handlePlayClick = () => {
     setShowPlayButton(false);
     if (videoRef.current) {
-      videoRef.current.play().catch(console.error);
+      videoRef.current.play().catch((error) => {
+        console.error("Error playing video:", error);
+        setVideoError(true);
+        setShowPlayButton(true);
+      });
     }
   };
 
-  const handleVideoLoad = () => {
+  const handleVideoCanPlay = () => {
+    setVideoCanPlay(true);
     setVideoLoaded(true);
-    setShowPlayButton(false);
 
-    // Hide background image after 1 second when video starts playing
+    // Attempt to autoplay
+    if (videoRef.current) {
+      const playPromise = videoRef.current.play();
+
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            // Autoplay started successfully
+            setShowPlayButton(false);
+            // Hide background image after video starts playing
+            setTimeout(() => {
+              setHideBackgroundImage(true);
+            }, 500);
+          })
+          .catch((error) => {
+            console.log("Autoplay prevented:", error);
+            // Show play button if autoplay is blocked
+            setShowPlayButton(true);
+          });
+      }
+    }
+  };
+
+  const handleVideoPlay = () => {
+    setShowPlayButton(false);
+    // Hide background image when video starts playing
     setTimeout(() => {
       setHideBackgroundImage(true);
-    }, 1000);
+    }, 500);
   };
 
   const handleVideoError = () => {
+    console.error("Video failed to load");
     setVideoError(true);
+    setVideoLoaded(false);
+    setShowPlayButton(false);
   };
 
   const getVideoSrc = () => {
-    return isMobile ? videoSources[1] : videoSources[0];
+    return isMobile ? heroVideoMobile : heroVideo;
   };
 
   const storyImages = [
@@ -167,38 +195,43 @@ const Adventure = () => {
 
   return (
     <div className="font-sans text-gray-800">
-      {/* Hero Section - Fixed Video Implementation */}
+      {/* Hero Section - Local Video Implementation */}
       <div className="relative h-screen flex justify-center items-center text-white text-center overflow-hidden">
-        {/* Background Image (conditionally shown) */}
-        {!hideBackgroundImage && (
+        {/* Background Image (shown when video not loaded or error) */}
+        {(!videoLoaded || videoError || !hideBackgroundImage) && (
           <div
-            className="absolute top-0 left-0 w-full h-full bg-cover bg-center transition-opacity duration-500"
+            className={`absolute top-0 left-0 w-full h-full bg-cover bg-center transition-opacity duration-1000 ${
+              hideBackgroundImage ? "opacity-0" : "opacity-100"
+            }`}
             style={{
-              backgroundImage: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url(${mainImage})`,
+              backgroundImage: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url(${fallbackImage})`,
             }}
           />
         )}
 
-        {/* Vimeo Video (covers background when loaded) */}
-        <iframe
-          className="absolute top-0 left-0 w-full h-full object-cover"
-          src={getVideoSrc()}
-          style={{
-            border: 0,
-            width: "100%",
-            height: "100%",
-            position: "absolute",
-            top: 0,
-            left: 0,
-          }}
-          allow="autoplay; fullscreen"
-          title="Future Bali Background Video"
-          onLoad={handleVideoLoad}
+        {/* Local Video */}
+        <video
+          ref={videoRef}
+          className={`absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-1000 ${
+            videoLoaded && !videoError ? "opacity-100" : "opacity-0"
+          }`}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          onCanPlay={handleVideoCanPlay}
+          onPlay={handleVideoPlay}
           onError={handleVideoError}
-        />
+          onLoadStart={() => console.log("Video load started")}
+          onLoadedData={() => console.log("Video data loaded")}
+        >
+          <source src={getVideoSrc()} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
 
-        {/* Manual Play Button (if needed) */}
-        {showPlayButton && (
+        {/* Manual Play Button (shown if autoplay is blocked) */}
+        {showPlayButton && videoCanPlay && (
           <button
             onClick={handlePlayClick}
             className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-30 bg-black bg-opacity-50 text-white rounded-full p-4 hover:bg-opacity-70 transition-all"
@@ -208,10 +241,10 @@ const Adventure = () => {
         )}
 
         {/* Dark overlay */}
-        <div className="absolute inset-0 bg-black bg-opacity-20"></div>
+        <div className="absolute inset-0 bg-black bg-opacity-20 z-10"></div>
 
         {/* Content - Responsive */}
-        <div className="relative z-10 px-4 sm:px-6 lg:px-8 mt-20 sm:mt-16 lg:mt-0">
+        <div className="relative z-20 px-4 sm:px-6 lg:px-8 mt-20 sm:mt-16 lg:mt-0">
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-center justify-center">
             <Link
               to="/packages"

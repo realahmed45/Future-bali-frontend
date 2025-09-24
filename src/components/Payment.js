@@ -651,7 +651,7 @@ const Payment = () => {
           (selectedAddOns && selectedAddOns.length > 0)) && (
           <div className="mb-6">
             <h3 className="text-lg font-semibold text-purple-600 mb-3">
-              Selected Add-ons
+              Selected Add-ons (New size)
             </h3>
             <div className="space-y-2">
               {(orderData?.selectedAddOns || selectedAddOns).map(
@@ -933,7 +933,7 @@ const Payment = () => {
           <h3 className="text-lg font-semibold mb-4">Complete Payment</h3>
           <div className="mb-6 p-4 bg-green-50 rounded-lg">
             <p className="text-green-800 text-lg font-bold mb-2">
-              Amount to Pay: ${payNowAmount}
+              Amount to Pay now OR within 2 weeks: ${payNowAmount}
             </p>
             <p className="text-green-700 text-sm">
               (90% of total investment - remaining 10% due later)
