@@ -847,7 +847,7 @@ const ContractPDFGenerator = forwardRef(({ contractData }, ref) => {
         <PageFooter pageNumber={10} />
       </div>
 
-      {/* PAGE 11 - Attachment B BILLING DETAILS & ALL USER INFO */}
+      {/* PAGE 11 - Attachment B BILLING DETAILS & USER INFO ONLY */}
       <div
         className="contract-page bg-white p-12 min-h-[297mm] flex flex-col"
         style={{ width: "210mm", fontSize: "12px", lineHeight: "1.5" }}
@@ -916,48 +916,145 @@ const ContractPDFGenerator = forwardRef(({ contractData }, ref) => {
                 </div>
               </div>
             ))}
-
-            <div className="mb-4">
-              <div className="font-bold mb-2">PACKAGE DETAILS:</div>
-              <div className="ml-4 space-y-1">
-                <div>
-                  • Selected Package:{" "}
-                  {contractData.basePackage?.title || "Standard Package"}
-                </div>
-                <div>
-                  • Package Price: $
-                  {contractData.basePackage?.price || contractData.totalAmount}
-                </div>
-                <div>• Total Investment: ${contractData.totalAmount}</div>
-              </div>
-            </div>
-
-            {contractData.selectedAddOns &&
-              contractData.selectedAddOns.length > 0 && (
-                <div className="mb-4">
-                  <div className="font-bold mb-2">SELECTED ADD-ONS:</div>
-                  <div className="ml-4 space-y-1">
-                    {contractData.selectedAddOns.map((addon, index) => (
-                      <div key={index}>
-                        • {addon.room} {addon.size ? `(${addon.size})` : ""} - $
-                        {addon.price}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
           </div>
         )}
 
         <PageFooter pageNumber={11} />
       </div>
 
-      {/* PAGE 12 - ATTACHMENT C INHERITANCE WITH INLINE PASSPORT IMAGES */}
+      {/* PAGE 12 - NEW PACKAGE DETAILS & SELECTED ADD-ONS PAGE */}
       <div
         className="contract-page bg-white p-12 min-h-[297mm] flex flex-col"
         style={{ width: "210mm", fontSize: "12px", lineHeight: "1.5" }}
       >
         <LogoHeader pageNumber={12} />
+
+        <h3 className="text-base font-bold mb-6">
+          Attachment B-2 PACKAGE DETAILS & SELECTED ADD-ONS
+        </h3>
+
+        <div className="mb-6">
+          <div className="font-bold mb-4 text-blue-600">PACKAGE DETAILS:</div>
+          <div className="ml-4 space-y-2 p-4 border-2 border-blue-200 rounded bg-blue-50">
+            <div className="font-semibold">
+              • Selected Package:{" "}
+              {contractData?.basePackage?.title || "Standard Package"}
+            </div>
+            <div>
+              • Package Price: $
+              {contractData?.basePackage?.price ||
+                contractData?.totalAmount ||
+                32000}
+            </div>
+            <div className="font-semibold text-blue-700">
+              • Total Investment: ${contractData?.totalAmount || 32000}
+            </div>
+          </div>
+        </div>
+
+        {contractData?.selectedAddOns &&
+          contractData.selectedAddOns.length > 0 && (
+            <div className="mb-6">
+              <div className="font-bold mb-4 text-green-600">
+                SELECTED ADD-ONS:
+              </div>
+              <div className="ml-4 space-y-3 p-4 border-2 border-green-200 rounded bg-green-50">
+                {contractData.selectedAddOns.map((addon, index) => (
+                  <div
+                    key={index}
+                    className="flex justify-between items-center border-b border-green-200 pb-2 last:border-b-0"
+                  >
+                    <div className="flex-1">
+                      • <span className="font-medium">{addon.room}</span>
+                      {addon.size && (
+                        <span className="text-gray-600"> ({addon.size})</span>
+                      )}
+                    </div>
+                    <div className="font-semibold text-green-700">
+                      ${addon.price}
+                    </div>
+                  </div>
+                ))}
+
+                <div className="mt-4 pt-2 border-t-2 border-green-300">
+                  <div className="flex justify-between items-center font-bold text-green-800">
+                    <span>Total Add-ons Value:</span>
+                    <span>
+                      $
+                      {contractData.selectedAddOns.reduce(
+                        (total, addon) => total + (addon.price || 0),
+                        0
+                      )}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+        {(!contractData?.selectedAddOns ||
+          contractData.selectedAddOns.length === 0) && (
+          <div className="mb-6">
+            <div className="font-bold mb-4 text-gray-600">
+              SELECTED ADD-ONS:
+            </div>
+            <div className="ml-4 p-4 border-2 border-gray-200 rounded bg-gray-50">
+              <div className="text-gray-600 text-center">
+                No additional add-ons selected
+              </div>
+            </div>
+          </div>
+        )}
+
+        <div className="mt-8 p-4 border-2 border-yellow-300 rounded bg-yellow-50">
+          <div className="font-bold text-yellow-800 mb-2">
+            INVESTMENT SUMMARY:
+          </div>
+          <div className="space-y-1">
+            <div className="flex justify-between">
+              <span>Base Package:</span>
+              <span>
+                $
+                {contractData?.basePackage?.price ||
+                  contractData?.totalAmount -
+                    (contractData?.selectedAddOns?.reduce(
+                      (total, addon) => total + (addon.price || 0),
+                      0
+                    ) || 0) ||
+                  32000}
+              </span>
+            </div>
+            {contractData?.selectedAddOns &&
+              contractData.selectedAddOns.length > 0 && (
+                <div className="flex justify-between">
+                  <span>Add-ons Total:</span>
+                  <span>
+                    $
+                    {contractData.selectedAddOns.reduce(
+                      (total, addon) => total + (addon.price || 0),
+                      0
+                    )}
+                  </span>
+                </div>
+              )}
+            <div className="border-t border-yellow-400 pt-2 mt-2">
+              <div className="flex justify-between font-bold text-yellow-900">
+                <span>TOTAL INVESTMENT:</span>
+                <span>${contractData?.totalAmount || 32000}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <PageFooter pageNumber={12} />
+      </div>
+
+      {/* PAGE 13 - ATTACHMENT C INHERITANCE WITH INLINE PASSPORT IMAGES */}
+      <div
+        className="contract-page bg-white p-12 min-h-[297mm] flex flex-col"
+        style={{ width: "210mm", fontSize: "12px", lineHeight: "1.5" }}
+      >
+        <LogoHeader pageNumber={13} />
 
         <h3 className="text-base font-bold mb-6 text-red-600">
           ATTACHMENT C INHERITANCE (
@@ -1035,15 +1132,15 @@ const ContractPDFGenerator = forwardRef(({ contractData }, ref) => {
               </div>
             ))}
 
-        <PageFooter pageNumber={12} />
+        <PageFooter pageNumber={13} />
       </div>
 
-      {/* PAGE 13 - ATTACHMENT D EMERGENCY CONTACTS */}
+      {/* PAGE 14 - ATTACHMENT D EMERGENCY CONTACTS */}
       <div
         className="contract-page bg-white p-12 min-h-[297mm] flex flex-col"
         style={{ width: "210mm", fontSize: "12px", lineHeight: "1.5" }}
       >
-        <LogoHeader pageNumber={13} />
+        <LogoHeader pageNumber={14} />
 
         <h3 className="text-base font-bold mb-4 text-red-600">
           ATTACHMENT D NO CONTACT EMERGENCY (
@@ -1088,7 +1185,7 @@ const ContractPDFGenerator = forwardRef(({ contractData }, ref) => {
               </div>
             ))}
 
-        <PageFooter pageNumber={13} />
+        <PageFooter pageNumber={14} />
       </div>
 
       {/* DYNAMIC PAGES FOR PASSPORT IMAGES - ALL USERS */}
@@ -1099,7 +1196,7 @@ const ContractPDFGenerator = forwardRef(({ contractData }, ref) => {
             className="contract-page bg-white p-12 min-h-[297mm] flex flex-col"
             style={{ width: "210mm", fontSize: "12px", lineHeight: "1.5" }}
           >
-            <LogoHeader pageNumber={14 + userIndex * 2} />
+            <LogoHeader pageNumber={15 + userIndex * 2} />
 
             <h3 className="text-base font-bold mb-6 text-center">
               IDENTIFICATION DOCUMENTS - {user.name}
@@ -1152,7 +1249,7 @@ const ContractPDFGenerator = forwardRef(({ contractData }, ref) => {
               )}
             </div>
 
-            <PageFooter pageNumber={14 + userIndex * 2} />
+            <PageFooter pageNumber={15 + userIndex * 2} />
           </div>
 
           {/* PASSPORT/ID BACK IMAGE */}
@@ -1160,7 +1257,7 @@ const ContractPDFGenerator = forwardRef(({ contractData }, ref) => {
             className="contract-page bg-white p-12 min-h-[297mm] flex flex-col"
             style={{ width: "210mm", fontSize: "12px", lineHeight: "1.5" }}
           >
-            <LogoHeader pageNumber={15 + userIndex * 2} />
+            <LogoHeader pageNumber={16 + userIndex * 2} />
 
             <h3 className="text-base font-bold mb-6 text-center">
               IDENTIFICATION DOCUMENTS - {user.name}
@@ -1213,7 +1310,7 @@ const ContractPDFGenerator = forwardRef(({ contractData }, ref) => {
               )}
             </div>
 
-            <PageFooter pageNumber={15 + userIndex * 2} />
+            <PageFooter pageNumber={16 + userIndex * 2} />
           </div>
         </React.Fragment>
       ))}
@@ -1229,7 +1326,7 @@ const ContractPDFGenerator = forwardRef(({ contractData }, ref) => {
             >
               <LogoHeader
                 pageNumber={
-                  16 + (contractData?.userInfo?.length || 0) * 2 + contactIndex
+                  17 + (contractData?.userInfo?.length || 0) * 2 + contactIndex
                 }
               />
 
@@ -1276,7 +1373,7 @@ const ContractPDFGenerator = forwardRef(({ contractData }, ref) => {
 
               <PageFooter
                 pageNumber={
-                  16 + (contractData?.userInfo?.length || 0) * 2 + contactIndex
+                  17 + (contractData?.userInfo?.length || 0) * 2 + contactIndex
                 }
               />
             </div>
@@ -1290,7 +1387,7 @@ const ContractPDFGenerator = forwardRef(({ contractData }, ref) => {
       >
         <LogoHeader
           pageNumber={
-            17 +
+            18 +
             (contractData?.userInfo?.length || 0) * 2 +
             (contractData?.emergencyContacts?.filter((c) => c.idImage).length ||
               0)
@@ -1344,7 +1441,7 @@ const ContractPDFGenerator = forwardRef(({ contractData }, ref) => {
 
         <PageFooter
           pageNumber={
-            17 +
+            18 +
             (contractData?.userInfo?.length || 0) * 2 +
             (contractData?.emergencyContacts?.filter((c) => c.idImage).length ||
               0)

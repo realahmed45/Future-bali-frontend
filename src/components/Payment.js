@@ -207,17 +207,32 @@ const BankDetailsModal = ({ showModal, onConfirm, onCancel, payNowAmount }) => {
             </div>
           </div>
 
-          {/* Instructions */}
-          <div className="bg-yellow-50 p-4 rounded-lg mb-6">
-            <h4 className="font-semibold text-yellow-800 mb-2">
-              Instructions:
+          {/* Instructions - CENTERED AND LARGE */}
+          <div className="bg-yellow-50 p-6 rounded-lg mb-6 text-center">
+            <h4 className="font-bold text-yellow-800 mb-4 text-xl">
+              Payment Instructions
             </h4>
-            <ol className="text-sm text-yellow-700 space-y-1 list-decimal list-inside">
-              <li>Transfer the exact amount: ${payNowAmount}</li>
-              <li>Use "Villa Investment" as reference</li>
-              <li>Send transfer screenshot to WhatsApp: +62 818-1818-5522</li>
-              <li>Click "I've Sent the Money" below after transfer</li>
-            </ol>
+            <div className="space-y-4 text-lg text-yellow-700">
+              <div className="bg-white p-4 rounded-lg shadow-sm">
+                <p className="font-semibold">1. Transfer the exact amount:</p>
+                <p className="text-2xl font-bold text-green-600">
+                  ${payNowAmount}
+                </p>
+              </div>
+              <div className="bg-white p-4 rounded-lg shadow-sm">
+                <p className="font-semibold">2. Use reference:</p>
+                <p className="font-bold text-blue-600">"Villa Investment"</p>
+              </div>
+              <div className="bg-white p-4 rounded-lg shadow-sm">
+                <p className="font-semibold">3. Send screenshot to WhatsApp:</p>
+                <p className="font-bold text-green-600">+62 818-1818-5522</p>
+              </div>
+              <div className="bg-white p-4 rounded-lg shadow-sm">
+                <p className="font-semibold">
+                  4. Click "I've Sent the Money" below
+                </p>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -845,14 +860,14 @@ const Payment = () => {
 
       {/* Payment Method Section with Bank Details */}
       <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-        <h3 className="text-2xl font-bold text-gray-800 mb-6">
+        <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">
           Payment Method
         </h3>
 
-        <div className="bg-blue-50 p-4 rounded-lg mb-6">
-          <div className="flex items-center mb-4">
+        <div className="bg-blue-50 p-6 rounded-lg mb-6">
+          <div className="flex items-center justify-center mb-6">
             <svg
-              className="w-8 h-8 text-blue-600 mr-3"
+              className="w-10 h-10 text-blue-600 mr-3"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -864,13 +879,13 @@ const Payment = () => {
                 d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
               />
             </svg>
-            <h4 className="text-lg font-semibold text-blue-800">
+            <h4 className="text-2xl font-bold text-blue-800">
               Bank Transfer (USD)
             </h4>
           </div>
 
-          <div className="bg-white p-4 rounded-lg">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+          <div className="bg-white p-6 rounded-lg mb-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-base">
               <div>
                 <span className="font-medium text-gray-700">Company:</span>
                 <span className="ml-2 font-semibold">Future Life Bali</span>
@@ -887,19 +902,19 @@ const Payment = () => {
                 <span className="font-medium text-gray-700">
                   Account Number:
                 </span>
-                <span className="ml-2 font-semibold text-blue-600">
+                <span className="ml-2 font-semibold text-blue-600 text-lg">
                   2134-02-000056-50-5
                 </span>
               </div>
               <div>
                 <span className="font-medium text-gray-700">Swift Code:</span>
-                <span className="ml-2 font-semibold text-blue-600">
+                <span className="ml-2 font-semibold text-blue-600 text-lg">
                   BRINIDJA
                 </span>
               </div>
               <div>
                 <span className="font-medium text-gray-700">Currency:</span>
-                <span className="ml-2 font-semibold text-green-600">
+                <span className="ml-2 font-semibold text-green-600 text-lg">
                   USD 🇺🇸
                 </span>
               </div>
@@ -912,17 +927,51 @@ const Payment = () => {
             </div>
           </div>
 
-          <div className="mt-4 p-3 bg-yellow-50 rounded-lg">
-            <p className="text-yellow-800 text-sm font-medium">
-              📝 Transfer Instructions:
-            </p>
-            <ul className="text-yellow-700 text-xs mt-2 space-y-1">
-              <li>
-                • Transfer exactly ${payNowAmount} (90% of total investment)
-              </li>
-              <li>• Use "Villa Investment" as reference</li>
-              <li>• Send screenshot to WhatsApp: +62 818-1818-5522</li>
-            </ul>
+          {/* CENTERED AND LARGE INSTRUCTIONS */}
+          <div className="bg-yellow-50 p-8 rounded-lg text-center">
+            <h4 className="text-2xl font-bold text-yellow-800 mb-6">
+              💰 Transfer Instructions
+            </h4>
+            <div className="space-y-6">
+              <div className="bg-white p-6 rounded-lg shadow-md">
+                <p className="text-xl font-bold text-gray-800 mb-2">
+                  1. Transfer Amount
+                </p>
+                <p className="text-3xl font-bold text-green-600">
+                  ${payNowAmount}
+                </p>
+                <p className="text-lg text-gray-600 mt-2">
+                  (90% of total investment)
+                </p>
+              </div>
+
+              <div className="bg-white p-6 rounded-lg shadow-md">
+                <p className="text-xl font-bold text-gray-800 mb-2">
+                  2. Use Reference
+                </p>
+                <p className="text-2xl font-bold text-blue-600">
+                  "Villa Investment"
+                </p>
+              </div>
+
+              <div className="bg-white p-6 rounded-lg shadow-md">
+                <p className="text-xl font-bold text-gray-800 mb-2">
+                  3. Send Screenshot
+                </p>
+                <p className="text-2xl font-bold text-green-600">
+                  WhatsApp: +62 818-1818-5522
+                </p>
+              </div>
+
+              <div className="bg-white p-6 rounded-lg shadow-md">
+                <p className="text-xl font-bold text-gray-800 mb-2">
+                  4. Confirm Payment
+                </p>
+                <p className="text-lg text-purple-600 font-semibold">
+                  Click "Pay Now" button below after transfer
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>

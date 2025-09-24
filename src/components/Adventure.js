@@ -199,7 +199,7 @@ const Adventure = () => {
 
   return (
     <div className="font-sans text-gray-800">
-      {/* Hero Section - Local Video Implementation */}
+      {/* Hero Section - Cloudinary Video Implementation */}
       <div className="relative h-screen flex justify-center items-center text-white text-center overflow-hidden">
         {/* Background Image (shown when video not loaded or error) */}
         {(!videoLoaded || videoError || !hideBackgroundImage) && (
@@ -220,7 +220,6 @@ const Adventure = () => {
             videoLoaded && !videoError ? "opacity-100" : "opacity-0"
           }`}
           autoPlay
-          muted
           loop
           playsInline
           preload="auto"
@@ -234,25 +233,37 @@ const Adventure = () => {
           Your browser does not support the video tag.
         </video>
 
-        {/* Manual Play Button (shown if autoplay is blocked) */}
+        {/* Attractive Play Button */}
         {showPlayButton && videoCanPlay && (
-          <button
-            onClick={handlePlayClick}
-            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-30 bg-black bg-opacity-50 text-white rounded-full p-4 hover:bg-opacity-70 transition-all"
-          >
-            <FaPlay className="w-8 h-8" />
-          </button>
+          <div className="absolute inset-0 flex items-center justify-center z-30">
+            <button onClick={handlePlayClick} className="group relative">
+              {/* Outer glow ring */}
+              <div className="absolute inset-0 rounded-full bg-white/20 blur-xl scale-150 group-hover:scale-175 transition-transform duration-700"></div>
+
+              {/* Main button */}
+              <div className="relative flex items-center justify-center w-20 h-20 sm:w-24 sm:h-24 lg:w-28 lg:h-28 rounded-full bg-white/10 backdrop-blur-md border border-white/30 shadow-2xl group-hover:bg-white/20 group-hover:scale-110 transition-all duration-500">
+                {/* Play icon */}
+                <div className="ml-1 text-white text-2xl sm:text-3xl lg:text-4xl group-hover:text-purple-200 transition-colors duration-300">
+                  ▶
+                </div>
+              </div>
+
+              {/* Pulse rings */}
+              <div className="absolute inset-0 rounded-full border-2 border-white/30 animate-ping"></div>
+              <div className="absolute inset-0 rounded-full border border-white/20 animate-pulse"></div>
+            </button>
+          </div>
         )}
 
         {/* Dark overlay */}
         <div className="absolute inset-0 bg-black bg-opacity-20 z-10"></div>
 
-        {/* Content - Responsive */}
-        <div className="relative z-20 px-4 sm:px-6 lg:px-8 mt-20 sm:mt-16 lg:mt-0">
+        {/* Content - Moved further down */}
+        <div className="relative z-20 px-4 sm:px-6 lg:px-8 mt-40 sm:mt-32 lg:mt-20">
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-center justify-center">
             <Link
               to="/packages"
-              className={`w-auto px-6 py-3 bg-purple-700 text-white rounded-lg hover:bg-purple-600 transition shadow-md text-center font-medium ${
+              className={`w-auto px-8 py-4 bg-gradient-to-r from-purple-700 to-purple-600 text-white rounded-xl hover:from-purple-600 hover:to-purple-500 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105 text-center font-semibold ${
                 isMobile ? "text-sm" : "text-base"
               }`}
             >
@@ -260,7 +271,7 @@ const Adventure = () => {
             </Link>
             <Link
               to="/contactUs"
-              className={`w-auto px-6 py-3 bg-purple-700 text-white rounded-lg hover:bg-purple-600 transition shadow-md text-center font-medium ${
+              className={`w-auto px-8 py-4 bg-gradient-to-r from-purple-700 to-purple-600 text-white rounded-xl hover:from-purple-600 hover:to-purple-500 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105 text-center font-semibold ${
                 isMobile ? "text-sm" : "text-base"
               }`}
             >

@@ -416,7 +416,7 @@ const Package3 = () => {
                         Rooms
                       </th>
                       <th className="border-0 px-2 lg:px-3 py-3 text-center font-bold text-xs lg:text-sm">
-                        Size
+                        New Size
                       </th>
                       <th className="border-0 px-2 lg:px-3 py-3 text-center font-bold text-xs lg:text-sm">
                         Price

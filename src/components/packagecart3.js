@@ -341,7 +341,7 @@ const Package3Cart = () => {
                   Room
                 </th>
                 <th className="px-2 py-1 font-bold text-purple-600 text-left">
-                  Size
+                  New Size
                 </th>
                 <th className="px-2 py-1 font-bold text-purple-600 text-right">
                   Price
