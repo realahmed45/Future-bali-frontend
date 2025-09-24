@@ -266,20 +266,6 @@ const History = () => {
                       <h3 className="text-lg font-semibold text-gray-800">
                         Order #{order._id.slice(-8).toUpperCase()}
                       </h3>
-                      <span
-                        className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(
-                          order.orderStatus
-                        )}`}
-                      >
-                        {order.orderStatus || "Unknown"}
-                      </span>
-                      <span
-                        className={`px-3 py-1 rounded-full text-xs font-medium ${getPaymentStatusColor(
-                          order.paymentStatus
-                        )}`}
-                      >
-                        Payment: {order.paymentStatus || "Unknown"}
-                      </span>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-gray-600">
@@ -331,12 +317,6 @@ const History = () => {
                     {/* Payment Info */}
                     {order.paymentDetails && (
                       <div className="mt-4 pt-4 border-t border-gray-200">
-                        <p className="text-sm text-gray-600">
-                          <span className="font-medium text-purple-600">
-                            Payment Method:
-                          </span>{" "}
-                          {order.paymentDetails.method || "N/A"}
-                        </p>
                         {order.paymentDetails.transactionId && (
                           <p className="text-xs text-gray-500">
                             Transaction ID: {order.paymentDetails.transactionId}
@@ -360,12 +340,6 @@ const History = () => {
                   <div className="flex flex-col gap-2">
                     {/* Payment Info */}
                     <div className="mt-4 pt-4 border-t border-gray-200">
-                      <p className="text-sm text-gray-600">
-                        <span className="font-medium text-purple-600">
-                          Payment Method:
-                        </span>{" "}
-                        Bank Transfer (Online)
-                      </p>
                       {order.paymentDetails?.transactionId && (
                         <p className="text-xs text-gray-500 mt-1">
                           Transaction ID: {order.paymentDetails.transactionId}
