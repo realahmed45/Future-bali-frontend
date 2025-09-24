@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const History = () => {
@@ -7,6 +8,7 @@ const History = () => {
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [pagination, setPagination] = useState({});
+  const navigate = useNavigate();
 
   // Backend URL
   const API_BASE_URL = "https://future-bali-backend-production.up.railway.app";
@@ -131,8 +133,39 @@ const History = () => {
     }
   };
 
-  const handleRetry = () => {
-    fetchOrderHistory();
+  // Handle view order details
+  const handleViewDetails = (orderId) => {
+    console.log("Navigating to order details:", orderId);
+    navigate(`/order-details/${orderId}`);
+  };
+
+  // Handle download contract
+  const handleDownloadContract = async (orderId, customerName) => {
+    try {
+      console.log("Downloading contract for order:", orderId);
+
+      // Navigate to contract page
+      navigate(`/contract/${orderId}`);
+
+      // Alternative: Direct download (if you prefer)
+      // const token = localStorage.getItem("authToken");
+      // const response = await axios.get(`${API_BASE_URL}/api/contract/download/${orderId}`, {
+      //   headers: { Authorization: `Bearer ${token}` },
+      //   responseType: 'blob'
+      // });
+      //
+      // const url = window.URL.createObjectURL(new Blob([response.data]));
+      // const link = document.createElement('a');
+      // link.href = url;
+      // link.setAttribute('download', `Contract_${customerName}_${orderId}.pdf`);
+      // document.body.appendChild(link);
+      // link.click();
+      // link.remove();
+      // window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Error downloading contract:", error);
+      alert("Failed to download contract. Please try again.");
+    }
   };
 
   if (loading) {
@@ -311,28 +344,20 @@ const History = () => {
 
                   {/* Actions */}
                   <div className="flex flex-col gap-2">
-                    <button
-                      onClick={() => {
-                        // Navigate to order details or view contract
-                        console.log("View order details:", order._id);
-                        // You can add navigation logic here
-                      }}
-                      className="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 transition duration-300 text-sm"
-                    >
-                      View Details
-                    </button>
-
-                    {order.orderStatus === "confirmed" && (
-                      <button
-                        onClick={() => {
-                          // Navigate to contract download
-                          console.log("Download contract:", order._id);
-                        }}
-                        className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition duration-300 text-sm"
-                      >
-                        Download Contract
-                      </button>
-                    )}
+                    {/* Payment Info */}
+                    <div className="mt-4 pt-4 border-t border-gray-200">
+                      <p className="text-sm text-gray-600">
+                        <span className="font-medium text-purple-600">
+                          Payment Method:
+                        </span>{" "}
+                        Bank Transfer (Online)
+                      </p>
+                      {order.paymentDetails?.transactionId && (
+                        <p className="text-xs text-gray-500 mt-1">
+                          Transaction ID: {order.paymentDetails.transactionId}
+                        </p>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>

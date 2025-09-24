@@ -24,6 +24,8 @@ import "../assets/styles/App.css";
 import ContactForm2 from "../components/Emergencyform2";
 import ProtectedRoute from "../components/ProtectedRoute";
 import Adventure from "../components/Adventure";
+import OrderDetails from "../components/OrderDetails";
+import ContractView from "../components/ContractView";
 
 const AppRoutes = () => {
   return (
@@ -78,6 +80,12 @@ const AppRoutes = () => {
               <Route path="/Emergency-details" element={<ContactForm2 />} />
               <Route path="/place-order" element={<PlaceOrder />} />
               <Route path="/payment" element={<Payment />} />
+              <Route path="/history" element={<History />} />
+              <Route
+                path="/order-details/:orderId"
+                element={<OrderDetails />}
+              />
+              <Route path="/contract/:orderId" element={<ContractView />} />
 
               {/* Account routes */}
               <Route path="/settings" element={<Settings />} />
