@@ -2,9 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import homeImage from "../assets/images/home1.png";
 import mainImage from "../assets/images/sunset2.png";
-// Videos now served from public folder
-const heroVideo = "/videos/futurelife.mp4";
-const heroVideoMobile = "/videos/futurelife-mobile.mp4";
 import fallbackImage from "../assets/Future life img.png";
 import {
   FaArrowLeft,
@@ -12,6 +9,10 @@ import {
   FaCheckCircle,
   FaPlay,
 } from "react-icons/fa";
+
+// Videos now served from public folder
+const heroVideo = "/videos/futurelife.mp4";
+const heroVideoMobile = "/videos/futurelife-mobile.mp4";
 
 const Adventure = () => {
   const navigate = useNavigate();
