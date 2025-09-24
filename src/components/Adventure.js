@@ -2,8 +2,9 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import homeImage from "../assets/images/home1.png";
 import mainImage from "../assets/images/sunset2.png";
-import heroVideo from "../assets/futurelife.mp4";
-import heroVideoMobile from "../assets/futurelife-mobile.mp4";
+// Videos now served from public folder
+const heroVideo = "/videos/futurelife.mp4";
+const heroVideoMobile = "/videos/futurelife-mobile.mp4";
 import fallbackImage from "../assets/Future life img.png";
 import {
   FaArrowLeft,
@@ -34,12 +35,6 @@ const Adventure = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  useEffect(() => {
-    console.log("Video paths:");
-    console.log("Desktop video:", heroVideo);
-    console.log("Mobile video:", heroVideoMobile);
-    console.log("Fallback image:", fallbackImage);
-  }, []);
   const handlePlayClick = () => {
     setShowPlayButton(false);
     if (videoRef.current) {
