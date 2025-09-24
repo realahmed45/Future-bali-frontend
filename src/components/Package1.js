@@ -178,6 +178,9 @@ const Package1 = () => {
               <span className="text-xs sm:text-sm font-semibold text-purple-600 bg-purple-50 px-3 py-1 rounded-full">
                 Open concept layout
               </span>
+              <span className="text-xs sm:text-sm font-semibold text-purple-600 bg-purple-50 px-3 py-1 rounded-full">
+                Fully Furnished
+              </span>
             </div>
 
             {/* Room Features */}
@@ -239,6 +242,10 @@ const Package1 = () => {
                 <li className="flex items-center text-sm">
                   <span className="w-2 h-2 bg-indigo-400 rounded-full mr-3 flex-shrink-0"></span>
                   All bathroom stuff
+                </li>
+                <li className="flex items-center text-sm">
+                  <span className="w-2 h-2 bg-indigo-400 rounded-full mr-3 flex-shrink-0"></span>
+                  Fully Furnished house
                 </li>
               </ul>
             </div>

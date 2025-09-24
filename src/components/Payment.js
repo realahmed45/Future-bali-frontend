@@ -72,14 +72,14 @@ const PaymentSuccessModal = ({
             </div>
           </div>
 
-          <div className="mt-6 p-4 bg-green-50 rounded-lg">
-            <p className="text-green-800 text-sm mb-3">
+          <div className="mt-6 p-5 bg-green-50 border border-green-200 rounded-lg">
+            <p className="text-green-800 text-base font-semibold mb-4">
               ✅ Contract emails will be sent automatically in 10 mins to all
               parties.
             </p>
-            <p className="text-green-700 text-xs">
+            <p className="text-green-700 text-sm font-medium">
               • Customer email: Contract copy delivered
-              <br />• Admin team: Notified of new contract
+              <br />• Future life will contact you shortly and plz contact us
             </p>
           </div>
 
@@ -214,7 +214,9 @@ const BankDetailsModal = ({ showModal, onConfirm, onCancel, payNowAmount }) => {
             </h4>
             <div className="space-y-4 text-lg text-yellow-700">
               <div className="bg-white p-4 rounded-lg shadow-sm">
-                <p className="font-semibold">1. Transfer the exact amount:</p>
+                <p className="font-semibold">
+                  1. Transfer the exact amount within 2 weeks:
+                </p>
                 <p className="text-2xl font-bold text-green-600">
                   ${payNowAmount}
                 </p>

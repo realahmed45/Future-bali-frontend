@@ -319,7 +319,7 @@ const PlaceOrder = () => {
         </div>
       </div>
 
-      <p className="text-gray-500 text-center mt-6 text-sm">
+      <p className="text-gray-700 text-center mt-6 text-base font-semibold">
         *After finalizing your order, you will be redirected to the payment
         page.
       </p>
