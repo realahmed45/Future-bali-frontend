@@ -168,6 +168,10 @@ const History = () => {
     }
   };
 
+  const handleRetry = () => {
+    fetchOrderHistory();
+  };
+
   if (loading) {
     return (
       <div className="max-w-4xl mx-auto mt-8 p-6 bg-gray-100 rounded-lg shadow-md">
