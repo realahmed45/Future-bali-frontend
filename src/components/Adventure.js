@@ -34,6 +34,12 @@ const Adventure = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  useEffect(() => {
+    console.log("Video paths:");
+    console.log("Desktop video:", heroVideo);
+    console.log("Mobile video:", heroVideoMobile);
+    console.log("Fallback image:", fallbackImage);
+  }, []);
   const handlePlayClick = () => {
     setShowPlayButton(false);
     if (videoRef.current) {
