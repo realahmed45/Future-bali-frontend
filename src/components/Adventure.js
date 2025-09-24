@@ -10,9 +10,11 @@ import {
   FaPlay,
 } from "react-icons/fa";
 
-// Videos now served from public folder
-const heroVideo = "/videos/futurelife.mp4";
-const heroVideoMobile = "/videos/futurelife-mobile.mp4";
+// External video hosting URLs - Cloudinary hosted videos
+const heroVideo =
+  "https://res.cloudinary.com/dgbxypivn/video/upload/v1758704847/fture_life_hero_video_web_244fps_and_720p_wmmcf6.mp4";
+const heroVideoMobile =
+  "https://res.cloudinary.com/dgbxypivn/video/upload/v1758705234/mobile_version_720p_24_fps_qv4lbc.mp4";
 
 const Adventure = () => {
   const navigate = useNavigate();
@@ -211,7 +213,7 @@ const Adventure = () => {
           />
         )}
 
-        {/* Local Video */}
+        {/* Cloudinary Hosted Video */}
         <video
           ref={videoRef}
           className={`absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-1000 ${
