@@ -146,7 +146,7 @@ const ContactForm2 = () => {
       <h2 className="text-3xl font-bold mb-4 text-purple-700 text-center">
         EMERGENCY CONTACT
       </h2>
-      <p className="text-sm text-gray-600 mb-6 text-center">
+      <p className="text-base md:text-lg text-gray-600 mb-6 text-center leading-relaxed">
         If there is no contact from the customer to 'My Future Life Bali' for
         9-12 months, 'My Future Life Bali' must attempt to contact the
         customer's relatives or the appropriate embassy. Please mention at least

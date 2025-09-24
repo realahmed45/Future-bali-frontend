@@ -146,7 +146,6 @@ const Adventure = () => {
   ];
   const packageDetails = {
     1: {
-      title: " Fully furnisded Single Bedroom Villa",
       image: "1.png",
       description: [
         "Modern design",
@@ -156,7 +155,6 @@ const Adventure = () => {
       ],
     },
     2: {
-      title: "Fully Furnished Bedroom Villa With Pool",
       image: "two.png",
       description: [
         "Luxury pool",
@@ -166,7 +164,6 @@ const Adventure = () => {
       ],
     },
     3: {
-      title: "Fully furnished Two Bedroom Villa",
       image: "4.jpeg",
       description: [
         "Perfect for families",
@@ -350,13 +347,6 @@ const Adventure = () => {
                   />
                 </div>
                 <div className={`bg-white ${isMobile ? "p-3" : "p-4"}`}>
-                  <h3
-                    className={`font-bold mb-2 text-gray-800 ${
-                      isMobile ? "text-sm" : "text-md"
-                    }`}
-                  >
-                    {packageDetails[key].title}
-                  </h3>
                   <ul
                     className={`space-y-1 text-gray-600 ${
                       isMobile ? "text-xs" : "text-xs"

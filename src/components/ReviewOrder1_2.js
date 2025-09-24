@@ -334,30 +334,47 @@ const UserInfoForm = () => {
               )}
             </div>
 
-            {/* Date of Birth Field - Enhanced with validation */}
+            {/* Date of Birth Field - Enhanced with calendar icon */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Date of Birth *
               </label>
-              <input
-                type="date"
-                min={getMinDate()}
-                max={getTodayDate()}
-                className={`w-full p-2 border rounded-md ${
-                  errors[`${index}-dob`] ? "border-red-500" : "border-gray-300"
-                }`}
-                value={person.dob}
-                onChange={(e) =>
-                  handleInputChange(index, "dob", e.target.value)
-                }
-              />
+              <div className="relative">
+                <input
+                  type="date"
+                  min={getMinDate()}
+                  max={getTodayDate()}
+                  className={`w-full p-2 pr-10 border rounded-md ${
+                    errors[`${index}-dob`]
+                      ? "border-red-500"
+                      : "border-gray-300"
+                  }`}
+                  value={person.dob}
+                  onChange={(e) =>
+                    handleInputChange(index, "dob", e.target.value)
+                  }
+                />
+                {/* Calendar icon */}
+                <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                  <svg
+                    className="w-5 h-5 text-gray-400"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </div>
+              </div>
               {errors[`${index}-dob`] && (
                 <p className="text-red-500 text-xs mt-1">
                   {errors[`${index}-dob`]}
                 </p>
               )}
             </div>
-
             {/* Address Field */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">

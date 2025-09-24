@@ -307,11 +307,13 @@ const Header = () => {
             >
               <FaBars />
             </button>
-            <img
-              src={require("../assets/images/logo1.png")}
-              alt="Logo"
-              className="h-10"
-            />
+            <Link to="/adventure">
+              <img
+                src={require("../assets/images/logo1.png")}
+                alt="Logo"
+                className="h-10 cursor-pointer hover:opacity-80 transition-opacity duration-200"
+              />
+            </Link>
           </div>
 
           {/* Desktop: Logo */}

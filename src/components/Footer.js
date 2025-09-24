@@ -186,15 +186,7 @@ const Footer = () => {
             >
               <FaFacebookF />
             </a>
-            <a
-              href="https://linkedin.com"
-              style={styles.iconLink}
-              aria-label="LinkedIn"
-              onMouseEnter={(e) => handleIconHover(e, true)}
-              onMouseLeave={(e) => handleIconHover(e, false)}
-            >
-              <FaLinkedinIn />
-            </a>
+
             <a
               href="https://instagram.com"
               style={styles.iconLink}

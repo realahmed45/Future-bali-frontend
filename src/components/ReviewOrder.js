@@ -328,7 +328,7 @@ const ReviewOrder = () => {
           </div>
 
           <p className="font-bold text-red-600 mb-4">
-            Payment within 1 week ( 90% of {totalCost} = {initialPayment})
+            Payment within 2 week ( 90% of {totalCost} = {initialPayment})
           </p>
         </div>
 
@@ -362,11 +362,11 @@ const ReviewOrder = () => {
           </ul>
 
           <div className="mt-4">
-            <p className="font-bold underline">between year 0-20.</p>
+            <p className="font-bold underline">between year 0-23.</p>
             <p className="ml-4">
-              - If the return on investment (ROI) is below 12% from year 0 to
-              year 20 you, as the party, will receive 70% of the profit instead
-              of 50%, and 'My Future Life Bali' will receive 30%.
+              - If the return on investment (ROI) is below 12% , as the party,
+              will receive 70% of the profit instead of 50%, and 'My Future Life
+              Bali' will receive 30%.
             </p>
           </div>
         </div>
