@@ -347,6 +347,31 @@ const History = () => {
                   </div>
 
                   {/* Actions */}
+
+                  {/* Actions */}
+                  <div className="flex flex-col gap-2">
+                    <button
+                      onClick={() => handleViewDetails(order._id)}
+                      className="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 transition duration-300 text-sm"
+                    >
+                      View Details
+                    </button>
+
+                    {(order.orderStatus === "confirmed" ||
+                      order.orderStatus === "completed") && (
+                      <button
+                        onClick={() =>
+                          handleDownloadContract(
+                            order._id,
+                            order.userInfo?.[0]?.name || "Customer"
+                          )
+                        }
+                        className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition duration-300 text-sm"
+                      >
+                        View Contract
+                      </button>
+                    )}
+                  </div>
                   <div className="flex flex-col gap-2">
                     {/* Payment Info */}
                     <div className="mt-4 pt-4 border-t border-gray-200">
