@@ -3,6 +3,32 @@ import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { FaTimes } from "react-icons/fa";
 
+// Blocked country codes
+const BLOCKED_COUNTRY_CODES = {
+  russia: ["+7", "7", "007"],
+  ukraine: ["+380", "380", "0380"],
+  romania: ["+40", "40", "0040"],
+  india: ["+91", "91", "0091"],
+};
+
+const isPhoneNumberBlocked = (phone) => {
+  if (!phone) return { blocked: false };
+
+  const cleanPhone = phone.toString().replace(/[\s\-\(\)]/g, "");
+
+  for (const country in BLOCKED_COUNTRY_CODES) {
+    const codes = BLOCKED_COUNTRY_CODES[country];
+
+    for (const code of codes) {
+      if (cleanPhone.startsWith(code)) {
+        return { blocked: true, country };
+      }
+    }
+  }
+
+  return { blocked: false };
+};
+
 const Login = () => {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
@@ -54,6 +80,15 @@ const Login = () => {
       }
       if (!validatePhone(phone)) {
         setPhoneError("Please enter a valid phone number with country code");
+        return;
+      }
+
+      // BLOCK SPECIFIED COUNTRIES
+      const blockCheck = isPhoneNumberBlocked(phone);
+      if (blockCheck.blocked) {
+        setPhoneError(
+          "Sorry, our service is currently not available in your region."
+        );
         return;
       }
     } else {
@@ -148,6 +183,17 @@ const Login = () => {
     if (!otp || otp.length !== 6) {
       setOtpError("Please enter a valid 6-digit OTP");
       return;
+    }
+
+    // Double-check blocking for phone (in case user manipulates the form)
+    if (loginMethod === "phone") {
+      const blockCheck = isPhoneNumberBlocked(phone);
+      if (blockCheck.blocked) {
+        setOtpError(
+          "Sorry, our service is currently not available in your region."
+        );
+        return;
+      }
     }
 
     setIsLoading(true);

@@ -360,13 +360,7 @@ const Header = () => {
                   <div className="px-4 py-2 text-gray-600 border-b text-sm">
                     {getUserDisplayText()}
                   </div>
-                  <Link
-                    to="/settings"
-                    className="block px-4 py-2 text-purple-600 hover:bg-purple-100"
-                    onClick={() => setShowOptions(false)}
-                  >
-                    Account Settings
-                  </Link>
+
                   <Link
                     to="/history"
                     className="block px-4 py-2 text-purple-600 hover:bg-purple-100"

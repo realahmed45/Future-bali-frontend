@@ -334,7 +334,7 @@ const UserInfoForm = () => {
               )}
             </div>
 
-            {/* Date of Birth Field - Enhanced with calendar icon */}
+            {/* Modified Date of Birth Field - Clean calendar picker */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Date of Birth *
@@ -344,20 +344,23 @@ const UserInfoForm = () => {
                   type="date"
                   min={getMinDate()}
                   max={getTodayDate()}
-                  className={`w-full p-2 pr-10 border rounded-md ${
+                  className={`w-full p-2 border rounded-md cursor-pointer ${
                     errors[`${index}-dob`]
                       ? "border-red-500"
                       : "border-gray-300"
-                  }`}
+                  } [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:right-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer`}
                   value={person.dob}
                   onChange={(e) =>
                     handleInputChange(index, "dob", e.target.value)
                   }
+                  style={{
+                    color: person.dob ? "#000" : "transparent",
+                  }}
                 />
-                {/* Calendar icon */}
-                <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                {/* Custom Calendar Icon */}
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                   <svg
-                    className="w-5 h-5 text-gray-400"
+                    className="w-6 h-6 text-gray-400"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
@@ -368,6 +371,14 @@ const UserInfoForm = () => {
                     />
                   </svg>
                 </div>
+                {/* Show selected date when a date is chosen */}
+                {person.dob && (
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <span className="text-black text-sm font-medium">
+                      {new Date(person.dob).toLocaleDateString()}
+                    </span>
+                  </div>
+                )}
               </div>
               {errors[`${index}-dob`] && (
                 <p className="text-red-500 text-xs mt-1">
@@ -375,6 +386,7 @@ const UserInfoForm = () => {
                 </p>
               )}
             </div>
+
             {/* Address Field */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
