@@ -244,7 +244,7 @@ const BankDetailsModal = ({ showModal, onConfirm, onCancel, payNowAmount }) => {
             onClick={onConfirm}
             className="w-full bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors"
           >
-            I've Sent the Money
+            I've Sent the Money or will send the money within 2 weeks
           </button>
           <button
             onClick={onCancel}
@@ -937,7 +937,7 @@ const Payment = () => {
             <div className="space-y-6">
               <div className="bg-white p-6 rounded-lg shadow-md">
                 <p className="text-xl font-bold text-gray-800 mb-2">
-                  1. Transfer Amount
+                  1. Transfer Amount within 2 weeks
                 </p>
                 <p className="text-3xl font-bold text-green-600">
                   ${payNowAmount}

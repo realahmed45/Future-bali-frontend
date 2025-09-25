@@ -86,9 +86,7 @@ const Login = () => {
       // BLOCK SPECIFIED COUNTRIES
       const blockCheck = isPhoneNumberBlocked(phone);
       if (blockCheck.blocked) {
-        setPhoneError(
-          "Sorry, our service is currently not available in your region."
-        );
+        setPhoneError();
         return;
       }
     } else {
