@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { FaTimesCircle } from "react-icons/fa";
+import { FaTimesCircle, FaPlus } from "react-icons/fa";
 import packageImage from "../assets/images/package2cart1.png";
 import axios from "axios";
 
@@ -20,8 +20,20 @@ const Package2Cart = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userIdentifier, setUserIdentifier] = useState(null);
+  const [showAddOns, setShowAddOns] = useState(false);
 
-  // Get minimum sizes for Package 2 - Furnished 1 bedroom house with pool
+  // Available add-ons for Package 2 (no swim pool since it's already included)
+  const availableAddOns = [
+    { room: "Bedroom", size: "40", price: 2000 },
+    { room: "Bathroom", size: "12", price: 500 },
+    { room: "Kitchen", size: "11", price: 1000 },
+    { room: "Storage", size: "3", price: 800 },
+    { room: "Larger Garden", size: "100", price: 2500 },
+    { room: "Living Room", size: "14", price: 1500 },
+    { room: "Out sitting", size: "9", price: 1000 },
+  ];
+
+  // Get minimum sizes for Package 2
   const getMinimumSizes = () => {
     return [
       { label: "1 Bedroom", size: "30 m²" },
@@ -47,6 +59,36 @@ const Package2Cart = () => {
       { label: "Living room", size: "10 m²" },
       { label: "Pool", size: "6 m²" },
     ],
+  };
+
+  // Check if an add-on is already selected
+  const isAddOnSelected = (room) => {
+    return cartData.selectedAddOns.some((addOn) => addOn.room === room);
+  };
+
+  // Handle adding/removing add-ons
+  const handleToggleAddOn = (room, size, price) => {
+    const isAlreadySelected = isAddOnSelected(room);
+    let updatedAddOns;
+
+    if (isAlreadySelected) {
+      updatedAddOns = cartData.selectedAddOns.filter(
+        (addOn) => addOn.room !== room
+      );
+    } else {
+      updatedAddOns = [...cartData.selectedAddOns, { room, size, price }];
+    }
+
+    const newCartData = {
+      ...cartData,
+      selectedAddOns: updatedAddOns,
+    };
+
+    setCartData(newCartData);
+    localStorage.setItem(
+      "currentPackageSelection",
+      JSON.stringify(newCartData)
+    );
   };
 
   // Check authentication status
@@ -82,7 +124,6 @@ const Package2Cart = () => {
 
         if (response.data.success) {
           setIsAuthenticated(true);
-          // Store the user identifier (email or phone) for cart operations
           if (response.data.user?.email) {
             setUserIdentifier(response.data.user.email);
           } else if (response.data.user?.phone) {
@@ -107,7 +148,6 @@ const Package2Cart = () => {
   useEffect(() => {
     console.log("[Package2Cart] Loading cart data");
     const loadData = () => {
-      // Priority 1: Location state
       if (location.state) {
         console.log("[Package2Cart] Using location state for cart data");
         setCartData({
@@ -118,7 +158,6 @@ const Package2Cart = () => {
         return;
       }
 
-      // Priority 2: LocalStorage
       const saved = localStorage.getItem("currentPackageSelection");
       console.log("[Package2Cart] LocalStorage data found:", !!saved);
 
@@ -137,7 +176,6 @@ const Package2Cart = () => {
         }
       }
 
-      // Priority 3: Defaults
       console.log("[Package2Cart] Using default cart data");
       setCartData({
         basePackage: defaultBasePackage,
@@ -163,7 +201,6 @@ const Package2Cart = () => {
       const response = await axios.post(
         "https://future-bali-backend-production.up.railway.app/api/cart/save",
         {
-          // Send both email and phone - the backend will handle which one to use
           email: userIdentifier.includes("@") ? userIdentifier : null,
           phone: userIdentifier.includes("@") ? null : userIdentifier,
           basePackage: cartData.basePackage,
@@ -262,8 +299,6 @@ const Package2Cart = () => {
     };
 
     setCartData(newCartData);
-
-    // Update localStorage
     localStorage.setItem(
       "currentPackageSelection",
       JSON.stringify(newCartData)
@@ -294,7 +329,6 @@ const Package2Cart = () => {
     return <div className="text-center py-8">Loading your package...</div>;
   }
 
-  // Get minimum sizes for display
   const minimumSizes = getMinimumSizes();
 
   return (
@@ -332,8 +366,10 @@ const Package2Cart = () => {
         </div>
       </div>
 
-      {/* Add-Ons */}
-      <h2 className="text-xl font-bold text-gray-800 mt-4 mb-2">Add Ons</h2>
+      {/* Selected Add-Ons */}
+      <h2 className="text-xl font-bold text-gray-800 mt-4 mb-2">
+        Selected Add Ons
+      </h2>
       {cartData.selectedAddOns.length > 0 ? (
         <div className="bg-white rounded-lg shadow-md p-3">
           <table className="table-auto w-full text-sm text-gray-800">
@@ -377,6 +413,81 @@ const Package2Cart = () => {
         </div>
       ) : (
         <p className="text-gray-500 text-center">No add-ons selected.</p>
+      )}
+
+      {/* Add More Add-Ons Button */}
+      <div className="mt-4">
+        <button
+          onClick={() => setShowAddOns(!showAddOns)}
+          className="w-full bg-indigo-600 text-white py-2 px-4 rounded-lg text-sm font-bold hover:bg-indigo-700 transition-all duration-300 flex items-center justify-center gap-2"
+        >
+          <FaPlus size={12} />
+          {showAddOns ? "Hide Available Add-Ons" : "Add More Add-Ons"}
+        </button>
+      </div>
+
+      {/* Available Add-Ons Section */}
+      {showAddOns && (
+        <div className="bg-white rounded-lg shadow-md p-4 mt-4">
+          <h3 className="text-lg font-bold text-purple-600 mb-3">
+            Available Add-Ons
+          </h3>
+          <div className="overflow-x-auto">
+            <table className="table-auto w-full text-sm text-gray-800">
+              <thead>
+                <tr className="border-b bg-purple-50">
+                  <th className="px-2 py-2 font-bold text-purple-600 text-left">
+                    Room
+                  </th>
+                  <th className="px-2 py-2 font-bold text-purple-600 text-center">
+                    New Size
+                  </th>
+                  <th className="px-2 py-2 font-bold text-purple-600 text-right">
+                    Price
+                  </th>
+                  <th className="px-2 py-2 font-bold text-purple-600 text-center">
+                    Select
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {availableAddOns.map(({ room, size, price }, index) => (
+                  <tr
+                    key={room}
+                    className={`border-b ${
+                      isAddOnSelected(room) ? "bg-purple-100" : ""
+                    }`}
+                  >
+                    <td className="px-2 py-2 font-semibold">
+                      <span className="text-gray-800">
+                        {room.split(" ")[0]}
+                      </span>
+                      {room.split(" ")[1] && (
+                        <span className="text-red-600 font-bold ml-1">
+                          {room.split(" ").slice(1).join(" ")}
+                        </span>
+                      )}
+                    </td>
+                    <td className="px-2 py-2 text-center font-bold text-purple-600">
+                      {size}
+                    </td>
+                    <td className="px-2 py-2 text-right font-bold text-green-600">
+                      ${price}
+                    </td>
+                    <td className="px-2 py-2 text-center">
+                      <input
+                        type="checkbox"
+                        checked={isAddOnSelected(room)}
+                        onChange={() => handleToggleAddOn(room, size, price)}
+                        className="w-5 h-5 cursor-pointer accent-purple-600 transform hover:scale-110 transition-transform duration-200"
+                      />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
       )}
 
       {/* Login Notice */}

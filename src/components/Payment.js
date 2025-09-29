@@ -294,7 +294,7 @@ const Payment = () => {
   const totalAmount = orderData?.totalAmount || calculatedTotal;
   const payNowAmount = Math.round(totalAmount * 0.9);
 
-  // Fetch complete order data
+  // In the fetchOrderData function, ensure contractNumber is included:
   const fetchOrderData = async () => {
     try {
       if (!orderId) {
@@ -313,6 +313,13 @@ const Payment = () => {
           "[Payment] Order data fetched from database:",
           response.data.order
         );
+
+        // Log contract number
+        console.log(
+          "[Payment] Contract Number:",
+          response.data.order.contractNumber
+        );
+
         return response.data.order;
       } else {
         console.error(
@@ -326,7 +333,6 @@ const Payment = () => {
       return null;
     }
   };
-
   // Fetch order data on component mount
   useEffect(() => {
     const loadOrderData = async () => {
@@ -1028,7 +1034,7 @@ const Payment = () => {
                 : "Generating Contract PDF..."}
             </p>
             <p className="text-gray-500 text-sm mt-2">
-              This may take a few moments
+              This can take up to 7 minutes before you receive the email
             </p>
           </div>
         </div>

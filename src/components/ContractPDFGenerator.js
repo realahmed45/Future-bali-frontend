@@ -30,11 +30,19 @@ const ContractPDFGenerator = forwardRef(({ contractData }, ref) => {
           pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
         }
 
+        // Use contract number from backend database
+        const contractNumber = contractData?.contractNumber || "UNKNOWN";
         const firstUserName = contractData?.userInfo?.[0]?.name || "Document";
-        const fileName = `Contract_${firstUserName.replace(
-          /[^a-zA-Z0-9]/g,
-          "_"
-        )}.pdf`;
+        const cleanName = firstUserName.replace(/[^a-zA-Z0-9]/g, "_");
+
+        // Format: Contract_#1_John_Doe.pdf
+        const fileName = `Contract_#${contractNumber}_${cleanName}.pdf`;
+
+        console.log(
+          `[PDF Generator] Generating PDF with contract number: ${contractNumber}`
+        );
+        console.log(`[PDF Generator] Filename: ${fileName}`);
+
         pdf.save(fileName);
         return pdf;
       } catch (error) {
@@ -145,7 +153,7 @@ const ContractPDFGenerator = forwardRef(({ contractData }, ref) => {
           <div>
             Initial payment 90% of Villa price ${" "}
             {Math.round((contractData?.totalAmount || 32000) * 0.9)} needs to be
-            paid or within 2 weeks now and the rest 10% 2 weeks after completion
+            paid now or within 2 weeks and the rest 10% 2 weeks after completion
           </div>
         </div>
 
@@ -776,8 +784,8 @@ const ContractPDFGenerator = forwardRef(({ contractData }, ref) => {
         </div>
 
         <div className="mb-6">
-          This agreement is made in 2 (two) copies, sufficiently stamped, and
-          having the same legal force, signed by both parties.
+          This agreement need to be signed form your side and send by email to
+          info@futurelifebali.com
         </div>
 
         <div className="flex justify-between mt-8">

@@ -98,8 +98,8 @@ const UserInfoForm = () => {
         const newPeople = [...people];
         newPeople[index] = {
           ...newPeople[index],
-          [field]: base64String, // Store base64 directly
-          [`${field}Preview`]: base64String, // Use same for preview
+          [field]: base64String,
+          [`${field}Preview`]: base64String,
         };
         setPeople(newPeople);
       };
@@ -126,12 +126,10 @@ const UserInfoForm = () => {
     const minDate = new Date();
     minDate.setFullYear(minDate.getFullYear() - 120);
 
-    // Check if date is in the future
     if (selectedDate > today) {
       return "Date of birth cannot be in the future";
     }
 
-    // Check if date is too far in the past (more than 120 years ago)
     if (selectedDate < minDate) {
       return "Please enter a valid date of birth";
     }
@@ -150,7 +148,6 @@ const UserInfoForm = () => {
         newErrors[`${index}-phone`] = "Phone number is required";
       }
 
-      // Enhanced date of birth validation
       const dobError = validateDateOfBirth(person.dob);
       if (dobError) {
         newErrors[`${index}-dob`] = dobError;
@@ -208,7 +205,6 @@ const UserInfoForm = () => {
     try {
       console.log("[UserInfoForm] Saving user info with base64 images");
 
-      // Prepare data with base64 images (no upload needed)
       const userData = people.map((person) => ({
         name: person.name.trim(),
         phone: person.phone.trim(),
@@ -217,13 +213,12 @@ const UserInfoForm = () => {
         country: person.country ? person.country.label : null,
         email: person.email.trim().toLowerCase(),
         passportId: person.passportId.trim(),
-        frontImage: person.frontImage, // Base64 string
-        backImage: person.backImage, // Base64 string
+        frontImage: person.frontImage,
+        backImage: person.backImage,
       }));
 
       console.log("[UserInfoForm] Saving user info to order:", orderId);
 
-      // Save user info to order directly
       const response = await axios.post(
         "https://future-bali-backend-production.up.railway.app/api/orders/save-user-info",
         {
@@ -248,7 +243,7 @@ const UserInfoForm = () => {
           totalCost,
           cartId,
           orderId,
-          formData: userData[0], // Primary user is first
+          formData: userData[0],
         },
       });
     } catch (error) {
@@ -334,7 +329,7 @@ const UserInfoForm = () => {
               )}
             </div>
 
-            {/* Modified Date of Birth Field - Clean calendar picker */}
+            {/* Clean Date of Birth Field */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Date of Birth *
@@ -344,41 +339,16 @@ const UserInfoForm = () => {
                   type="date"
                   min={getMinDate()}
                   max={getTodayDate()}
-                  className={`w-full p-2 border rounded-md cursor-pointer ${
+                  className={`w-full p-2 border rounded-md ${
                     errors[`${index}-dob`]
                       ? "border-red-500"
                       : "border-gray-300"
-                  } [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:right-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer`}
+                  }`}
                   value={person.dob}
                   onChange={(e) =>
                     handleInputChange(index, "dob", e.target.value)
                   }
-                  style={{
-                    color: person.dob ? "#000" : "transparent",
-                  }}
                 />
-                {/* Custom Calendar Icon */}
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                  <svg
-                    className="w-6 h-6 text-gray-400"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </div>
-                {/* Show selected date when a date is chosen */}
-                {person.dob && (
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <span className="text-black text-sm font-medium">
-                      {new Date(person.dob).toLocaleDateString()}
-                    </span>
-                  </div>
-                )}
               </div>
               {errors[`${index}-dob`] && (
                 <p className="text-red-500 text-xs mt-1">

@@ -151,11 +151,11 @@ const Package3 = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-indigo-50">
-      <div className="container mx-auto px-2 lg:px-8 max-w-7xl">
+      <div className="container mx-auto px-2 lg:px-6 max-w-7xl">
         {/* Header */}
-        <header className="w-full py-12 lg:py-16 bg-gradient-to-r from-purple-600 via-purple-700 to-indigo-600 shadow-xl flex justify-center items-center text-white text-center rounded-b-3xl mb-8 lg:mb-12">
+        <header className="w-full py-6 lg:py-8 bg-gradient-to-r from-purple-600 via-purple-700 to-indigo-600 shadow-xl flex justify-center items-center text-white text-center rounded-b-3xl mb-4 lg:mb-6">
           <div className="px-4">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-2 lg:mb-4 tracking-wide">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-1 tracking-wide">
               Package 3
             </h1>
             <h2 className="text-lg sm:text-xl lg:text-2xl font-bold tracking-wide">
@@ -165,59 +165,59 @@ const Package3 = () => {
         </header>
 
         {/* Main Content */}
-        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 mb-12">
+        <div className="flex flex-col lg:flex-row gap-3 lg:gap-4 mb-6">
           {/* Features Section */}
-          <div className="flex-1 bg-white shadow-2xl rounded-2xl p-6 lg:p-8 border border-purple-100">
-            <h2 className="text-2xl lg:text-3xl font-bold mb-6 text-purple-700 border-b-2 border-purple-200 pb-3">
+          <div className="flex-1 bg-white shadow-xl rounded-2xl p-5 lg:p-7 border border-purple-100">
+            <h2 className="text-2xl lg:text-3xl font-bold mb-5 text-purple-700 border-b-2 border-purple-200 pb-2">
               FEATURES
             </h2>
 
             {/* Tags */}
-            <div className="mb-6 flex flex-wrap gap-2">
-              <span className="text-xs sm:text-sm font-semibold text-purple-600 bg-purple-50 px-3 py-1 rounded-full">
+            <div className="mb-5 flex flex-wrap gap-2">
+              <span className="text-sm font-semibold text-purple-600 bg-purple-50 px-3 py-1.5 rounded-full">
                 Modern Bali Design
               </span>
-              <span className="text-xs sm:text-sm font-semibold text-purple-600 bg-purple-50 px-3 py-1 rounded-full">
+              <span className="text-sm font-semibold text-purple-600 bg-purple-50 px-3 py-1.5 rounded-full">
                 Open concept layout with Swimming Pool
               </span>
-              <span className="text-xs sm:text-sm font-semibold text-purple-600 bg-purple-50 px-3 py-1 rounded-full">
+              <span className="text-sm font-semibold text-purple-600 bg-purple-50 px-3 py-1.5 rounded-full">
                 Fully Furnished
               </span>
             </div>
 
             {/* Room Features */}
-            <div className="space-y-4">
+            <div className="space-y-3">
               {minimumSizes.map(
                 (room, index) =>
                   room.size && (
                     <div
                       key={index}
-                      className="bg-gray-50 rounded-lg p-4 border-l-4 border-purple-500"
+                      className="bg-gray-50 rounded-lg p-3.5 border-l-4 border-purple-500"
                     >
-                      <p className="text-sm lg:text-base font-bold text-purple-700">
-                        • {room.label}: {room.size}m²
+                      <p className="text-base font-bold text-purple-700">
+                        • {room.label}: {room.size} m²
                       </p>
                       {room.label.toLowerCase().includes("bedroom") && (
-                        <p className="text-gray-600 pl-4 mt-2 text-sm italic">
+                        <p className="text-gray-600 pl-4 mt-1.5 text-sm italic">
                           • **Add On** Walk in closet toward bathroom*
                         </p>
                       )}
                       {room.label.toLowerCase().includes("bathroom") && (
-                        <ul className="list-none pl-6 text-gray-600 mt-3 space-y-2">
+                        <ul className="list-none pl-4 text-gray-600 mt-2 space-y-1.5">
                           <li className="flex items-center text-sm">
-                            <span className="w-2 h-2 bg-purple-400 rounded-full mr-3 flex-shrink-0"></span>
+                            <span className="w-2 h-2 bg-purple-400 rounded-full mr-2 flex-shrink-0"></span>
                             Shower
                           </li>
                           <li className="flex items-center text-sm">
-                            <span className="w-2 h-2 bg-purple-400 rounded-full mr-3 flex-shrink-0"></span>
+                            <span className="w-2 h-2 bg-purple-400 rounded-full mr-2 flex-shrink-0"></span>
                             Toilet
                           </li>
                           <li className="flex items-center text-sm">
-                            <span className="w-2 h-2 bg-purple-400 rounded-full mr-3 flex-shrink-0"></span>
+                            <span className="w-2 h-2 bg-purple-400 rounded-full mr-2 flex-shrink-0"></span>
                             Sitting area
                           </li>
                           <li className="flex items-center text-sm">
-                            <span className="w-2 h-2 bg-purple-400 rounded-full mr-3 flex-shrink-0"></span>
+                            <span className="w-2 h-2 bg-purple-400 rounded-full mr-2 flex-shrink-0"></span>
                             Bathtub
                           </li>
                         </ul>
@@ -228,49 +228,49 @@ const Package3 = () => {
             </div>
 
             {/* Swimming pool - special case for Package 3 */}
-            <div className="mt-4 bg-gray-50 rounded-lg p-4 border-l-4 border-purple-500">
-              <p className="text-sm lg:text-base font-bold text-purple-700">
-                • Swimming pool: 9m²
+            <div className="mt-3 bg-gray-50 rounded-lg p-3.5 border-l-4 border-purple-500">
+              <p className="text-base font-bold text-purple-700">
+                • Swimming pool: 9 m²
               </p>
-              <p className="text-gray-600 pl-4 mt-2 text-sm italic">
+              <p className="text-gray-600 pl-4 mt-1.5 text-sm italic">
                 • Private pool included
               </p>
             </div>
 
             {/* Furnishing Details */}
-            <div className="mt-8 bg-gradient-to-r from-purple-50 to-indigo-50 rounded-lg p-6">
-              <p className="text-sm lg:text-base font-bold text-purple-700 mb-4">
+            <div className="mt-6 bg-gradient-to-r from-purple-50 to-indigo-50 rounded-lg p-5">
+              <p className="text-base font-bold text-purple-700 mb-3">
                 • All furnishing is included
               </p>
-              <ul className="list-none pl-6 text-gray-600 space-y-2">
+              <ul className="list-none pl-4 text-gray-600 space-y-2">
                 <li className="flex items-center text-sm">
-                  <span className="w-2 h-2 bg-indigo-400 rounded-full mr-3 flex-shrink-0"></span>
+                  <span className="w-2 h-2 bg-indigo-400 rounded-full mr-2 flex-shrink-0"></span>
                   Bed settings
                 </li>
                 <li className="flex items-center text-sm">
-                  <span className="w-2 h-2 bg-indigo-400 rounded-full mr-3 flex-shrink-0"></span>
+                  <span className="w-2 h-2 bg-indigo-400 rounded-full mr-2 flex-shrink-0"></span>
                   All kitchen stuff
                 </li>
                 <li className="flex items-center text-sm">
-                  <span className="w-2 h-2 bg-indigo-400 rounded-full mr-3 flex-shrink-0"></span>
+                  <span className="w-2 h-2 bg-indigo-400 rounded-full mr-2 flex-shrink-0"></span>
                   All bathroom stuff
                 </li>
-                <li>
-                  <span className="w-2 h-2 bg-indigo-400 rounded-full mr-3 flex-shrink-0"></span>
+                <li className="flex items-center text-sm">
+                  <span className="w-2 h-2 bg-indigo-400 rounded-full mr-2 flex-shrink-0"></span>
                   Fully Furnished house
                 </li>
               </ul>
             </div>
 
             {/* Description */}
-            <div className="mt-8 space-y-4">
-              <p className="text-sm lg:text-base text-gray-600 leading-relaxed bg-white p-4 lg:p-6 rounded-lg shadow-inner border">
+            <div className="mt-6 space-y-3">
+              <p className="text-sm lg:text-base text-gray-600 leading-relaxed bg-white p-4 lg:p-5 rounded-lg shadow-inner border">
                 We are committed to delivering quality work on time and without
                 unnecessary interruptions to the client. We follow our
                 flexibility to the best we can do to make sure cost is at the
                 lowest.
               </p>
-              <p className="text-sm lg:text-base text-gray-600 leading-relaxed bg-white p-4 lg:p-6 rounded-lg shadow-inner border">
+              <p className="text-sm lg:text-base text-gray-600 leading-relaxed bg-white p-4 lg:p-5 rounded-lg shadow-inner border">
                 As soon as the construction is done, we will list the property
                 on Airbnb to maximize your return on investment (ROI).
               </p>
@@ -278,10 +278,10 @@ const Package3 = () => {
           </div>
 
           {/* Package Info & Image */}
-          <div className="flex-1 space-y-6">
+          <div className="flex-1 space-y-3">
             {/* Package Details Card */}
-            <div className="bg-white shadow-2xl rounded-2xl p-6 lg:p-8 text-black border border-purple-100">
-              <div className="mb-6">
+            <div className="bg-white shadow-xl rounded-2xl p-5 lg:p-7 text-black border border-purple-100">
+              <div className="mb-5">
                 <p className="text-gray-500 text-xs uppercase tracking-wider mb-2">
                   Package
                 </p>
@@ -289,7 +289,7 @@ const Package3 = () => {
                   2 bedroom package
                 </p>
               </div>
-              <div className="mb-6">
+              <div className="mb-5">
                 <p className="text-gray-500 text-xs uppercase tracking-wider mb-2">
                   Duration
                 </p>
@@ -313,7 +313,7 @@ const Package3 = () => {
                 <img
                   src={require("../assets/images/package3.1.png")}
                   alt="Package 3"
-                  className="w-full rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-500 transform group-hover:scale-105"
+                  className="w-full rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 transform group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-purple-900/20 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </div>
@@ -322,12 +322,12 @@ const Package3 = () => {
         </div>
 
         {/* Add Ons Section */}
-        <section className="mb-12">
-          <div className="text-center mb-8">
-            <h2 className="text-2xl lg:text-3xl font-bold text-purple-700 mb-4">
+        <section className="mb-6">
+          <div className="text-center mb-5">
+            <h2 className="text-2xl lg:text-3xl font-bold text-purple-700 mb-3">
               Add Ons
             </h2>
-            <p className="text-sm lg:text-base text-gray-600 leading-relaxed max-w-4xl mx-auto bg-white p-4 lg:p-6 rounded-lg shadow-lg">
+            <p className="text-sm lg:text-base text-gray-600 leading-relaxed max-w-4xl mx-auto bg-white p-4 lg:p-5 rounded-lg shadow-lg">
               Optional add-ons increase your property's minimum size, offering
               more space, value, and future flexibility. The total size can
               expand further, especially in the garden area, which can be
@@ -338,20 +338,20 @@ const Package3 = () => {
         </section>
 
         {/* Cost of Building Section */}
-        <section className="mb-12">
-          <div className="text-center mb-8">
-            <h2 className="text-2xl lg:text-4xl font-bold text-purple-700 mb-4">
+        <section className="mb-6">
+          <div className="text-center mb-5">
+            <h2 className="text-2xl lg:text-4xl font-bold text-purple-700 mb-3">
               COST OF BUILDING IN BALI
             </h2>
-            <h3 className="text-lg lg:text-2xl font-semibold text-gray-800 mb-8">
+            <h3 className="text-lg lg:text-2xl font-semibold text-gray-800 mb-6">
               **The size is of minimum of what should you expect**
             </h3>
           </div>
 
-          <div className="flex flex-col xl:flex-row gap-8">
+          <div className="flex flex-col xl:flex-row gap-4">
             {/* Included Package Table */}
-            <div className="flex-1 bg-white shadow-2xl rounded-2xl p-6 lg:p-8 border border-purple-100">
-              <h3 className="text-xl lg:text-2xl font-bold mb-6 text-purple-600 text-center border-b-2 border-purple-200 pb-3">
+            <div className="w-full sm:w-3/4 md:w-2/3 xl:w-[31.25%] bg-white shadow-xl rounded-2xl p-5 lg:p-7 border border-purple-100 mx-auto xl:mx-0">
+              <h3 className="text-xl lg:text-2xl font-bold mb-5 text-purple-600 text-center border-b-2 border-purple-200 pb-3">
                 Included in this package
               </h3>
 
@@ -379,7 +379,7 @@ const Package3 = () => {
                           {room.label}
                         </td>
                         <td className="border-0 px-3 lg:px-4 py-3 text-center font-bold text-purple-600 text-sm lg:text-base">
-                          {room.size}
+                          {room.size ? `${room.size} m²` : room.size}
                         </td>
                       </tr>
                     ))}
@@ -389,15 +389,15 @@ const Package3 = () => {
                         Swimming pool
                       </td>
                       <td className="border-0 px-3 lg:px-4 py-3 text-center font-bold text-purple-600 text-sm lg:text-base">
-                        9
+                        9 m²
                       </td>
                     </tr>
                   </tbody>
                 </table>
               </div>
 
-              <div className="mt-8 bg-gradient-to-r from-purple-50 to-indigo-50 rounded-xl p-4 lg:p-6">
-                <h4 className="text-lg lg:text-xl font-bold mb-4 text-gray-800">
+              <div className="mt-6 bg-gradient-to-r from-purple-50 to-indigo-50 rounded-xl p-4 lg:p-5">
+                <h4 className="text-lg lg:text-xl font-bold mb-3 text-gray-800">
                   Smartly Designed Living
                 </h4>
                 <p className="text-sm lg:text-base text-gray-700 leading-relaxed">
@@ -410,8 +410,8 @@ const Package3 = () => {
             </div>
 
             {/* Customization Table */}
-            <div className="flex-1 bg-white shadow-2xl rounded-2xl p-6 lg:p-8 border border-purple-100">
-              <h3 className="text-xl lg:text-2xl font-bold mb-6 text-purple-600 text-center border-b-2 border-purple-200 pb-3">
+            <div className="w-full sm:w-3/4 md:w-2/3 xl:w-[53.15%] bg-white shadow-xl rounded-2xl p-5 lg:p-7 border border-purple-100 mx-auto xl:mx-0">
+              <h3 className="text-xl lg:text-2xl font-bold mb-5 text-purple-600 text-center border-b-2 border-purple-200 pb-3">
                 Customize According To Your Needs
               </h3>
 
@@ -419,23 +419,23 @@ const Package3 = () => {
                 <table className="w-full border-collapse min-w-full">
                   <thead>
                     <tr className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white">
-                      <th className="border-0 px-2 lg:px-3 py-3 text-left font-bold text-xs lg:text-sm">
+                      <th className="border-0 px-3 py-3 text-left font-bold text-sm">
                         Rooms
                       </th>
-                      <th className="border-0 px-2 lg:px-3 py-3 text-center font-bold text-xs lg:text-sm">
+                      <th className="border-0 px-3 py-3 text-center font-bold text-sm">
                         New Size
                       </th>
-                      <th className="border-0 px-2 lg:px-3 py-3 text-center font-bold text-xs lg:text-sm">
+                      <th className="border-0 px-3 py-3 text-center font-bold text-sm">
                         Price
                       </th>
-                      <th className="border-0 px-2 lg:px-3 py-3 text-center font-bold text-xs lg:text-sm">
+                      <th className="border-0 px-3 py-3 text-center font-bold text-sm">
                         Add
                       </th>
                     </tr>
                   </thead>
                   <tbody className="bg-white">
                     {[
-                      { room: "Bedroom", size: "40", price: 2000 },
+                      { room: "Bedroom", size: "50", price: 2000 },
                       { room: "Bathroom", size: "12", price: 500 },
                       { room: "Kitchen", size: "14", price: 1000 },
                       { room: "Storage", size: "3", price: 800 },
@@ -450,7 +450,7 @@ const Package3 = () => {
                           index % 2 === 0 ? "bg-gray-50" : "bg-white"
                         } hover:bg-purple-50 transition-colors duration-200`}
                       >
-                        <td className="border-0 px-2 lg:px-3 py-3 font-semibold text-xs lg:text-sm">
+                        <td className="border-0 px-3 py-2.5 font-semibold text-sm">
                           <span className="text-gray-800">
                             {room.split(" ")[0]}
                           </span>
@@ -460,13 +460,13 @@ const Package3 = () => {
                             </span>
                           )}
                         </td>
-                        <td className="border-0 px-2 lg:px-3 py-3 text-center font-bold text-purple-600 text-xs lg:text-sm">
-                          {size}
+                        <td className="border-0 px-3 py-2.5 text-center font-bold text-purple-600 text-sm">
+                          {size} m²
                         </td>
-                        <td className="border-0 px-2 lg:px-3 py-3 text-center font-bold text-green-600 text-xs lg:text-sm">
+                        <td className="border-0 px-3 py-2.5 text-center font-bold text-green-600 text-sm">
                           ${price}
                         </td>
-                        <td className="border-0 px-2 lg:px-3 py-3 text-center">
+                        <td className="border-0 px-3 py-2.5 text-center">
                           <input
                             type="checkbox"
                             onChange={() =>
@@ -481,8 +481,8 @@ const Package3 = () => {
                 </table>
               </div>
 
-              <div className="mt-8 bg-gradient-to-r from-purple-50 to-indigo-50 rounded-xl p-4 lg:p-6">
-                <h4 className="text-lg lg:text-xl font-bold mb-4 text-gray-800">
+              <div className="mt-6 bg-gradient-to-r from-purple-50 to-indigo-50 rounded-xl p-4 lg:p-5">
+                <h4 className="text-lg lg:text-xl font-bold mb-3 text-gray-800">
                   Add Ons
                 </h4>
                 <p className="text-sm lg:text-base text-gray-700 leading-relaxed">
@@ -496,9 +496,9 @@ const Package3 = () => {
           </div>
 
           {/* Proceed Button */}
-          <div className="mt-12 flex justify-center">
+          <div className="mt-6 flex justify-center">
             <button
-              className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold py-3 lg:py-4 px-6 lg:px-8 rounded-full shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300 text-sm lg:text-base"
+              className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold py-3 lg:py-4 px-8 lg:px-10 rounded-full shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 text-base lg:text-lg"
               onClick={handleProceed}
               type="button"
             >
@@ -508,42 +508,42 @@ const Package3 = () => {
         </section>
 
         {/* Construction Overview */}
-        <section className="mb-12">
-          <h2 className="text-2xl lg:text-4xl font-bold mb-8 text-purple-700 text-center">
+        <section className="mb-6">
+          <h2 className="text-2xl lg:text-4xl font-bold mb-5 text-purple-700 text-center">
             Construction Overview
           </h2>
-          <div className="flex flex-col lg:flex-row gap-8 bg-white shadow-2xl rounded-2xl p-6 lg:p-8 border border-purple-100">
+          <div className="flex flex-col lg:flex-row gap-5 bg-white shadow-xl rounded-2xl p-5 lg:p-7 border border-purple-100">
             <div className="flex-1">
-              <h3 className="text-xl lg:text-2xl font-bold mb-6 text-purple-600 border-b-2 border-purple-200 pb-3">
+              <h3 className="text-xl lg:text-2xl font-bold mb-4 text-purple-600 border-b-2 border-purple-200 pb-3">
                 Overview
               </h3>
-              <p className="text-sm lg:text-base text-gray-700 leading-relaxed bg-gray-50 p-4 lg:p-6 rounded-xl">
+              <p className="text-sm lg:text-base text-gray-700 leading-relaxed bg-gray-50 p-4 lg:p-5 rounded-xl">
                 Our Package features{" "}
                 {
                   minimumSizes.find((room) => room.label.includes("Bedrooms"))
                     ?.size
-                }
+                }{" "}
                 m² of bedroom space, living room of{" "}
                 {
                   minimumSizes.find((room) => room.label.includes("Living"))
                     ?.size
-                }
+                }{" "}
                 m², kitchen of{" "}
                 {
                   minimumSizes.find((room) => room.label.includes("Kitchen"))
                     ?.size
-                }
+                }{" "}
                 m², and{" "}
                 {
                   minimumSizes.find((room) => room.label.includes("Bathrooms"))
                     ?.size
-                }
+                }{" "}
                 m² of bathroom space. The highlight is the private swimming pool
-                of 9m² set within an{" "}
+                of 9 m² set within an{" "}
                 {
                   minimumSizes.find((room) => room.label.includes("Garden"))
                     ?.size
-                }
+                }{" "}
                 m² garden. This package includes all furniture and accessories
                 for optimal living and relaxation. The swimming pool adds
                 significant value for Airbnb rental potential.
@@ -554,7 +554,7 @@ const Package3 = () => {
                 <img
                   src={require("../assets/images/constructionOvr.png")}
                   alt="Construction Overview"
-                  className="w-full rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-500 transform group-hover:scale-105"
+                  className="w-full rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 transform group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-purple-900/20 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </div>
@@ -563,11 +563,11 @@ const Package3 = () => {
         </section>
 
         {/* Photo Gallery */}
-        <section className="mb-16">
-          <h2 className="text-2xl lg:text-4xl font-bold mb-8 text-purple-700 text-center">
+        <section className="mb-10">
+          <h2 className="text-2xl lg:text-4xl font-bold mb-5 text-purple-700 text-center">
             Photo Gallery
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5 max-w-6xl mx-auto">
             {[
               "package1gallery1.png",
               "package1gallery2.png",
@@ -577,7 +577,7 @@ const Package3 = () => {
                 <img
                   src={require(`../assets/images/${img}`)}
                   alt={`Gallery Image ${index + 1}`}
-                  className="w-full h-48 sm:h-56 lg:h-64 object-cover rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-500 transform group-hover:scale-105"
+                  className="w-full h-48 sm:h-56 lg:h-64 object-cover rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 transform group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-purple-900/30 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </div>

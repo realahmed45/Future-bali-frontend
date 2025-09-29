@@ -434,8 +434,8 @@ const ReviewOrder = () => {
             style={{ transform: "scale(1.5)" }}
           />
           <label className="text-xl font-extrabold leading-tight">
-            I have reviewed the contract in its entirety and confirm my
-            agreement with all terms and conditions.
+            I have reviewed the terms above and confirm my agreement with all
+            the terms and conditions above.
           </label>
         </div>
       </div>

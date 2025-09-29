@@ -31,17 +31,20 @@ const History = () => {
 
       console.log("[History] Fetching order history for page:", currentPage);
 
-      const response = await axios.get(`${API_BASE_URL}/api/orders`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        params: {
-          page: currentPage,
-          limit: 10, // Show 10 orders per page
-        },
-        timeout: 30000, // 30 second timeout
-      });
+      const response = await axios.get(
+        `${API_BASE_URL}/api/orders/user-orders`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          params: {
+            page: currentPage,
+            limit: 10,
+          },
+          timeout: 30000,
+        }
+      );
 
       if (response.data.success) {
         setOrders(response.data.orders || []);
@@ -63,10 +66,8 @@ const History = () => {
 
       if (error.response?.status === 401) {
         errorMessage = "Authentication expired. Please login again.";
-        // Clear token and redirect to login
         localStorage.removeItem("authToken");
-        // You might want to redirect to login page here
-        // window.location.href = '/login';
+        setTimeout(() => navigate("/login"), 2000);
       } else if (error.response?.status === 404) {
         errorMessage = "No orders found";
       } else if (error.code === "ECONNABORTED") {
@@ -133,39 +134,9 @@ const History = () => {
     }
   };
 
-  // Handle view order details
   const handleViewDetails = (orderId) => {
     console.log("Navigating to order details:", orderId);
     navigate(`/order-details/${orderId}`);
-  };
-
-  // Handle download contract
-  const handleDownloadContract = async (orderId, customerName) => {
-    try {
-      console.log("Downloading contract for order:", orderId);
-
-      // Navigate to contract page
-      navigate(`/contract/${orderId}`);
-
-      // Alternative: Direct download (if you prefer)
-      // const token = localStorage.getItem("authToken");
-      // const response = await axios.get(`${API_BASE_URL}/api/contract/download/${orderId}`, {
-      //   headers: { Authorization: `Bearer ${token}` },
-      //   responseType: 'blob'
-      // });
-      //
-      // const url = window.URL.createObjectURL(new Blob([response.data]));
-      // const link = document.createElement('a');
-      // link.href = url;
-      // link.setAttribute('download', `Contract_${customerName}_${orderId}.pdf`);
-      // document.body.appendChild(link);
-      // link.click();
-      // link.remove();
-      // window.URL.revokeObjectURL(url);
-    } catch (error) {
-      console.error("Error downloading contract:", error);
-      alert("Failed to download contract. Please try again.");
-    }
   };
 
   const handleRetry = () => {
@@ -225,7 +196,7 @@ const History = () => {
   return (
     <div className="max-w-4xl mx-auto mt-8 p-6 bg-gray-100 rounded-lg shadow-md">
       <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
-        Order History
+        My Order History
       </h2>
 
       {orders.length === 0 ? (
@@ -252,7 +223,6 @@ const History = () => {
         </div>
       ) : (
         <>
-          {/* Orders List */}
           <div className="space-y-4 mb-6">
             {orders.map((order) => (
               <div
@@ -260,12 +230,30 @@ const History = () => {
                 className="p-6 bg-white rounded-lg shadow hover:shadow-lg transition duration-300 border border-gray-200"
               >
                 <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
-                  {/* Order Info */}
                   <div className="flex-1">
                     <div className="flex flex-wrap items-center gap-2 mb-3">
                       <h3 className="text-lg font-semibold text-gray-800">
                         Order #{order._id.slice(-8).toUpperCase()}
                       </h3>
+                      {order.contractNumber && (
+                        <span className="text-xs font-bold text-purple-600 bg-purple-100 px-2 py-1 rounded">
+                          Contract #{order.contractNumber}
+                        </span>
+                      )}
+                      <span
+                        className={`text-xs px-2 py-1 rounded ${getStatusColor(
+                          order.orderStatus
+                        )}`}
+                      >
+                        {order.orderStatus || "Pending"}
+                      </span>
+                      <span
+                        className={`text-xs px-2 py-1 rounded ${getPaymentStatusColor(
+                          order.paymentStatus
+                        )}`}
+                      >
+                        {order.paymentStatus || "Pending"}
+                      </span>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-gray-600">
@@ -297,14 +285,14 @@ const History = () => {
                       </p>
                     </div>
 
-                    {/* Customer Info */}
                     {order.userInfo && order.userInfo.length > 0 && (
                       <div className="mt-4 pt-4 border-t border-gray-200">
                         <p className="text-sm text-gray-600">
                           <span className="font-medium text-purple-600">
                             Customer:
                           </span>{" "}
-                          {order.userInfo[0].name} ({order.userInfo[0].email})
+                          {order.userInfo[0].name} (
+                          {order.userInfo[0].email || order.userInfo[0].phone})
                         </p>
                         {order.userInfo.length > 1 && (
                           <p className="text-xs text-gray-500">
@@ -314,45 +302,28 @@ const History = () => {
                       </div>
                     )}
 
-                    {/* Payment Info */}
-                    {order.paymentDetails && (
+                    {order.paymentDetails?.transactionId && (
                       <div className="mt-4 pt-4 border-t border-gray-200">
-                        {order.paymentDetails.transactionId && (
-                          <p className="text-xs text-gray-500">
-                            Transaction ID: {order.paymentDetails.transactionId}
-                          </p>
-                        )}
+                        <p className="text-xs text-gray-500">
+                          Transaction ID: {order.paymentDetails.transactionId}
+                        </p>
                       </div>
                     )}
                   </div>
 
-                  {/* Actions */}
-
-                  {/* Actions */}
                   <div className="flex flex-col gap-2">
                     <button
                       onClick={() => handleViewDetails(order._id)}
-                      className="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 transition duration-300 text-sm"
+                      className="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 transition duration-300 text-sm whitespace-nowrap"
                     >
                       View Details
                     </button>
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    {/* Payment Info */}
-                    <div className="mt-4 pt-4 border-t border-gray-200">
-                      {order.paymentDetails?.transactionId && (
-                        <p className="text-xs text-gray-500 mt-1">
-                          Transaction ID: {order.paymentDetails.transactionId}
-                        </p>
-                      )}
-                    </div>
                   </div>
                 </div>
               </div>
             ))}
           </div>
 
-          {/* Pagination */}
           {pagination.totalPages > 1 && (
             <div className="flex justify-center items-center space-x-4">
               <button
