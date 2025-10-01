@@ -329,7 +329,7 @@ const UserInfoForm = () => {
               )}
             </div>
 
-            {/* Clean Date of Birth Field */}
+            {/* Date of Birth Field with Calendar Icon */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Date of Birth *
@@ -339,16 +339,39 @@ const UserInfoForm = () => {
                   type="date"
                   min={getMinDate()}
                   max={getTodayDate()}
-                  className={`w-full p-2 border rounded-md ${
+                  className={`w-full p-2 border rounded-md text-center cursor-pointer ${
                     errors[`${index}-dob`]
                       ? "border-red-500"
                       : "border-gray-300"
-                  }`}
+                  }
+      [&::-webkit-calendar-picker-indicator]:absolute 
+      [&::-webkit-calendar-picker-indicator]:inset-0 
+      [&::-webkit-calendar-picker-indicator]:w-full 
+      [&::-webkit-calendar-picker-indicator]:h-full 
+      [&::-webkit-calendar-picker-indicator]:opacity-0 
+      [&::-webkit-calendar-picker-indicator]:cursor-pointer`}
                   value={person.dob}
                   onChange={(e) =>
                     handleInputChange(index, "dob", e.target.value)
                   }
                 />
+                {!person.dob && (
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <svg
+                      className="w-6 h-6 text-gray-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                      />
+                    </svg>
+                  </div>
+                )}
               </div>
               {errors[`${index}-dob`] && (
                 <p className="text-red-500 text-xs mt-1">
@@ -356,7 +379,6 @@ const UserInfoForm = () => {
                 </p>
               )}
             </div>
-
             {/* Address Field */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">

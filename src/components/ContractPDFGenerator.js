@@ -1403,8 +1403,8 @@ const ContractPDFGenerator = forwardRef(({ contractData }, ref) => {
         />
 
         <div className="mt-8 mb-4">
-          This agreement is made in 2 (two) copies, sufficiently stamped, and
-          having the same legal force, signed by both parties.
+          This agreement need to be signed form your side and send by email to
+          info@futurelifebali.com .
         </div>
 
         <div className="flex justify-between mt-8">
