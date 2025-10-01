@@ -353,6 +353,20 @@ const UserInfoForm = () => {
                     handleInputChange(index, "dob", e.target.value)
                   }
                 />
+                <style jsx>{`
+                  input[type="date"]::-webkit-calendar-picker-indicator {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    width: auto;
+                    height: auto;
+                    color: transparent;
+                    background: transparent;
+                    cursor: pointer;
+                  }
+                `}</style>
                 {!person.dob && (
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                     <svg

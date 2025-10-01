@@ -1403,8 +1403,10 @@ const ContractPDFGenerator = forwardRef(({ contractData }, ref) => {
         />
 
         <div className="mt-8 mb-4">
-          This agreement need to be signed form your side and send by email to
-          info@futurelifebali.com .
+          This agreement will be made in 2 (two) copies, sufficiently stamped,
+          and having the same legal force, signed by both parties. You need to
+          sign the copy and send it to us by email at info@futurelifebali.com
+          and we will mail you back with the stamp.
         </div>
 
         <div className="flex justify-between mt-8">
