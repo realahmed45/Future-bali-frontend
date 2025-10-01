@@ -329,7 +329,7 @@ const UserInfoForm = () => {
               )}
             </div>
 
-            {/* Date of Birth Field with Calendar Icon */}
+            {/* Date of Birth Field with Calendar Icon Only */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Date of Birth *
@@ -343,13 +343,11 @@ const UserInfoForm = () => {
                     errors[`${index}-dob`]
                       ? "border-red-500"
                       : "border-gray-300"
-                  }
-      [&::-webkit-calendar-picker-indicator]:absolute 
-      [&::-webkit-calendar-picker-indicator]:inset-0 
-      [&::-webkit-calendar-picker-indicator]:w-full 
-      [&::-webkit-calendar-picker-indicator]:h-full 
-      [&::-webkit-calendar-picker-indicator]:opacity-0 
-      [&::-webkit-calendar-picker-indicator]:cursor-pointer`}
+                  }`}
+                  style={{
+                    colorScheme: "light",
+                    color: person.dob ? "inherit" : "transparent",
+                  }}
                   value={person.dob}
                   onChange={(e) =>
                     handleInputChange(index, "dob", e.target.value)
