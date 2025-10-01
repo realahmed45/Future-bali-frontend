@@ -362,10 +362,12 @@ const NuanuHomepage = () => {
 
               <div className="space-y-3 pt-6 lg:pt-8">
                 <div className="flex flex-col lg:flex-row items-center space-y-2 lg:space-y-0 lg:space-x-4">
-                  <button className="bg-gray-800 text-white px-6 py-3 lg:px-8 lg:py-4 rounded-full text-sm font-medium hover:bg-gray-900 transition-colors flex items-center space-x-2 w-full lg:w-auto">
-                    <span>See Options</span>
-                    <span>→</span>
-                  </button>
+                  <Link to="/packages" className="w-full">
+                    <button className="bg-gray-800 text-white px-6 py-3 lg:px-8 lg:py-4 rounded-full text-sm font-medium hover:bg-gray-900 transition-colors flex items-center space-x-2 w-full lg:w-auto">
+                      <span>See Options</span>
+                      <span>→</span>
+                    </button>
+                  </Link>
                   <p className="text-gray-600 text-center lg:text-left text-sm lg:text-base">
                     See all your options and join the adventure now
                   </p>

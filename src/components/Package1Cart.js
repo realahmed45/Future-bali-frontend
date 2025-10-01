@@ -418,7 +418,7 @@ const Package1Cart = () => {
       <div className="mt-4">
         <button
           onClick={() => setShowAddOns(!showAddOns)}
-          className="w-full bg-indigo-600 text-white py-2 px-4 rounded-lg text-sm font-bold hover:bg-indigo-700 transition-all duration-300 flex items-center justify-center gap-2"
+          className="w-full bg-indigo-600 text-white py-2 px-4 rounded-lg text-lg font-bold hover:bg-indigo-700 transition-all duration-300 flex items-center justify-center gap-2"
         >
           <FaPlus size={12} />
           {showAddOns ? "Hide Available Add-Ons" : "Add More Add-Ons"}
