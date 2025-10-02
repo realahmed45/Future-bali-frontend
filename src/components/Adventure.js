@@ -1,20 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import homeImage from "../assets/images/home1.png";
-import mainImage from "../assets/images/sunset2.png";
-import fallbackImage from "../assets/Future life img.png";
-import {
-  FaArrowLeft,
-  FaArrowRight,
-  FaCheckCircle,
-  FaPlay,
-} from "react-icons/fa";
-
-// External video hosting URLs - Cloudinary hosted videos
-const heroVideo =
-  "https://res.cloudinary.com/dgbxypivn/video/upload/v1758704847/fture_life_hero_video_web_244fps_and_720p_wmmcf6.mp4";
-const heroVideoMobile =
-  "https://res.cloudinary.com/dgbxypivn/video/upload/v1758705234/mobile_version_720p_24_fps_qv4lbc.mp4";
+import { FaArrowLeft, FaArrowRight, FaCheckCircle } from "react-icons/fa";
+import mediaConfig from "../config/mediaConfig.json";
 
 const Adventure = () => {
   const navigate = useNavigate();
@@ -26,6 +13,9 @@ const Adventure = () => {
   const [hideBackgroundImage, setHideBackgroundImage] = useState(false);
   const [videoCanPlay, setVideoCanPlay] = useState(false);
   const videoRef = useRef(null);
+
+  // Get media from config
+  const { videos, images } = mediaConfig.adventure;
 
   useEffect(() => {
     const handleResize = () => {
@@ -53,23 +43,19 @@ const Adventure = () => {
     setVideoCanPlay(true);
     setVideoLoaded(true);
 
-    // Attempt to autoplay
     if (videoRef.current) {
       const playPromise = videoRef.current.play();
 
       if (playPromise !== undefined) {
         playPromise
           .then(() => {
-            // Autoplay started successfully
             setShowPlayButton(false);
-            // Hide background image after video starts playing
             setTimeout(() => {
               setHideBackgroundImage(true);
             }, 500);
           })
           .catch((error) => {
             console.log("Autoplay prevented:", error);
-            // Show play button if autoplay is blocked
             setShowPlayButton(true);
           });
       }
@@ -78,7 +64,6 @@ const Adventure = () => {
 
   const handleVideoPlay = () => {
     setShowPlayButton(false);
-    // Hide background image when video starts playing
     setTimeout(() => {
       setHideBackgroundImage(true);
     }, 500);
@@ -92,41 +77,17 @@ const Adventure = () => {
   };
 
   const getVideoSrc = () => {
-    return isMobile ? heroVideoMobile : heroVideo;
+    return isMobile ? videos.heroVideoMobile : videos.heroVideo;
   };
 
-  const storyImages = [
-    "adventure1.png",
-    "adventure2.png",
-    "adventure3.png",
-    "adventure4.png",
-    "adventure5.png",
-    "adventure6.png",
-    "adventure7.png",
-    "adventure8.png",
-    "adventure9.png",
-  ];
-  const galleryImages = [
-    "1.png",
-    "2.jpeg",
-    "3.png",
-    "5.jpeg",
-    "6.jpeg",
-    "10.jpeg",
-    "11.png",
-    "12.jpeg",
-  ];
-  const blogImages = [
-    "blog1.jpeg",
-    "blog5.jpeg",
-    "blog6.jpeg",
-    "blog3.jpeg",
-    "blog4.jpeg",
-    "blog2.jpeg",
-  ];
-
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [selectedPackage, setSelectedPackage] = useState(1);
+  const getImageSrc = (imagePath) => {
+    // If it's a URL (starts with http), return as is
+    if (imagePath.startsWith("http")) {
+      return imagePath;
+    }
+    // Otherwise, it's a local file path
+    return require(`../assets/images/${imagePath}`);
+  };
 
   const blogTitles = [
     "Waterfall",
@@ -144,9 +105,10 @@ const Adventure = () => {
     "Long walk on rice fields, known for their green terraces and peaceful views.",
     "Indonesia is famous for its surfing all around the world. Bali to start with",
   ];
+
   const packageDetails = {
     1: {
-      image: "1.png",
+      image: images.packageImages.package1,
       description: [
         "Modern design",
         "Land: 155m²",
@@ -155,7 +117,7 @@ const Adventure = () => {
       ],
     },
     2: {
-      image: "two.png",
+      image: images.packageImages.package2,
       description: [
         "Luxury pool",
         "Built-up: 65m²",
@@ -164,7 +126,7 @@ const Adventure = () => {
       ],
     },
     3: {
-      image: "4.jpeg",
+      image: images.packageImages.package3,
       description: [
         "Perfect for families",
         "Built-up: 80m² min",
@@ -173,6 +135,9 @@ const Adventure = () => {
       ],
     },
   };
+
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [selectedPackage, setSelectedPackage] = useState(1);
 
   const handleViewPackages = () => {
     const token = localStorage.getItem("authToken");
@@ -185,32 +150,32 @@ const Adventure = () => {
 
   const handlePrevious = () =>
     setCurrentImageIndex((prev) =>
-      prev === 0 ? storyImages.length - 1 : prev - 1
+      prev === 0 ? images.storyImages.length - 1 : prev - 1
     );
   const handleNext = () =>
     setCurrentImageIndex((prev) =>
-      prev === storyImages.length - 1 ? 0 : prev + 1
+      prev === images.storyImages.length - 1 ? 0 : prev + 1
     );
 
   const handleImageClick = (id) => setSelectedPackage(id);
 
   return (
     <div className="font-sans text-gray-800">
-      {/* Hero Section - Cloudinary Video Implementation */}
+      {/* Hero Section */}
       <div className="relative h-screen flex justify-center items-center text-white text-center overflow-hidden">
-        {/* Background Image (shown when video not loaded or error) */}
         {(!videoLoaded || videoError || !hideBackgroundImage) && (
           <div
             className={`absolute top-0 left-0 w-full h-full bg-cover bg-center transition-opacity duration-1000 ${
               hideBackgroundImage ? "opacity-0" : "opacity-100"
             }`}
             style={{
-              backgroundImage: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url(${fallbackImage})`,
+              backgroundImage: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url(${getImageSrc(
+                images.fallbackImage
+              )})`,
             }}
           />
         )}
 
-        {/* Cloudinary Hosted Video */}
         <video
           ref={videoRef}
           className={`absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-1000 ${
@@ -223,39 +188,28 @@ const Adventure = () => {
           onCanPlay={handleVideoCanPlay}
           onPlay={handleVideoPlay}
           onError={handleVideoError}
-          onLoadStart={() => console.log("Video load started")}
-          onLoadedData={() => console.log("Video data loaded")}
         >
           <source src={getVideoSrc()} type="video/mp4" />
           Your browser does not support the video tag.
         </video>
 
-        {/* Attractive Play Button */}
         {showPlayButton && videoCanPlay && (
           <div className="absolute inset-0 flex items-center justify-center z-30">
             <button onClick={handlePlayClick} className="group relative">
-              {/* Outer glow ring */}
               <div className="absolute inset-0 rounded-full bg-white/20 blur-xl scale-150 group-hover:scale-175 transition-transform duration-700"></div>
-
-              {/* Main button */}
               <div className="relative flex items-center justify-center w-20 h-20 sm:w-24 sm:h-24 lg:w-28 lg:h-28 rounded-full bg-white/10 backdrop-blur-md border border-white/30 shadow-2xl group-hover:bg-white/20 group-hover:scale-110 transition-all duration-500">
-                {/* Play icon */}
                 <div className="ml-1 text-white text-2xl sm:text-3xl lg:text-4xl group-hover:text-purple-200 transition-colors duration-300">
                   ▶
                 </div>
               </div>
-
-              {/* Pulse rings */}
               <div className="absolute inset-0 rounded-full border-2 border-white/30 animate-ping"></div>
               <div className="absolute inset-0 rounded-full border border-white/20 animate-pulse"></div>
             </button>
           </div>
         )}
 
-        {/* Dark overlay */}
         <div className="absolute inset-0 bg-black bg-opacity-20 z-10"></div>
 
-        {/* Content - Moved further down */}
         <div className="relative z-20 px-4 sm:px-6 lg:px-8 mt-40 sm:mt-32 lg:mt-20">
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-center justify-center">
             <Link
@@ -341,7 +295,7 @@ const Adventure = () => {
               >
                 <div className="aspect-[4/3] overflow-hidden">
                   <img
-                    src={require(`../assets/images/${packageDetails[key].image}`)}
+                    src={getImageSrc(packageDetails[key].image)}
                     alt={packageDetails[key].title}
                     className="w-full h-full object-cover"
                   />
@@ -389,7 +343,7 @@ const Adventure = () => {
                 }`}
               >
                 <img
-                  src={require(`../assets/images/sunset1.jpg`)}
+                  src={getImageSrc(images.sunsetImage)}
                   alt="Our Story"
                   className="w-full h-full object-cover"
                 />
@@ -434,7 +388,7 @@ const Adventure = () => {
               <div className="relative mt-4">
                 <div className="aspect-[16/9] overflow-hidden rounded-lg shadow-md">
                   <img
-                    src={require(`../assets/images/${storyImages[currentImageIndex]}`)}
+                    src={getImageSrc(images.storyImages[currentImageIndex])}
                     alt="Story Slider"
                     className="w-full h-full object-cover"
                   />
@@ -470,7 +424,7 @@ const Adventure = () => {
           >
             <div className="aspect-[16/9] overflow-hidden rounded-lg shadow-lg">
               <img
-                src={mainImage}
+                src={getImageSrc(images.mainImage)}
                 alt="Main Feature"
                 className="w-full h-full object-cover"
               />
@@ -510,14 +464,14 @@ const Adventure = () => {
                 : "grid-cols-2 md:grid-cols-4"
             }`}
           >
-            {galleryImages.map((img, index) => (
+            {images.galleryImages.map((img, index) => (
               <div
                 key={index}
                 className="group relative overflow-hidden rounded-lg shadow-lg bg-white hover:shadow-xl transition-all duration-300 hover:scale-105"
               >
                 <div className="aspect-square overflow-hidden">
                   <img
-                    src={require(`../assets/images/${img}`)}
+                    src={getImageSrc(img)}
                     alt={`Gallery ${index + 1}`}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                   />
@@ -576,14 +530,14 @@ const Adventure = () => {
                 : "grid-cols-1 sm:grid-cols-2 md:grid-cols-3"
             }`}
           >
-            {blogImages.map((img, index) => (
+            {images.blogImages.map((img, index) => (
               <div
                 key={index}
                 className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl hover:scale-105 transition-all duration-300"
               >
                 <div className="aspect-[4/3] overflow-hidden">
                   <img
-                    src={require(`../assets/images/${img}`)}
+                    src={getImageSrc(img)}
                     alt={`Blog ${index + 1}`}
                     className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
                   />

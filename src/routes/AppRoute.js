@@ -26,6 +26,7 @@ import ProtectedRoute from "../components/ProtectedRoute";
 import Adventure from "../components/Adventure";
 import OrderDetails from "../components/OrderDetails";
 import ContractView from "../components/ContractView";
+import MediaAdminPanel from "../components/MediaPanel";
 
 const AppRoutes = () => {
   return (
@@ -61,12 +62,14 @@ const AppRoutes = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/case-study" element={<CaseStudy />} />
+            <Route path="/admin" element={<MediaAdminPanel />} />
             <Route path="/adventure" element={<Adventure />} />
 
             {/* Protected routes */}
             <Route element={<ProtectedRoute />}>
               {/* Package routes */}
               <Route path="/package1" element={<Package1 />} />
+
               <Route path="/package2" element={<Package2 />} />
               <Route path="/package3" element={<Package3 />} />
 
