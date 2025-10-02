@@ -1,0 +1,61 @@
+{
+  "adventure": {
+    "videos": {
+      "heroVideo": "https://res.cloudinary.com/dgbxypivn/video/upload/v1758704847/fture_life_hero_video_web_244fps_and_720p_wmmcf6.mp4",
+      "heroVideoMobile": "https://res.cloudinary.com/dgbxypivn/video/upload/v1758705234/mobile_version_720p_24_fps_qv4lbc.mp4"
+    },
+    "images": {
+      "homeImage": "home1.png",
+      "mainImage": "https://res.cloudinary.com/dgbxypivn/image/upload/v1759406169/enlwiedrg83sjwr4jxnj.png",
+      "fallbackImage": "Future life img.png",
+      "sunsetImage": "sunset1.jpg",
+      "storyImages": [
+        "adventure1.png",
+        "adventure2.png",
+        "adventure3.png",
+        "adventure4.png",
+        "adventure5.png",
+        "adventure6.png",
+        "adventure7.png",
+        "adventure8.png",
+        "adventure9.png"
+      ],
+      "galleryImages": [
+        "1.png",
+        "2.jpeg",
+        "3.png",
+        "5.jpeg",
+        "6.jpeg",
+        "10.jpeg",
+        "11.png",
+        "12.jpeg"
+      ],
+      "blogImages": [
+        "blog1.jpeg",
+        "blog5.jpeg",
+        "blog6.jpeg",
+        "blog3.jpeg",
+        "blog4.jpeg",
+        "blog2.jpeg"
+      ],
+      "packageImages": {
+        "package1": "1.png",
+        "package2": "two.png",
+        "package3": "4.jpeg"
+      }
+    }
+  },
+  "nuanu": {
+    "images": {
+      "frame1": "Frame1.png",
+      "frameSmall": "Framesmall.png",
+      "frame3": "Frame3.png",
+      "frame4": "Frame4.png",
+      "frame5": "Frame5.png",
+      "frame7": "Frame7.png",
+      "frame8": "Frame 8.png",
+      "frame9": "Frame 9.png",
+      "frame10": "Frame 10.png"
+    }
+  }
+}
