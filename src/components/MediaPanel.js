@@ -59,10 +59,10 @@ const MediaAdminPanel = () => {
     try {
       const formData = new FormData();
       formData.append("file", file);
-      formData.append("upload_preset", cloudinaryPreset);
 
+      // Upload via backend instead of directly to Cloudinary
       const response = await fetch(
-        `https://api.cloudinary.com/v1_1/${cloudinaryCloudName}/auto/upload`,
+        `${BACKEND_URL}/api/media/upload-to-cloudinary`,
         {
           method: "POST",
           body: formData,
@@ -71,7 +71,7 @@ const MediaAdminPanel = () => {
 
       const data = await response.json();
 
-      if (data.secure_url) {
+      if (data.success && data.secure_url) {
         const newConfig = { ...mediaConfig };
 
         if (index !== null) {
@@ -85,10 +85,12 @@ const MediaAdminPanel = () => {
 
         setMediaConfig(newConfig);
         alert('Upload successful! Click "Save & Push to GitHub" when done.');
+      } else {
+        alert("Upload failed: " + (data.message || "Unknown error"));
       }
     } catch (error) {
       console.error("Upload error:", error);
-      alert("Upload failed. Please check your Cloudinary settings.");
+      alert("Upload failed. Please try again.");
     } finally {
       setUploadingKey(null);
     }
