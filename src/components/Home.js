@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Play, MapPin } from "lucide-react";
 import mediaConfig from "../config/mediaConfig.json";
+import { useTextConfig } from "../hooks/useTextConfig";
 
 const NuanuHomepage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { textConfig, loading, error } = useTextConfig();
 
   // Get media from config
   const { images } = mediaConfig.nuanu;
@@ -48,6 +50,32 @@ const NuanuHomepage = () => {
     },
   ];
 
+  // Loading state
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading content...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center text-red-600">
+          <p>Error loading content: {error}</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Get text content
+  const t = textConfig.nuanu;
+
   return (
     <div className="min-h-screen bg-white">
       <section className="relative h-screen overflow-hidden">
@@ -63,7 +91,7 @@ const NuanuHomepage = () => {
         <div className="absolute top-4 right-4 lg:top-6 lg:right-[750px] border border-white rounded-xl lg:rounded-2xl px-3 py-2 lg:px-5 lg:py-3 text-white z-10 shadow-lg">
           <div className="text-center">
             <div className="text-xs lg:text-base font-semibold">
-              +15% rental
+              {t.rentalIncome}
             </div>
             <div className="text-xs lg:text-sm opacity-90">income per year</div>
           </div>
@@ -71,17 +99,17 @@ const NuanuHomepage = () => {
 
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 lg:top-1 lg:left-8 lg:transform-none text-white lg:text-black max-w-sm lg:max-w-md z-10 text-center lg:text-left">
           <h1 className="text-2xl lg:text-3xl font-semibold mb-3 lg:mb-2 leading-tight">
-            Best Premium investment in Bali
+            {t.mainTitle}
           </h1>
-          <p className="text-3xl lg:text-4xl mb-1 font-bold">(from $36,000)</p>
+          <p className="text-3xl lg:text-4xl mb-1 font-bold">{t.subtitle}</p>
         </div>
 
         <div className="absolute bottom-20 lg:bottom-[350px] left-4 lg:left-14 text-white z-10">
           <h2 className="text-4xl lg:text-[120px] font-light mb-1 tracking-wide leading-none">
-            Bali
+            {t.largeHeading1}
           </h2>
           <p className="text-xl lg:text-[60px] font-light opacity-90 tracking-wider leading-none">
-            |Future Life
+            {t.largeHeading2}
           </p>
         </div>
 
@@ -97,11 +125,11 @@ const NuanuHomepage = () => {
               </div>
               <div className="flex-1">
                 <p className="text-xs text-gray-600 mb-2 leading-tight">
-                  select your future home with available futures
+                  {t.selectHomeText}
                 </p>
                 <Link to="/packages" className="w-full">
                   <button className="bg-black text-white px-3 py-1.5 lg:px-4 lg:py-2 rounded-full text-xs font-medium hover:bg-gray-800 transition-colors flex items-center justify-center space-x-1 w-full">
-                    <span>See Options</span>
+                    <span>{t.seeOptionsBtn}</span>
                     <span className="ml-1">→</span>
                   </button>
                 </Link>
@@ -115,25 +143,22 @@ const NuanuHomepage = () => {
         <div className="max-w-6xl mx-auto">
           <div className="flex items-center space-x-2 mb-6 lg:mb-8">
             <MapPin className="text-gray-600" size={20} />
-            <span className="text-gray-600">Indonesia</span>
+            <span className="text-gray-600">{t.location}</span>
           </div>
 
           <h2 className="text-2xl lg:text-5xl font-bold mb-8 lg:mb-12 text-gray-900">
-            Welcome to Future Bali
+            {t.welcomeHeading}
           </h2>
 
           <div className="grid md:grid-cols-2 gap-8 lg:gap-12 items-center mb-12 lg:mb-16">
             <div className="space-y-4 lg:space-y-6">
               <p className="text-sm lg:text-lg text-gray-700 leading-relaxed">
-                Bali is often reffered to as the island of gods and a province
-                of Indonesia. Indonesia is the largest country in Southeast Asia
-                and is the largest country in Southeast Asia, after India and
-                China
+                {t.welcomePara1}
               </p>
               <p className="text-sm lg:text-lg leading-relaxed">
                 Bali is consistently ranked among{" "}
                 <span className="text-blue-500 font-medium">
-                  the top tourist and investment destinations
+                  {t.highlightText}
                 </span>
                 , renowned for its stunning beaches, world-class surfing, rich
                 culture and outstanding hospitality
@@ -181,8 +206,7 @@ const NuanuHomepage = () => {
 
           <div className="block lg:hidden px-4 py-6 mb-4">
             <p className="text-lg text-gray-800 leading-relaxed text-center">
-              creative holiday adventure property is embodying a commitment to
-              harmonious living and adventure.
+              {t.creativePropertyText}
             </p>
           </div>
 
@@ -190,8 +214,7 @@ const NuanuHomepage = () => {
             <div className="absolute inset-0 flex items-center justify-center z-10">
               <div className="px-8 py-6 max-w-2xl mx-auto">
                 <p className="text-3xl text-gray-800 ml-16 leading-relaxed text-center">
-                  creative holiday adventure property is embodying a commitment
-                  to harmonious living and adventure.
+                  {t.creativePropertyText}
                 </p>
               </div>
             </div>
@@ -212,39 +235,28 @@ const NuanuHomepage = () => {
 
             <div className="block lg:hidden px-4 py-6">
               <h3 className="text-2xl font-bold text-gray-900 mb-2 text-center">
-                Invest as{" "}
-                <span className="text-gray-500">life adventure for life</span>
+                {t.investmentTitle1}{" "}
+                <span className="text-gray-500">{t.investmentTitle2}</span>
               </h3>
               <p className="text-base text-gray-800 leading-relaxed text-center">
-                The holiday is dedicated to nature adventure, harmony wellness,
-                entertainment living, giving back to your soul, body and
-                community.
+                {t.investmentDesc}
               </p>
             </div>
 
             <div className="hidden lg:block absolute top-8 left-8 max-w-md">
               <div className="px-6 py-6 mt-40">
                 <h3 className="text-3xl font-bold text-gray-900 mb-1">
-                  Invest as <span className="text-gray-500">life</span>
+                  {t.investmentTitle1}{" "}
+                  <span className="text-gray-500">life</span>
                 </h3>
                 <h3 className="text-3xl font-bold text-gray-500 mb-1">
-                  adventure
+                  {t.investmentTitle2}
                 </h3>
                 <h3 className="text-3xl font-bold text-gray-500 mb-3">
-                  for life
+                  {t.investmentTitle3}
                 </h3>
                 <p className="text-2xl text-gray-800 mr-4 leading-relaxed">
-                  The holiday is dedicated
-                  <br />
-                  to nature adventure,
-                  <br />
-                  harmony wellness,
-                  <br />
-                  entertainment living,
-                  <br />
-                  giving back to your soul,
-                  <br />
-                  body and community.
+                  {t.investmentDesc}
                 </p>
               </div>
             </div>
@@ -271,7 +283,7 @@ const NuanuHomepage = () => {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-8 lg:mb-16">
             <h2 className="text-xl lg:text-5xl font-light text-gray-900 mb-8 lg:mb-12">
-              This will make your life{" "}
+              {t.featuresHeading.split("as adventure")[0]}{" "}
               <span className="font-bold">as adventure</span>
             </h2>
           </div>
@@ -279,15 +291,7 @@ const NuanuHomepage = () => {
           <div className="flex justify-center lg:justify-end lg:mr-40">
             <div className="space-y-4 lg:space-y-8 max-w-sm lg:max-w-md w-full">
               <div className="space-y-2 lg:space-y-4">
-                {[
-                  "Amazing Service",
-                  "Adventure oriented",
-                  "Walkable surroundings",
-                  "Senior friendly",
-                  "Guest/staff focused",
-                  "Activities depends on area",
-                  "high (ROI) oriented",
-                ].map((feature, index) => (
+                {t.features.map((feature, index) => (
                   <div
                     key={index}
                     className="flex items-center space-x-3 lg:space-x-4 py-2 lg:py-3 border-b border-gray-100"
@@ -306,12 +310,12 @@ const NuanuHomepage = () => {
                 <div className="flex flex-col lg:flex-row items-center space-y-2 lg:space-y-0 lg:space-x-4">
                   <Link to="/packages" className="w-full">
                     <button className="bg-gray-800 text-white px-6 py-3 lg:px-8 lg:py-4 rounded-full text-sm font-medium hover:bg-gray-900 transition-colors flex items-center space-x-2 w-full lg:w-auto">
-                      <span>See Options</span>
+                      <span>{t.seeOptionsBtn}</span>
                       <span>→</span>
                     </button>
                   </Link>
                   <p className="text-gray-600 text-center lg:text-left text-sm lg:text-base">
-                    See all your options and join the adventure now
+                    {t.featuresCTA}
                   </p>
                 </div>
               </div>
@@ -334,18 +338,7 @@ const NuanuHomepage = () => {
                 Map Features
               </h3>
               <div className="grid grid-cols-1 gap-2">
-                {[
-                  "hot spring",
-                  "waterfalls",
-                  "adventure bikes",
-                  "Tracks",
-                  "waterfall",
-                  "spring water",
-                  "rafting",
-                  "ATV adventure",
-                  "waterfall track",
-                  "waterfall",
-                ].map((feature, index) => (
+                {t.mapFeatures.map((feature, index) => (
                   <div
                     key={index}
                     className="flex items-center space-x-3 py-1 border-b border-gray-100"
@@ -361,18 +354,7 @@ const NuanuHomepage = () => {
 
             <div className="hidden lg:block absolute top-1/4 mt-20 left-2 mr-14 p-8 max-w-md">
               <div className="space-y-3">
-                {[
-                  "hot spring",
-                  "waterfalls",
-                  "adventure bikes",
-                  "Tracks",
-                  "waterfall",
-                  "spring water",
-                  "rafting",
-                  "ATV adventure",
-                  "waterfall track",
-                  "waterfall",
-                ].map((feature, index) => (
+                {t.mapFeatures.map((feature, index) => (
                   <div
                     key={index}
                     className="flex items-center space-x-4 py-2 border-b border-gray-100"
@@ -399,18 +381,22 @@ const NuanuHomepage = () => {
 
           <div className="block lg:hidden p-4 text-center">
             <h2 className="text-2xl font-semibold text-gray-900 mb-1">
-              Invest in it.
+              {t.finalTitle1}
             </h2>
-            <h3 className="text-2xl text-gray-400 mb-1">Live in it.</h3>
+            <h3 className="text-2xl text-gray-400 mb-1">{t.finalTitle2}</h3>
             <h4 className="text-2xl font-semibold text-gray-900">
-              Rent it out.
+              {t.finalTitle3}
             </h4>
           </div>
 
           <div className="hidden lg:block absolute top-8 left-8 space-y-2">
-            <h2 className="text-5xl text-black font-semibold">Invest in it.</h2>
-            <h3 className="text-5xl text-gray-400">Live in it.</h3>
-            <h4 className="text-5xl text-black font-semibold">Rent it out.</h4>
+            <h2 className="text-5xl text-black font-semibold">
+              {t.finalTitle1}
+            </h2>
+            <h3 className="text-5xl text-gray-400">{t.finalTitle2}</h3>
+            <h4 className="text-5xl text-black font-semibold">
+              {t.finalTitle3}
+            </h4>
           </div>
         </div>
       </section>
@@ -420,11 +406,11 @@ const NuanuHomepage = () => {
           <div className="flex-1 bg-gray-900 flex items-center justify-center p-6 lg:p-8">
             <div className="max-w-lg text-center">
               <h2 className="text-2xl lg:text-6xl font-light text-white leading-tight">
-                Escape.
+                {t.escapeHeading1}
                 <br />
-                Explore.
+                {t.escapeHeading2}
                 <br />
-                Experience.
+                {t.escapeHeading3}
               </h2>
             </div>
           </div>

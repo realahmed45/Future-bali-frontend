@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useTextConfig } from "../hooks/useTextConfig";
 
 const Package1 = () => {
   const navigate = useNavigate();
+  const { textConfig, loading, error } = useTextConfig();
   const [selectedAddOns, setSelectedAddOns] = useState([]);
 
-  // Get minimum sizes based on package type
   const getMinimumSizes = (packageType = 1) => {
     if (packageType === 1) {
       return [
@@ -17,33 +18,12 @@ const Package1 = () => {
         { label: "Garden", size: "80" },
         { label: "Living room", size: "10" },
       ];
-    } else if (packageType === 2) {
-      return [
-        { label: "1 Bedroom", size: "30" },
-        { label: "1 Bathroom", size: "9" },
-        { label: "Kitchen", size: "7" },
-        { label: "Storage", size: "" },
-        { label: "Garden", size: "80" },
-        { label: "Living room", size: "10" },
-        { label: "Pool", size: "6" },
-      ];
-    } else if (packageType === 3) {
-      return [
-        { label: "2 Bedrooms", size: "40" },
-        { label: "2 Bathrooms", size: "9" },
-        { label: "Kitchen", size: "7" },
-        { label: "Storage", size: "" },
-        { label: "Garden", size: "80" },
-        { label: "Living room", size: "10" },
-      ];
     }
-
     return [];
   };
 
-  const minimumSizes = getMinimumSizes(1); // Package 1
+  const minimumSizes = getMinimumSizes(1);
 
-  // Debug: Log component mount and initial state
   useEffect(() => {
     console.log("[Package1] Component mounted");
     console.log("[Package1] Initial selectedAddOns:", selectedAddOns);
@@ -83,9 +63,9 @@ const Package1 = () => {
       const packageData = {
         selectedAddOns,
         basePackage: {
-          title: "Furnished 1 bedroom house",
+          title: t.packageName,
           price: 32000,
-          duration: "4-6 months",
+          duration: t.duration,
           details: [
             { label: "Bedroom", size: "24-36 m²" },
             { label: "Bathroom", size: "10-15 m²" },
@@ -131,7 +111,6 @@ const Package1 = () => {
         console.error("[Package1] API Error:", apiError);
         console.log("[Package1] Response data:", apiError.response?.data);
 
-        // Fallback to localStorage
         console.log("[Package1] Using fallback to localStorage");
         localStorage.setItem(
           "currentPackageSelection",
@@ -142,10 +121,32 @@ const Package1 = () => {
       }
     } catch (error) {
       console.error("[Package1] Unexpected error:", error);
-      // Ultimate fallback
       navigate("/package1-cart");
     }
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading content...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center text-red-600">
+          <p>Error loading content: {error}</p>
+        </div>
+      </div>
+    );
+  }
+
+  const t = textConfig.package1;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-indigo-50">
@@ -154,10 +155,10 @@ const Package1 = () => {
         <header className="w-full py-6 lg:py-8 bg-gradient-to-r from-purple-600 via-purple-700 to-indigo-600 shadow-xl flex justify-center items-center text-white text-center rounded-b-3xl mb-4 lg:mb-6">
           <div className="px-4">
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-1 tracking-wide">
-              Package 1
+              {t.headerTitle}
             </h1>
             <h2 className="text-lg sm:text-xl lg:text-2xl font-bold tracking-wide">
-              Furnished 1 bedroom house
+              {t.headerSubtitle}
             </h2>
           </div>
         </header>
@@ -167,20 +168,19 @@ const Package1 = () => {
           {/* Features Section */}
           <div className="flex-1 bg-white shadow-xl rounded-2xl p-5 lg:p-7 border border-purple-100">
             <h2 className="text-2xl lg:text-3xl font-bold mb-5 text-purple-700 border-b-2 border-purple-200 pb-2">
-              FEATURES
+              {t.featuresHeading}
             </h2>
 
             {/* Tags */}
             <div className="mb-5 flex flex-wrap gap-2">
-              <span className="text-sm font-semibold text-purple-600 bg-purple-50 px-3 py-1.5 rounded-full">
-                Modern Bali Design
-              </span>
-              <span className="text-sm font-semibold text-purple-600 bg-purple-50 px-3 py-1.5 rounded-full">
-                Open concept layout
-              </span>
-              <span className="text-sm font-semibold text-purple-600 bg-purple-50 px-3 py-1.5 rounded-full">
-                Fully Furnished
-              </span>
+              {t.tags.map((tag, index) => (
+                <span
+                  key={index}
+                  className="text-sm font-semibold text-purple-600 bg-purple-50 px-3 py-1.5 rounded-full"
+                >
+                  {tag}
+                </span>
+              ))}
             </div>
 
             {/* Room Features */}
@@ -228,39 +228,25 @@ const Package1 = () => {
             {/* Furnishing Details */}
             <div className="mt-6 bg-gradient-to-r from-purple-50 to-indigo-50 rounded-lg p-5">
               <p className="text-base font-bold text-purple-700 mb-3">
-                • All furnishing is included
+                • {t.furnishingTitle}
               </p>
               <ul className="list-none pl-4 text-gray-600 space-y-2">
-                <li className="flex items-center text-sm">
-                  <span className="w-2 h-2 bg-indigo-400 rounded-full mr-2 flex-shrink-0"></span>
-                  Bed settings
-                </li>
-                <li className="flex items-center text-sm">
-                  <span className="w-2 h-2 bg-indigo-400 rounded-full mr-2 flex-shrink-0"></span>
-                  All kitchen stuff
-                </li>
-                <li className="flex items-center text-sm">
-                  <span className="w-2 h-2 bg-indigo-400 rounded-full mr-2 flex-shrink-0"></span>
-                  All bathroom stuff
-                </li>
-                <li className="flex items-center text-sm">
-                  <span className="w-2 h-2 bg-indigo-400 rounded-full mr-2 flex-shrink-0"></span>
-                  Fully Furnished house
-                </li>
+                {t.furnishingItems.map((item, index) => (
+                  <li key={index} className="flex items-center text-sm">
+                    <span className="w-2 h-2 bg-indigo-400 rounded-full mr-2 flex-shrink-0"></span>
+                    {item}
+                  </li>
+                ))}
               </ul>
             </div>
 
             {/* Description */}
             <div className="mt-6 space-y-3">
               <p className="text-sm lg:text-base text-gray-600 leading-relaxed bg-white p-4 lg:p-5 rounded-lg shadow-inner border">
-                We are committed to delivering quality work on time and without
-                unnecessary interruptions to the client. We follow our
-                flexibility to the best we can do to make sure cost is at the
-                lowest.
+                {t.description1}
               </p>
               <p className="text-sm lg:text-base text-gray-600 leading-relaxed bg-white p-4 lg:p-5 rounded-lg shadow-inner border">
-                As soon as the construction is done, we will list the property
-                on Airbnb to maximize your return on investment (ROI).
+                {t.description2}
               </p>
             </div>
           </div>
@@ -271,26 +257,26 @@ const Package1 = () => {
             <div className="bg-white shadow-xl rounded-2xl p-5 lg:p-7 text-black border border-purple-100">
               <div className="mb-5">
                 <p className="text-gray-500 text-xs uppercase tracking-wider mb-2">
-                  Package
+                  {t.packageLabel}
                 </p>
                 <p className="font-bold text-lg lg:text-xl text-purple-800 leading-tight">
-                  Furnished 1 bedroom house
+                  {t.packageName}
                 </p>
               </div>
               <div className="mb-5">
                 <p className="text-gray-500 text-xs uppercase tracking-wider mb-2">
-                  Duration
+                  {t.durationLabel}
                 </p>
                 <p className="font-bold text-lg lg:text-xl text-gray-800 leading-tight">
-                  6 months max construction period
+                  {t.duration}
                 </p>
               </div>
               <div>
                 <p className="text-gray-500 text-xs uppercase tracking-wider mb-2">
-                  Budget
+                  {t.budgetLabel}
                 </p>
                 <p className="font-bold text-2xl lg:text-3xl text-green-600">
-                  $32,000
+                  {t.budget}
                 </p>
               </div>
             </div>
@@ -313,14 +299,10 @@ const Package1 = () => {
         <section className="mb-6">
           <div className="text-center mb-5">
             <h2 className="text-2xl lg:text-3xl font-bold text-purple-700 mb-3">
-              Add Ons
+              {t.addOnsHeading}
             </h2>
             <p className="text-sm lg:text-base text-gray-600 leading-relaxed max-w-4xl mx-auto bg-white p-4 lg:p-5 rounded-lg shadow-lg">
-              Optional add-ons increase your property's minimum size, offering
-              more space, value, and future flexibility. The total size can
-              expand further, especially in the garden area, which can be
-              converted into additional land for structures or open space,
-              contributing to a larger overall land size.
+              {t.addOnsDescription}
             </p>
           </div>
         </section>
@@ -329,10 +311,10 @@ const Package1 = () => {
         <section className="mb-6">
           <div className="text-center mb-5">
             <h2 className="text-2xl lg:text-4xl font-bold text-purple-700 mb-3">
-              COST OF BUILDING IN BALI
+              {t.costHeading}
             </h2>
             <h3 className="text-lg lg:text-2xl font-semibold text-gray-800 mb-6">
-              **The size is of minimum of what should you expect**
+              {t.costSubheading}
             </h3>
           </div>
 
@@ -340,7 +322,7 @@ const Package1 = () => {
             {/* Included Package Table */}
             <div className="w-full sm:w-3/4 md:w-2/3 xl:w-[31.25%] bg-white shadow-xl rounded-2xl p-5 lg:p-7 border border-purple-100 mx-auto xl:mx-0">
               <h3 className="text-xl lg:text-2xl font-bold mb-5 text-purple-600 text-center border-b-2 border-purple-200 pb-3">
-                Included in this package
+                {t.includedTableTitle}
               </h3>
               <div className="overflow-x-auto rounded-xl shadow-inner">
                 <table className="w-full border-collapse">
@@ -375,13 +357,10 @@ const Package1 = () => {
               </div>
               <div className="mt-6 bg-gradient-to-r from-purple-50 to-indigo-50 rounded-xl p-4 lg:p-5">
                 <h4 className="text-lg lg:text-xl font-bold mb-3 text-gray-800">
-                  Smartly Designed Living
+                  {t.smartDesignTitle}
                 </h4>
                 <p className="text-sm lg:text-base text-gray-700 leading-relaxed">
-                  Each property comes with generous minimum room sizes and a
-                  land area of 155–170 m². The extra space of 19–30 m² is
-                  professionally distributed by our team to create the best
-                  layout for comfort and lifestyle
+                  {t.smartDesignDesc}
                 </p>
               </div>
             </div>
@@ -389,7 +368,7 @@ const Package1 = () => {
             {/* Customization Table */}
             <div className="w-full sm:w-3/4 md:w-2/3 xl:w-[53.15%] bg-white shadow-xl rounded-2xl p-5 lg:p-7 border border-purple-100 mx-auto xl:mx-0">
               <h3 className="text-xl lg:text-2xl font-bold mb-5 text-purple-600 text-center border-b-2 border-purple-200 pb-3">
-                Customize According To Your Needs
+                {t.customizeTableTitle}
               </h3>
 
               <div className="overflow-x-auto rounded-xl shadow-inner">
@@ -460,17 +439,15 @@ const Package1 = () => {
 
               <div className="mt-6 bg-gradient-to-r from-purple-50 to-indigo-50 rounded-xl p-4 lg:p-5">
                 <h4 className="text-lg lg:text-xl font-bold mb-3 text-gray-800">
-                  Add Ons
+                  {t.addOnsInfoTitle}
                 </h4>
                 <p className="text-sm lg:text-base text-gray-700 leading-relaxed">
-                  Add-ons increase minimum room sizes. Total size may vary based
-                  on design, especially the garden, which can add 50 m² for
-                  structures or open space. This extra land enhances overall
-                  property size to fit your lifestyle.
+                  {t.addOnsInfoDesc}
                 </p>
               </div>
             </div>
           </div>
+
           {/* Proceed Button */}
           <div className="mt-6 flex justify-center">
             <button
@@ -478,7 +455,7 @@ const Package1 = () => {
               onClick={handleProceed}
               type="button"
             >
-              Proceed with my package
+              {t.proceedBtn}
             </button>
           </div>
         </section>
@@ -486,12 +463,12 @@ const Package1 = () => {
         {/* Construction Overview */}
         <section className="mb-6">
           <h2 className="text-2xl lg:text-4xl font-bold mb-5 text-purple-700 text-center">
-            Construction Overview
+            {t.constructionHeading}
           </h2>
           <div className="flex flex-col lg:flex-row gap-5 bg-white shadow-xl rounded-2xl p-5 lg:p-7 border border-purple-100">
             <div className="flex-1">
               <h3 className="text-xl lg:text-2xl font-bold mb-4 text-purple-600 border-b-2 border-purple-200 pb-3">
-                Overview
+                {t.constructionSubheading}
               </h3>
               <p className="text-sm lg:text-base text-gray-700 leading-relaxed bg-gray-50 p-4 lg:p-5 rounded-xl">
                 Our fully furnished single bedroom house consists of one bedroom
@@ -530,7 +507,7 @@ const Package1 = () => {
         {/* Photo Gallery */}
         <section className="mb-10">
           <h2 className="text-2xl lg:text-4xl font-bold mb-5 text-purple-700 text-center">
-            Photo Gallery
+            {t.galleryHeading}
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5 max-w-6xl mx-auto">
             {[

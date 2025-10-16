@@ -2,9 +2,15 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaArrowLeft, FaArrowRight, FaCheckCircle } from "react-icons/fa";
 import mediaConfig from "../config/mediaConfig.json";
+import { useTextConfig } from "../hooks/useTextConfig";
 
 const Adventure = () => {
   const navigate = useNavigate();
+  const {
+    textConfig,
+    loading: textLoading,
+    error: textError,
+  } = useTextConfig();
   const [isMobile, setIsMobile] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
   const [videoLoaded, setVideoLoaded] = useState(false);
@@ -81,72 +87,14 @@ const Adventure = () => {
   };
 
   const getImageSrc = (imagePath) => {
-    // If it's a URL (starts with http), return as is
     if (imagePath.startsWith("http")) {
       return imagePath;
     }
-    // Otherwise, it's a local file path
     return require(`../assets/images/${imagePath}`);
-  };
-
-  const blogTitles = [
-    "Waterfall",
-    "Volcano Mountains",
-    "Temples",
-    "Beaches",
-    "Rice field",
-    "Surfing",
-  ];
-  const blogDescriptions = [
-    "breathtaking waterfalls hidden in lush tropical landscapes.",
-    "Track mountains with beautiful views and fresh air.",
-    "temples, known for their unique architecture and spiritual importance",
-    "beaches, famous for soft sand, clear water, and stunning sunsets.",
-    "Long walk on rice fields, known for their green terraces and peaceful views.",
-    "Indonesia is famous for its surfing all around the world. Bali to start with",
-  ];
-
-  const packageDetails = {
-    1: {
-      image: images.packageImages.package1,
-      description: [
-        "Modern design",
-        "Land: 155m²",
-        "Built-up: 65m²",
-        "Ready in 3 months",
-      ],
-    },
-    2: {
-      image: images.packageImages.package2,
-      description: [
-        "Luxury pool",
-        "Built-up: 65m²",
-        "Land: 155m²",
-        "Ready in 3 months",
-      ],
-    },
-    3: {
-      image: images.packageImages.package3,
-      description: [
-        "Perfect for families",
-        "Built-up: 80m² min",
-        "Land: 160m² min",
-        "Add-on: Pool possibility",
-      ],
-    },
   };
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [selectedPackage, setSelectedPackage] = useState(1);
-
-  const handleViewPackages = () => {
-    const token = localStorage.getItem("authToken");
-    if (!token) {
-      navigate("/login");
-    } else {
-      navigate("/packages");
-    }
-  };
 
   const handlePrevious = () =>
     setCurrentImageIndex((prev) =>
@@ -157,7 +105,47 @@ const Adventure = () => {
       prev === images.storyImages.length - 1 ? 0 : prev + 1
     );
 
-  const handleImageClick = (id) => setSelectedPackage(id);
+  // Loading state
+  if (textLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading content...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (textError) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center text-red-600">
+          <p>Error loading content: {textError}</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Get text content
+  const t = textConfig.adventure;
+
+  // Package details with text from config
+  const packageDetails = {
+    1: {
+      image: images.packageImages.package1,
+      description: t.package1Details,
+    },
+    2: {
+      image: images.packageImages.package2,
+      description: t.package2Details,
+    },
+    3: {
+      image: images.packageImages.package3,
+      description: t.package3Details,
+    },
+  };
 
   return (
     <div className="font-sans text-gray-800">
@@ -218,7 +206,7 @@ const Adventure = () => {
                 isMobile ? "text-sm" : "text-base"
               }`}
             >
-              View Packages
+              {t.viewPackagesBtn}
             </Link>
             <Link
               to="/contactUs"
@@ -226,7 +214,7 @@ const Adventure = () => {
                 isMobile ? "text-sm" : "text-base"
               }`}
             >
-              Contact Us
+              {t.contactUsBtn}
             </Link>
           </div>
         </div>
@@ -239,22 +227,21 @@ const Adventure = () => {
             isMobile ? "text-sm" : "text-lg"
           }`}
         >
-          Our Packages
+          {t.packagesLabel}
         </h2>
         <h3
           className={`text-center font-bold mb-3 sm:mb-4 ${
             isMobile ? "text-xl" : "text-2xl"
           }`}
         >
-          Choose The Best For You
+          {t.packagesHeading}
         </h3>
         <p
           className={`text-center text-gray-600 mb-4 sm:mb-6 ${
             isMobile ? "text-xs px-2" : "text-sm"
           }`}
         >
-          We offer simple, customizable & affordable building packages, so let's
-          make your dream come true.
+          {t.packagesDesc}
         </p>
 
         <div className="flex justify-center gap-1 sm:gap-2 mb-4 sm:mb-6 flex-wrap px-2">
@@ -270,7 +257,7 @@ const Adventure = () => {
                   : "bg-gray-200 text-gray-700"
               }`}
             >
-              {isMobile ? `Package ${key}` : packageDetails[key].title}
+              {isMobile ? `Package ${key}` : t[`package${key}Btn`]}
             </button>
           ))}
         </div>
@@ -296,7 +283,7 @@ const Adventure = () => {
                 <div className="aspect-[4/3] overflow-hidden">
                   <img
                     src={getImageSrc(packageDetails[key].image)}
-                    alt={packageDetails[key].title}
+                    alt={t[`package${key}Btn`]}
                     className="w-full h-full object-cover"
                   />
                 </div>
@@ -357,32 +344,28 @@ const Adventure = () => {
                   isMobile ? "text-lg" : "text-xl"
                 }`}
               >
-                A New beginning
+                {t.storySubtitle}
               </h3>
               <h2
                 className={`font-bold text-gray-800 mb-3 sm:mb-4 ${
                   isMobile ? "text-2xl" : "text-3xl"
                 }`}
               >
-                Dream Holiday Investment
+                {t.storyTitle}
               </h2>
               <p
                 className={`text-gray-600 leading-relaxed mb-3 sm:mb-4 ${
                   isMobile ? "text-sm" : "text-base"
                 }`}
               >
-                Step into the new life with a unique holiday property
-                investment. Here we have Secure dream getaway, create memories
-                in paradise, and build a smart future. Enjoying all the luxury
-                at a fraction of the cost. Every stay is an adventure, every
-                moment feels like missing my new adventure home.
+                {t.storyPara1}
               </p>
               <p
                 className={`font-bold text-gray-600 leading-relaxed mb-3 sm:mb-4 ${
                   isMobile ? "text-sm" : "text-lg"
                 }`}
               >
-                Your dream. Your holiday. Your investment. Your new life.
+                {t.storyPara2}
               </p>
 
               <div className="relative mt-4">
@@ -444,14 +427,14 @@ const Adventure = () => {
             isMobile ? "text-2xl" : "text-4xl"
           }`}
         >
-          Our Gallery
+          {t.galleryTitle}
         </h2>
         <p
           className={`font-bold text-gray-600 mb-6 sm:mb-8 ${
             isMobile ? "text-base" : "text-lg"
           }`}
         >
-          Our Projects Blend Well With The Surroundings
+          {t.gallerySubtitle}
         </p>
 
         <div className="max-w-6xl mx-auto">
@@ -510,14 +493,14 @@ const Adventure = () => {
             isMobile ? "text-2xl" : "text-4xl"
           }`}
         >
-          Explore Bali
+          {t.blogTitle}
         </h2>
         <p
           className={`font-bold text-gray-600 mb-6 sm:mb-8 ${
             isMobile ? "text-base" : "text-lg"
           }`}
         >
-          What is bali famous for
+          {t.blogSubtitle}
         </p>
 
         <div className="max-w-4xl mx-auto">
@@ -548,14 +531,14 @@ const Adventure = () => {
                       isMobile ? "text-base" : "text-lg"
                     }`}
                   >
-                    {blogTitles[index] || `Blog Title ${index + 1}`}
+                    {t.blogTitles[index] || `Blog Title ${index + 1}`}
                   </h3>
                   <p
                     className={`text-gray-600 leading-relaxed ${
                       isMobile ? "text-xs" : "text-sm"
                     }`}
                   >
-                    {blogDescriptions[index % blogDescriptions.length]}
+                    {t.blogDescriptions[index]}
                   </p>
                   <div className="mt-4"></div>
                 </div>
